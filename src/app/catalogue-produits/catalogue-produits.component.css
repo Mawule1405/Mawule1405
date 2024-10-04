@@ -1,0 +1,72 @@
+.mini-aside{
+    position: fixed;
+    top:0;
+    left:18.5%;
+    width: 80%;
+}
+
+
+
+.container.card {
+    width: 99%; /* Largeur adaptative */
+    max-width: 96%; /* Limite maximale pour les grands écrans */
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
+    height: 95%;
+    max-height: 99vh;
+}
+
+.card-header {
+    background-color: #0f0f0f;
+    color: white;
+    padding: 1rem;
+    margin: 0;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-footer {
+    padding: 1rem;
+}
+
+.table {
+    margin-top: 10px;
+}
+
+.btn-close {
+    font-size: 1rem;
+}
+
+.card-body table tr td{
+    font-size: .735rem;
+
+
+}
+.card-body table tr{
+    height: 25px;
+}
+
+.card-body table tr .sm{
+    width: 10%;
+    text-align: center;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .product-card img {
+    max-width: 100%;
+    height: auto;
+  }
+  .product-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+  }

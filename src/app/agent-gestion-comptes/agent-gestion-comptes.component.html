@@ -1,0 +1,19 @@
+<app-agent-nav-bar></app-agent-nav-bar>
+
+<div class="screen-show">
+    <div class="d-flex justify-content-end my-3">
+        <button class="btn btn-sm btn-outline-dark small mx-2"
+               (click)="openClientAccountManager()">Gestion des Comptes Clients 
+        </button>
+        <button class="btn btn-sm btn-outline-dark small mx-2"
+                (click)="openAgentAccountManager()">Gestion des Comptes Agents
+        </button>
+      </div>
+      
+      <app-agent-gestion-compte-client *ngIf="basculAccount=='client'"></app-agent-gestion-compte-client>
+      
+      <app-agent-gestion-compte-agent *ngIf="basculAccount=='agent'"></app-agent-gestion-compte-agent>
+</div>
+
+<router-outlet></router-outlet>
+

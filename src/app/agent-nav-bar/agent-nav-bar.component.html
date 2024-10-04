@@ -1,0 +1,43 @@
+<div class="sidebar text-black"  *ngIf="!isSidebarVisible">
+    <!-- Hamburger button -->
+    <button (click)="toggleSidebar()" class="btn btn-light mx-2 my-2">
+      <i class="bi bi-list"></i>
+    </button>
+  
+    <!-- Sidebar content -->
+    <div class="mt-3 d-flex flex-column">
+      <ul class="ul-nav list-unstyled p-2">
+        <li *ngFor="let item of actions"  
+            routerLink="{{item.router}}"
+            [class]="currentAction==item ? 'item bg-black text-light' : 'item'"
+            (click)="changeAction(item)">
+          <i class="bi bi-{{item.icon}} me-3"></i> <span>{{item.text}}</span>
+        </li>
+      </ul>
+    </div>
+
+</div>
+  
+<div class="sidebar text-black"  *ngIf="isSidebarVisible">
+    <!-- Hamburger button -->
+    <button (click)="toggleSidebar()" class="btn btn-light mx-2 my-2">
+      <i class="bi bi-list"></i>
+    </button>
+  
+    <!-- Sidebar content -->
+    <div  class="mt-3 d-flex flex-column sidebar-min">
+        <ul class="ul-nav list-unstyled p-2">
+          <li *ngFor="let item of actions" 
+            [class]="currentAction == item? 'item bg-black text-light' : 'item'" 
+            routerLink="{{item.router}}" 
+            (click)="changeAction(item)">
+            <i class="bi bi-{{item.icon}} me-3"></i> 
+          </li>
+        </ul>
+    </div>
+
+</div>
+
+
+
+ 

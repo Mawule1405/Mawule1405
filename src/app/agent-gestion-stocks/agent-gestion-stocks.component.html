@@ -1,0 +1,166 @@
+<div class="d-flex justify-content-between flex-row">
+  <app-agent-nav-bar></app-agent-nav-bar>
+
+  <div class="mini-aside">
+    <!--Recherche sur les produit-->
+    <div class="d-flex justify-content-end align-items-center mb-2">
+      <!-- Boutons -->
+      <button class="btn btn-sm btn-outline-dark small me-1 d-flex align-items-center"
+              *ngFor="let btn of allButtonsElements"
+              (click)="changeLesElementsAffiches(btn)"
+      >
+        <span>{{btn.title}}</span>
+      </button>
+    </div>
+
+    <!--Affichage des médicaments retirés du catalo-->
+    <div *ngIf="affichageCourant==allButtonsElements[0]" class="container py-4 overflow-y-auto" style="max-height:95vh">
+      <div class="d-flex justify-content-between flex-row">
+        <h5 class="h5 mb-4 me-5 text-start">Les médicaments retirés du catalogues</h5>
+
+        <form [formGroup]="researchMedicamentsFormular" class=" flex-grow-1">
+          <label  for="searchInput" class="visually-hidden">Recherche de médicaments</label>
+          <input
+            id="searchInput"
+            type="search"
+            class="form-control form-control-sm w-100"
+            formControlName="cle"
+            (input)="researchMouvements()"
+            placeholder="Rechercher...">
+        </form>
+      </div>
+
+      <div class="d-flex flex-wrap justify-content-between">
+        <div *ngFor="let medoc of lesMedicaments" [class]="medoc.etat=='RETIRE' ? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+          <div *ngIf="medoc.etat == 'RETIRE'">
+            <div class="card-header p-0">
+              <img src="assets/images/img.png" class="card-img-top" alt="Image de {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
+            </div>
+            <div class="card-body">
+              <h4 class="h4 small">code: {{medoc.code}}</h4>
+              <h5 class="h5 small">Libellé: {{medoc.libelle}}</h5>
+              <h6 class="h6 small">Dosage: {{medoc.concentration}} {{medoc.uniteConcentration}}</h6>
+              <h6 class="h6 small">Quantité disponible: {{medoc.quantiteStock}}</h6>
+            </div>
+            <div [class]="10 < medoc.quantiteStock ? 'card-footer bg-success d-flex justify-content-between' : 'card-footer bg-dark d-flex justify-content-between'">
+              <button
+                title="Réajouter le produit au catalogue"
+                class="btn btn-sm btn-light mx-1"
+                (click)="reAjouterMedicamentAuCatalogue(medoc)">
+                <i class="bi bi-plus-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Affichage des approvisionnement-->
+    <div *ngIf="affichageCourant==allButtonsElements[1]"  class="container py-4 ">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h5 class="h5 text-start">Les approvisionnements</h5>
+
+        <form [formGroup]="formulaireFiltre" class="d-flex align-items-center">
+
+          <div class="input-group me-2">
+            <span class="btn btn-sm btn-outline-dark"><i class="bi bi-search"></i></span>
+            <input
+              type="search"
+              class="form-control form-control-sm"
+              formControlName ="valeurDeRecherche"
+              placeholder="Rechercher..."
+              (input)="rechercheDunMouvementParCle()"
+              >
+          </div>
+
+          <div class="input-group me-2">
+            <span class="btn btn-sm btn-outline-dark"><i class="bi bi-calendar-month"></i></span>
+            <select id="monthSelect"
+                    class="form-select form-select-sm"
+                    formControlName="leMoisDeFiltre"
+                    (change)="rechercheDeMouvementParMois()"
+            >
+              <option value="" disabled>Tous les mois</option>
+              <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+            </select>
+          </div>
+
+          <div class="input-group me-2">
+            <span class="btn btn-sm btn-outline-dark"><i class="bi bi-calendar-date"></i></span>
+            <select id="yearSelect"
+                    class="form-select form-select-sm"
+                    formControlName="lanneeDeFiltre"
+                    (click)="rechercheDeMouvementParAnnee()"
+            >
+              <option value="" disabled>Toutes les années</option>
+              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+
+          <div class="input-group me-2">
+            <span class="btn btn-sm btn-outline-dark"><i class="bi bi-clock"></i></span>
+            <select
+              class="form-select form-select-sm"
+              formControlName = "nombreRecent"
+              (click)="filtrerLesApprovisionnements()"
+            >
+              <option *ngFor="let op of optionMouvementRecent" [value]="op">{{ op }}</option>
+            </select>
+          </div>
+        </form>
+
+        <button class="btn btn-sm btn-outline-dark">
+          Imprimer
+        </button>
+      </div>
+
+
+
+      <div class="d-flex flex-wrap justify-content-between overflow-auto" style="max-height:80vh">
+        <table class="table table-bordered table-striped">
+          <thead class="text-small-m">
+              <tr>
+                <th class="bg-dark text-light text-small-m">code</th>
+                <th class="bg-dark text-light text-small-m">libellé</th>
+                <th class="bg-dark text-light text-small-m">Quantité</th>
+                <th class="bg-dark text-light text-small-m">P Achat</th>
+                <th class="bg-dark text-light text-small-m">P vente</th>
+                <th class="bg-dark text-light text-small-m">Date</th>
+                <th class="bg-dark text-light text-small-m">Date Expiration</th>
+                <th class="bg-dark text-light text-small-m" colspan="2">Action</th>
+              </tr>
+          </thead>
+
+            <tbody class="text-small-m">
+              <tr *ngFor="let mouv of lesMouvementsStock">
+                <td>{{ mouv.article.code }} </td>
+                <td>{{ mouv.article.libelle }}</td>
+                <td>{{ mouv.quantite }}</td>
+                <td>{{ mouv.prixAchatUnitaire }}</td>
+                <td>{{ mouv.prixVenteUnitaire }}</td>
+                <td>{{mouv.dateMouvement | date}}</td>
+                <td>{{ mouv.dateExpiration | date }}</td>
+                <td>
+                  <button class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                </td>
+                <td>
+                  <button
+                          class="btn btn-sm btn-outline-danger"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+
+                </td>
+              </tr>
+            </tbody>
+
+
+
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

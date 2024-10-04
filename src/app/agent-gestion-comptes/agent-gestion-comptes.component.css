@@ -1,0 +1,13 @@
+.screen-show{
+  position: fixed;
+  top:0;
+  left:18.5%;
+  width: 80%;
+}
+
+.nouveau-compte{
+  background-color: red;
+  color: white;
+  width: 50px;
+  border-radius: 10% 10%;
+}

@@ -1,0 +1,45 @@
+<app-nav-bar ></app-nav-bar>
+
+<div class=" d-flex justify-content-center align-items-center min-vh-100 bg-image">
+  <div class="card mx-1 p-4 shadow-lg" style="width: 400px;">
+    <h3 class="text-center mb-4">Connexion</h3>
+    <form [formGroup]="loginFormular" (submit)="login()">
+      <p>{{JSON.stringify(loginFormular.value)}}</p>
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="identifiant" class="form-label">Nom utilisateur ou Adresse e-mail</label>
+        <input type="text" class="form-control" formControlName="identifiant"  id="identifiant" placeholder="Entrez votre e-mail" required>
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3" *ngIf="!passwordForget">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" formControlName="motDePasse" class="form-control" id="password" placeholder="Entrez votre mot de passe" required>
+      </div>
+
+      <!-- code de connexion-->
+      <div class="mb-3" *ngIf="passwordForget">
+        <label for="code" class="form-label">Code de connexion  {{time}}s</label>
+        <input type="text" class="form-control" id="code" placeholder="Entrer le code" required>
+      </div>
+
+      <!-- Remember Me & Forgot Password -->
+      <div class="d-flex justify-content-between mb-3">
+
+        <a class="text-decoration"
+        *ngIf="!passwordForget"
+        (click)="clickPassWordLink()">Mot de passe oublié ?</a>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+      </div>
+
+      <!-- Sign Up Link -->
+      <div class="text-center">
+        <p>Pas encore de compte ? <a href="/create-account" class="text-decoration-none">Créer un compte</a></p>
+      </div>
+    </form>
+  </div>
+</div>

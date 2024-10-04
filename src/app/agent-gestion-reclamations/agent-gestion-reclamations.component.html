@@ -1,0 +1,158 @@
+<div class="d-flex justify-content-between flex-row">
+    <app-agent-nav-bar></app-agent-nav-bar>
+
+    <div class="mini-aside ">
+        <!--Les actions des boutons-->
+        <div class="d-flex justify-content-end align-items-center mb-2">
+            <!-- Boutons -->
+            <button
+              *ngFor="let btn of lesActions"
+              (click)="changeLesElementsAffiches(btn)"
+              [class]="boutonCourant==btn?'btn-sm btn btn-dark small me-1 d-flex align-items-center':'btn-sm btn btn-outline-dark small me-1 d-flex align-items-center'"
+              >
+                <span>{{btn.title}}</span>
+            </button>
+        </div>
+
+        <!--Zone d'affichage des réclamations nouvelles-->
+        <div  [class]="boutonCourant.index==0?'container py-2': 'modal'">
+
+            <!--Entête de la page-->
+            <div class="d-flex justify-content-between flex-row ">
+              <h5 class="h5 mb-4 me-5 text-start">Nouvelles réclamations <i class="bi bi-pencil text-success"></i> <strong>{{lesReclamations.length}}</strong></h5>
+
+
+              <form class="flex-grow-1">
+                <input
+                  type="search"
+                  class="form-control form-control-sm w-100"
+
+                  (input)="researchReclamationsNouvelles()"
+                  placeholder="Rechercher...">
+              </form>
+            </div>
+
+            <!--Présentation des tableaux-->
+            <div class="container  overflow-y-auto" style="max-height:90vh">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let head of headTableReclammations"
+                                class="bg-black text-white text-center"
+                            >{{head}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let recl of lesReclamations">
+                            <td>{{recl.id}}</td>
+                            <td>{{recl.dateReclamation | date}}</td>
+                            <td>{{recl.etatReclamation}}</td>
+                            <td>{{recl.commande.id}}</td>
+                            <td>{{recl.descriptionReclamation}}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-success"><i class="bi bi-eye"></i></button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-chat"></i></button></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+        <!--Zone d'affichage des réclamations-->
+        <div  [class]="boutonCourant.index==1?'container py-2': 'modal'">
+
+            <!--Entête de la page-->
+            <div class="d-flex justify-content-between flex-row ">
+              <h5 class="h5 mb-4 me-5 text-start">Réclamations lues <i class="bi bi-pencil text-success"></i> <strong>{{lesReclamations.length}}</strong></h5>
+
+
+              <form class="flex-grow-1">
+                <input
+                  type="search"
+                  class="form-control form-control-sm w-100"
+
+                  (input)="researchReclamationsNouvelles()"
+                  placeholder="Rechercher...">
+              </form>
+            </div>
+
+            <!--Présentation des tableaux-->
+            <div class="container  overflow-y-auto" style="max-height:90vh">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <td *ngFor="let head of headTableReclammations"
+                                class="bg-black text-white text-center"
+                            >{{head}}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let recl of lesReclamations">
+                            <td>{{recl.id}}</td>
+                            <td>{{recl.dateReclamation | date}}</td>
+                            <td>{{recl.etatReclamation}}</td>
+                            <td>{{recl.commande.id}}</td>
+                            <td>{{recl.descriptionReclamation}}</td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-success"><i class="bi bi-eye"></i></button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-chat"></i></button></td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+        <!--Zone d'affichage des réclamations traités-->
+        <div  [class]="boutonCourant.index==2?'container py-2': 'modal'">
+
+        <!--Entête de la page-->
+        <div class="d-flex  justify-content-between flex-row ">
+          <h5 class="h5 mb-4 me-5 text-start">Réclamations traitées <i class="bi bi-pencil text-success"></i> <strong>{{lesReclamations.length}}</strong></h5>
+
+
+          <form class="flex-grow-1">
+            <input
+              type="search"
+              class="form-control form-control-sm w-100"
+
+              (input)="researchReclamationsNouvelles()"
+              placeholder="Rechercher...">
+          </form>
+        </div>
+
+        <!--Présentation des tableaux-->
+        <div class="container   overflow-y-auto" style="max-height:90vh">
+          <table class="table table-striped table-bordered">
+            <thead>
+            <tr class="text-small-m">
+              <td *ngFor="let head of headTableReclammations"
+                  class="bg-black text-white text-center text-small-m"
+              >{{head}}</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let recl of lesReclamations" >
+              <td>{{recl.id}}</td>
+              <td>{{recl.dateReclamation | date}}</td>
+              <td>{{recl.etatReclamation}}</td>
+              <td>{{recl.commande.id}}</td>
+              <td>{{recl.descriptionReclamation}}</td>
+              <td class="text-center"><button class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></button></td>
+              <td class="text-center"><button class="btn btn-sm btn-outline-success"><i class="bi bi-eye"></i></button></td>
+              <td class="text-center"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-chat"></i></button></td>
+            </tr>
+            </tbody>
+
+          </table>
+        </div>
+
+      </div>
+
+
+
+    </div>
+</div>

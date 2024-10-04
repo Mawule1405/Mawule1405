@@ -1,0 +1,336 @@
+<div class="d-flex justify-content-between flex-row">
+  <app-agent-nav-bar></app-agent-nav-bar>
+
+  <div class="mini-aside ">
+    <!--Les boutons pour choisirs les commandes à afficher-->
+    <div class="d-flex justify-content-end align-items-center mb-2">
+      <!-- Boutons -->
+      <button
+        *ngFor="let btn of allButtonsElements"
+        (click)="changeLesElementsAffiches(btn)"
+        [class]="boutonCourant==btn?'btn-sm btn btn-dark small me-1 d-flex align-items-center':'btn-sm btn btn-outline-dark small me-1 d-flex align-items-center'"
+        >
+          <span>{{btn.title}}</span>
+      </button>
+    </div>
+
+    <!--Présentation et traitements des nouvelles commandes reçus-->
+    <div  [class]="boutonCourant.index==0?'container py-2': 'modal'">
+
+      <!--Entête de la page-->
+      <div class="d-flex justify-content-between flex-row ">
+        <h5 class="h5 mb-4 me-5 text-start">Nouvelles commandes</h5>
+
+        <form class="flex-grow-1">
+          <input
+            type="search"
+            class="form-control form-control-sm w-100"
+
+            (input)="researchProducts()"
+            placeholder="Rechercher...">
+        </form>
+      </div>
+
+
+    <!-- Présentation des commandes -->
+      <div class="container  overflow-y-auto" style="max-height:90vh">
+        <div class="row">
+          <div *ngFor="let order of lesCommandes" class="col-md-4 mb-4 ">
+            <div class="card">
+              <div class="card-body commande-en-attente">
+                <h5 class="card-title">Commande N° {{ order.id }}</h5>
+                <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
+
+                <!-- Boutons d'action sous forme d'icônes -->
+                <div class="d-flex justify-content-between ">
+                  <!-- Bouton Voir plus de détails -->
+                  <button class="btn btn-outline-primary" (click)="voirDetailsCommande(order)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+
+                  <!-- Bouton Accepter la commande -->
+                  <button class="btn btn-outline-success" (click)="accepterCommande(order)">
+                    <i class="bi bi-check-circle"></i> <!-- Icône pour accepter la commande -->
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Présentation et traitements des nouvelles commandes en cours de traitement-->
+    <div  [class]="boutonCourant.index==1?'container py-2': 'modal'">
+
+      <!--Entête de la page-->
+      <div class="d-flex justify-content-between flex-row ">
+        <h5 class="h5 mb-4 me-5 text-start">Commande en cours de traitement</h5>
+
+        <form class="flex-grow-1">
+          <input
+            type="search"
+            class="form-control form-control-sm w-100"
+
+            (input)="researchProducts()"
+            placeholder="Rechercher...">
+        </form>
+      </div>
+
+
+    <!-- Présentation des commandes -->
+      <div class="container  overflow-y-auto" style="max-height:90vh">
+        <div class="row">
+          <div *ngFor="let order of lesCommandes" class="col-md-4 mb-4 ">
+            <div class="card">
+              <div class="card-body commande-en-cours">
+                <h5 class="card-title">Commande N° {{ order.id }}</h5>
+                <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
+
+                <!-- Boutons d'action sous forme d'icônes -->
+                <div class="d-flex justify-content-between ">
+                  <!-- Bouton Voir plus de détails -->
+                  <button class="btn btn-outline-primary" (click)="voirDetailsCommande(order)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+
+                  <!-- Bouton Accepter la commande -->
+                  <button class="btn btn-outline-success" (click)="accepterCommande(order)">
+                    <i class="bi bi-check-circle"></i> <!-- Icône pour accepter la commande -->
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Présentation et traitements des nouvelles commandes traitées-->
+    <div  [class]="boutonCourant.index==2?'container py-2': 'modal'">
+
+      <!--Entête de la page-->
+      <div class="d-flex justify-content-between flex-row ">
+        <h5 class="h5 mb-4 me-5 text-start">Commandes traitées</h5>
+
+        <form class="flex-grow-1">
+          <input
+            type="search"
+            class="form-control form-control-sm w-100"
+
+            (input)="researchProducts()"
+            placeholder="Rechercher...">
+        </form>
+      </div>
+
+
+      <!-- Présentation des commandes -->
+      <div class="container  overflow-y-auto" style="max-height:90vh">
+        <div class="row">
+          <div *ngFor="let order of lesCommandes" class="col-md-4 mb-4 ">
+            <div class="card">
+              <div class="card-body commande-traite">
+                <h5 class="card-title">Commande N° {{ order.id }}</h5>
+                <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
+
+                <!-- Boutons d'action sous forme d'icônes -->
+                <div class="d-flex justify-content-between ">
+                  <!-- Bouton Voir plus de détails -->
+                  <button class="btn btn-outline-primary" (click)="voirDetailsCommande(order)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+
+                  <!-- Bouton Accepter la commande -->
+                  <button class="btn btn-outline-success" (click)="accepterCommande(order)">
+                    <i class="bi bi-check-circle"></i> <!-- Icône pour accepter la commande -->
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Présentation et traitements des nouvelles commandes livrées-->
+    <div  [class]="boutonCourant.index==3?'container py-2': 'modal'">
+
+      <!--Entête de la page-->
+      <div class="d-flex justify-content-between flex-row ">
+        <h5 class="h5 mb-4 me-5 text-start">Commandes en livrées</h5>
+
+        <form class="flex-grow-1">
+          <input
+            type="search"
+            class="form-control form-control-sm w-100"
+
+            (input)="researchProducts()"
+            placeholder="Rechercher...">
+        </form>
+      </div>
+
+
+      <!-- Présentation des commandes -->
+      <div class="container  overflow-y-auto" style="max-height:90vh">
+        <div class="row">
+          <div *ngFor="let order of lesCommandes" class="col-md-4 mb-4 ">
+            <div class="card">
+              <div class="card-body commande-en-livraison">
+                <h5 class="card-title">Commande N° {{ order.id }}</h5>
+                <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
+
+                <!-- Boutons d'action sous forme d'icônes -->
+                <div class="d-flex justify-content-between ">
+                  <!-- Bouton Voir plus de détails -->
+                  <button class="btn btn-outline-primary" (click)="voirDetailsCommande(order)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+
+                  <!-- Bouton Accepter la commande -->
+                  <button class="btn btn-outline-success" (click)="accepterCommande(order)">
+                    <i class="bi bi-check-circle"></i> <!-- Icône pour accepter la commande -->
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Présentation et traitements des nouvelles commandes annulées par le client-->
+    <div  [class]="boutonCourant.index==4?'container py-2': 'modal'">
+
+      <!--Entête de la page-->
+      <div class="d-flex justify-content-between flex-row ">
+        <h5 class="h5 mb-4 me-5 text-start">Commandes annulées</h5>
+
+        <form class="flex-grow-1">
+          <input
+            type="search"
+            class="form-control form-control-sm w-100"
+
+            (input)="researchProducts()"
+            placeholder="Rechercher...">
+        </form>
+      </div>
+
+
+      <!-- Présentation des commandes -->
+      <div class="container  overflow-y-auto" style="max-height:90vh">
+        <div class="row">
+          <div *ngFor="let order of lesCommandes" class="col-md-4 mb-4 ">
+            <div class="card">
+              <div class="card-body commande-annulee">
+                <h5 class="card-title">Commande N° {{ order.id }}</h5>
+                <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
+
+                <!-- Boutons d'action sous forme d'icônes -->
+                <div class="d-flex justify-content-between ">
+                  <!-- Bouton Voir plus de détails -->
+                  <button class="btn btn-outline-primary" (click)="voirDetailsCommande(order)">
+                    <i class="bi bi-eye"></i>
+                  </button>
+
+                  <!-- Bouton Accepter la commande -->
+                  <button class="btn btn-outline-success" (click)="accepterCommande(order)">
+                    <i class="bi bi-check-circle"></i> <!-- Icône pour accepter la commande -->
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--présentation des détailles de la commande-->
+    <div  [class]="afficherLesDetailsCommande? 'show-modal ': 'modal'">
+      <div *ngIf="commandeCourante" class="card shadow-lg w-75">
+
+        <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+          <h6>Détail sur la commande</h6>
+          <button class="btn btn-light" (click)="closeModalButton()">
+            <span class="btn-close"></span>
+          </button>
+        </div>
+        
+        <div class="d-flex flex-column justify-content-start align-items-center p-3">
+          <!-- En-tête avec les informations de la commande et du client -->
+          <div class=" me-2 w-100 border p-3 rounded shadow-sm bg-light">
+            <!-- Informations de la commande -->
+            <div class="row">
+              <div class="col-6">
+                <strong>Commande N°:</strong> {{commandeCourante.id}}
+              </div>
+              <div class="col-6 text-end">
+                <strong>Date:</strong> {{commandeCourante.dateCommande}}
+              </div>
+            </div>
+        
+            <!-- Informations du client -->
+            <div class="row mt-2">
+              <div class="col-6">
+                <strong>Client:</strong> {{commandeCourante.client.nomStructure}}
+              </div>
+              <div class="col-6 text-end">
+                <strong>Email:</strong> {{commandeCourante.client.email}}
+              </div>
+            </div>
+        
+            <div class="row mt-2">
+              <div class="col-6">
+                <strong>Adresse:</strong> {{commandeCourante.client.adresse}}
+              </div>
+              <div class="col-6 text-end">
+                <strong>Téléphone:</strong> {{commandeCourante.client.telephone}}
+              </div>
+            </div>
+          </div>
+        
+          <!-- Tableau des produits avec possibilité de scroller -->
+          <div class="w-100 overflow-auto mt-1 border p-1 rounded shadow-sm bg-white" style="max-height: 65vh;">
+            <table class="table table-striped table-hover">
+              <thead class="table-dark">
+                <tr  class="text-black">
+                  <th class="text-black">Produit</th>
+                  <th class="text-black">Spécialité</th>
+                  <th class="text-black">Forme</th>
+                  <th class="text-black">Dosage</th>
+                  <th class="text-black">Quantité</th>
+                  <th class="text-black">Prix Unitaire</th>
+                  <th class="text-black">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let ligne of lesLignesCommandes">
+                  <td> {{ ligne.medicament.libelle }}</td>
+                  <td> {{ligne.medicament.specialitePharmaceutique.libelle}}</td>
+                  <td> {{ligne.medicament.formeGalenique.nomFormeGalenique}}</td>
+                  <td> {{ligne.medicament.concentration}} {{ligne.medicament.uniteConcentration}}</td>
+                  <td> {{ ligne.quantiteLigneCommande }} </td>
+                  <td> {{ ligne.prixLigneCommande }} FCFA</td>
+                  <td> {{ ligne.quantiteLigneCommande * ligne.prixLigneCommande }} FCFA</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        
+      
+      </div>
+    </div>
+
+  </div>
+</div>

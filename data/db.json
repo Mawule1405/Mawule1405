@@ -1,0 +1,475 @@
+{
+  "ComptesClients": [
+    {
+      "id": "1",
+      "motDePasse": "client",
+      "nomUtilisateur": "client",
+      "nomStructure": "Hopital de santé d'OWENDO",
+      "typeCompte": "client",
+      "numeroAccreditation": "NB2541368952",
+      "estOperationnel": false,
+      "email": "contact@owendo.chu",
+      "telephone": "+241 060 05 53 98",
+      "adresse": "OWENDO, Estuaire, Libreville BP:",
+      "preuve": ""
+    },
+    {
+      "id": "2",
+      "motDePasse": "client",
+      "nomUtilisateur": "client",
+      "nomStructure": "Hopital de santé d'OWENDO",
+      "typeCompte": "client",
+      "numeroAccreditation": "NB2541368952",
+      "estOperationnel": true,
+      "email": "contact@owendo.chu",
+      "telephone": "+241 060 05 53 98",
+      "adresse": "OWENDO, Estuaire, Libreville BP:",
+      "preuve": ""
+    }
+  ],
+  "ComptesAgents": [
+    {
+      "id": "1",
+      "motDePasse": "agent",
+      "nomUtilisateur": "agent",
+      "typeCompte": "agent",
+      "nom": "MBAME",
+      "prenom": "Mathias"
+    }
+  ],
+  "commandes": [
+    {
+      "id": "2888f",
+      "montantTotalCommande": 700000,
+      "etatCommande": "EN_COURS",
+      "dateCommande": "2024-05-14",
+      "client": {
+        "id": "1",
+        "motDePasse": "client",
+        "nomUtilisateur": "client",
+        "nomStructure": "Hopital de santé d'OWENDO",
+        "typeCompte": "client",
+        "numeroAccreditation": "NB2541368952",
+        "estOperationnel": false,
+        "email": "contact@owendo.chu",
+        "telephone": "+241 060 05 53 98",
+        "adresse": "OWENDO, Estuaire, Libreville BP:",
+        "preuve": ""
+      }
+    },
+    {
+      "id": "8538f",
+      "montantTotalCommande": 700000,
+      "etatCommande": "EN_ATTENTE",
+      "dateCommande": "2024-05-14",
+      "client": {
+        "id": "1",
+        "motDePasse": "client",
+        "nomUtilisateur": "client",
+        "nomStructure": "Hopital de santé d'OWENDO",
+        "typeCompte": "client",
+        "numeroAccreditation": "NB2541368952",
+        "estOperationnel": false,
+        "email": "contact@owendo.chu",
+        "telephone": "+241 060 05 53 98",
+        "adresse": "OWENDO, Estuaire, Libreville BP:",
+        "preuve": ""
+      }
+    }
+  ],
+
+  "reclamations": [
+      {
+        "id": 1,
+        "dateReclamation": "2024-05-16",
+        "etatReclamation": "NOUVEAU",
+        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+        "preuve": "",
+        "commande":{"id":"2888f"}
+      },
+      
+      {
+        "id": 2,
+        "dateReclamation": "2024-05-16",
+        "etatReclamation": "NOUVEAU",
+        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+        "preuve": "",
+        "commande":{"id":"2888f"}
+      },
+      {
+        "id": 3,
+        "dateReclamation": "2024-05-16",
+        "etatReclamation": "NOUVEAU",
+        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+        "preuve": "",
+        "commande":{"id":"2888f"}
+      },
+      {
+        "id": 4,
+        "dateReclamation": "2024-05-16",
+        "etatReclamation": "NOUVEAU",
+        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+        "preuve": "",
+        "commande":{"id":"2888f"}
+      },
+      {
+        "id": 5,
+        "dateReclamation": "2024-05-16",
+        "etatReclamation": "NOUVEAU",
+        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+        "preuve": "",
+        "commande":{"id":"2888f"}
+      }
+  ],
+
+
+  "lignesCommandes": [
+    {
+      "id": "0473",
+      "prixLigneCommande": 500,
+      "quantiteLigneCommande": 12,
+      "medicament": {
+        "id": "dd75",
+        "code": "sddscs",
+        "libelle": "cscdcs",
+        "concentration": "10",
+        "prixGenerique": 856,
+        "uniteConcentration": "ml",
+        "description": "vvvvvvvvvvvvvvvvvvvvv",
+        "quantiteStock": 40,
+        "etat": "NONRETIRE",
+        "image": "",
+        "specialitePharmaceutique": {
+          "id": "71a2"
+        },
+        "formeGalenique": {
+          "id": "1be6"
+        }
+      },
+      "commande": {
+        "id": "8538f"
+      }
+    },
+    {
+      "id": "0473",
+      "prixLigneCommande": 500,
+      "quantiteLigneCommande": 12,
+      "medicament": {
+        "id": "dd75",
+        "code": "sddscs",
+        "libelle": "cscdcs",
+        "concentration": "10",
+        "prixGenerique": 856,
+        "uniteConcentration": "ml",
+        "description": "vvvvvvvvvvvvvvvvvvvvv",
+        "quantiteStock": 40,
+        "etat": "NONRETIRE",
+        "image": "",
+        "specialitePharmaceutique": {
+          "id": "71a2"
+        },
+        "formeGalenique": {
+          "id": "1be6"
+        }
+      },
+      "commande": {
+        "id": "2888f"
+      }
+    },
+    {
+      "id": "0473",
+      "prixLigneCommande": 500,
+      "quantiteLigneCommande": 12,
+      "medicament": {
+        "id": "dd75",
+        "code": "sddscs",
+        "libelle": "cscdcs",
+        "concentration": "10",
+        "prixGenerique": 856,
+        "uniteConcentration": "ml",
+        "description": "vvvvvvvvvvvvvvvvvvvvv",
+        "quantiteStock": 40,
+        "etat": "NONRETIRE",
+        "image": "",
+        "specialitePharmaceutique": {
+          "id": "71a2"
+        },
+        "formeGalenique": {
+          "id": "1be6"
+        }
+      },
+      "commande": {
+        "id": "8538f"
+      }
+    }
+  ],
+  "Medicaments": [
+    {
+      "id": "dd75",
+      "code": "sddscs",
+      "libelle": "cscdcs",
+      "concentration": "10",
+      "prixGenerique": 856,
+      "uniteConcentration": "ml",
+      "description": "vvvvvvvvvvvvvvvvvvvvv",
+      "quantiteStock": 40,
+      "etat": "NONRETIRE",
+      "image": "",
+      "specialitePharmaceutique": {
+        "id": "71a2"
+      },
+      "formeGalenique": {
+        "id": "1be6"
+      }
+    },
+    {
+      "id": "dee4",
+      "code": "sssdsd",
+      "libelle": "xxxxxxxxxxxx",
+      "concentration": "7",
+      "uniteConcentration": "cl",
+      "description": "",
+      "prixGenerique": 856,
+      "quantiteStock": 450,
+      "etat": "NONRETIRE",
+      "image": "",
+      "specialitePharmaceutique": {
+        "id": "ce15"
+      },
+      "formeGalenique": {
+        "id": "133f"
+      }
+    },
+    {
+      "id": "0473",
+      "code": "huyuuuu",
+      "libelle": "yuuyitn",
+      "concentration": "52",
+      "uniteConcentration": "cg",
+      "description": "",
+      "prixGenerique": 856,
+      "quantiteStock": 0,
+      "etat": "NONRETIRE",
+      "image": "",
+      "specialitePharmaceutique": {
+        "id": "1c5d"
+      },
+      "formeGalenique": {
+        "id": "1be6"
+      }
+    },
+    {
+      "id": "64fd",
+      "code": "fgjkjvgvh",
+      "libelle": "bgcgjkuhiunkl",
+      "concentration": 85,
+      "uniteConcentration": "cg",
+      "description": "",
+      "quantiteStock": 0,
+      "etat": "RETIRE",
+      "prixGenerique": 125,
+      "image": "",
+      "specialitePharmaceutique": {
+        "id": "71a2"
+      },
+      "formeGalenique": {
+        "id": "1be6"
+      }
+    },
+    {
+      "id": "12c6",
+      "code": "azzaezer",
+      "libelle": "dfwdfgfcgh",
+      "concentration": 10,
+      "uniteConcentration": "ml",
+      "description": null,
+      "quantiteStock": 50,
+      "etat": "NONRETIRE",
+      "prixGenerique": 856,
+      "image": null,
+      "specialitePharmaceutique": {
+        "id": "ce15"
+      },
+      "formeGalenique": {
+        "id": "133f"
+      }
+    }
+  ],
+  "mouvementStocks": [
+    {
+      "id": "d8ec",
+      "quantite": 10,
+      "dateMouvement": "2024-10-01T13:35:43.727Z",
+      "prixAchatUnitaire": 2500,
+      "prixVenteUnitaire": 3500,
+      "dateExpiration": "2024-10-24",
+      "typeMouvement": "ENTREE",
+      "article": {
+        "id": "dd75",
+        "code": "sddscs",
+        "libelle": "cscdcs",
+        "concentration": "10",
+        "uniteConcentration": "ml",
+        "description": "vvvvvvvvvvvvvvvvvvvvv",
+        "quantiteStock": 10,
+        "etat": "NONRETIRE",
+        "image": "",
+        "specialite": {
+          "id": "71a2"
+        },
+        "formeGalenique": {
+          "id": "1be6"
+        }
+      }
+    },
+    {
+      "id": "a4c1",
+      "quantite": 30,
+      "dateMouvement": "2024-10-01T13:36:18.615Z",
+      "prixAchatUnitaire": 2535,
+      "prixVenteUnitaire": 3200,
+      "dateExpiration": "2024-10-31",
+      "typeMouvement": "ENTREE",
+      "article": {
+        "id": "dd75",
+        "code": "sddscs",
+        "libelle": "cscdcs",
+        "concentration": "10",
+        "uniteConcentration": "ml",
+        "description": "vvvvvvvvvvvvvvvvvvvvv",
+        "quantiteStock": 40,
+        "etat": "NONRETIRE",
+        "image": "",
+        "specialite": {
+          "id": "71a2"
+        },
+        "formeGalenique": {
+          "id": "1be6"
+        }
+      }
+    },
+    {
+      "id": "e1e0",
+      "quantite": 450,
+      "dateMouvement": "2024-10-01T13:38:32.582Z",
+      "prixAchatUnitaire": 25300,
+      "prixVenteUnitaire": 2500,
+      "dateExpiration": "2024-10-31",
+      "typeMouvement": "ENTREE",
+      "article": {
+        "id": "dee4",
+        "code": "sssdsd",
+        "libelle": "xxxxxxxxxxxx",
+        "concentration": "7",
+        "uniteConcentration": "cl",
+        "description": "",
+        "quantiteStock": 450,
+        "etat": "NONRETIRE",
+        "image": "",
+        "specialite": {
+          "id": "ce15"
+        },
+        "formeGalenique": {
+          "id": "133f"
+        }
+      }
+    },
+    {
+      "id": "5d9b",
+      "quantite": 50,
+      "dateMouvement": "2024-10-01T21:17:29.729Z",
+      "prixAchatUnitaire": 7500,
+      "prixVenteUnitaire": 8000,
+      "dateExpiration": "2024-11-06",
+      "typeMouvement": "ENTREE",
+      "article": {
+        "id": "12c6",
+        "code": "azzaezer",
+        "libelle": "dfwdfgfcgh",
+        "concentration": 10,
+        "uniteConcentration": "ml",
+        "description": null,
+        "quantiteStock": 50,
+        "etat": "NONRETIRE",
+        "prixGenerique": 856,
+        "image": null,
+        "specialite": {
+          "id": "ce15"
+        },
+        "dci": {},
+        "formeGalenique": {
+          "id": "133f"
+        }
+      }
+    }
+  ],
+  "productDCI": [
+    {
+      "id": "1",
+      "nomDci": "Antipaludéens"
+    },
+    {
+      "id": "2",
+      "nomDci": "Analgésiques"
+    },
+    {
+      "id": "3",
+      "nomDci": "Antibiotiques"
+    },
+    {
+      "id": "4",
+      "nomDci": "Antiviraux"
+    },
+    {
+      "id": "5",
+      "nomDci": "Antifongiques"
+    },
+    {
+      "id": "6",
+      "nomDci": "Antipyrétiques"
+    }
+  ],
+  "productSpecialities": [
+    {
+      "id": "71a2",
+      "libelle": "dzdzdz",
+      "nomLaboratoire": "sdsdsd",
+      "dci": {
+        "id": "6",
+        "nomDci": "Antipyrétiques"
+      }
+    },
+    {
+      "id": "ce15",
+      "libelle": "dzdzdz",
+      "nomLaboratoire": "sdsdsd",
+      "dci": {
+        "id": "1",
+        "nomDci": "Antipaludéens"
+      }
+    },
+    {
+      "id": "1c5d",
+      "libelle": "ddsd",
+      "nomLaboratoire": "sdsds",
+      "dci": {
+        "id": "3",
+        "nomDci": "Antibiotiques"
+      }
+    }
+  ],
+  "productFormGeneriques": [
+    {
+      "id": "133f",
+      "nomFormeGalenique": "fdddddddddddd"
+    },
+    {
+      "id": "1be6",
+      "nomFormeGalenique": "dfgdhjghvbkj"
+    },
+    {
+      "id": "84e0",
+      "nomFormeGalenique": "pppmmmmmmmm"
+    }
+  ]
+}

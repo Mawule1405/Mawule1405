@@ -1,0 +1,84 @@
+<app-nav-bar ></app-nav-bar>
+<div class="w-100 text-black">
+  
+  <!-- Header of the page -->
+  <div class="bg-image d-flex flex-column align-items-center text-center">
+    <div class="d-flex flex-column justify-content-center align-items-center py-5">
+      <div class="content">
+        <h1 class="display-4">Bienvenue à l'OPN</h1>
+        <h3 class="mb-3">Votre point de ravitaillement</h3>
+        <h6>Ensemble sauvons des vies</h6>
+      </div>
+      <button class="btn btn-primary color-1 mt-4" routerLink="/about">
+        Qui sommes-nous ?
+      </button>
+    </div>
+
+    <!-- Section with images and text -->
+    <div class="mt-5 text-light">
+      <div class="row gx-4 mx-1"> <!-- Added gx-4 to manage gutters -->
+        <!-- Notre Histoire -->
+        <div class="col-12 col-md-6 d-flex align-items-center py-3 mb-1 color-1 hover">
+          <img src="path/to/image1.jpg" alt="Notre Histoire" class="img-fluid me-3">
+          <div>
+            <h4>Notre Histoire</h4>
+            <p>didunt ut labore et dolore magna aliqua.</p>
+          </div>
+        </div>
+
+        <!-- Nos Services -->
+        <div class="col-12 col-md-6 d-flex align-items-center py-3 mb-1 color-1 hover">
+          <img src="path/to/image2.jpg" alt="Nos services" class="img-fluid me-3">
+          <div>
+            <h4>Nos services</h4>
+            <p>incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Presentation of the service of OPN -->
+  <div class="container my-5">
+    <div class="row gx-4 justify-content-center"> <!-- Added gx-4 to manage gutters -->
+      <!-- Carte -->
+      <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" *ngFor="let service of listOfService">
+        <div class="card" style="width: 100%;">
+          <div class="card-image">
+            <img [src]="service.image" alt="Photo_1" class="card-img-top">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{service.title}}</h5>
+            <p class="card-text">{{service.description}}</p>
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-outline-primary">En savoir plus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Actualité-->
+  <div>
+    <div class="content">
+      <h6 class="h6">Nouvelles & Actualités</h6>
+    </div>
+  
+    <div>
+      <div class="big-actuality">
+        <img src="assets/images/img_2.png" alt="Actualités" srcset="" class="">
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Voluptatibus velit deserunt blanditiis quasi? Et, porro.
+           Unde quia libero, doloribus, impedit,
+           at alias esse aperiam quo dolor eveniet numquam.
+            Aspernatur, possimus!
+        </p>
+      </div>
+
+
+    </div>
+  </div>
+
+</div>

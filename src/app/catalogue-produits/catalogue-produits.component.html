@@ -1,0 +1,658 @@
+<div class="d-flex justify-content-between flex-row">
+    <app-agent-nav-bar></app-agent-nav-bar>
+
+    <div class="mini-aside">
+
+
+        <div class="d-flex justify-content-end align-items-center mb-4">
+            <!-- Formulaire de recherche -->
+            <form [formGroup]="researchProductsFormular" class="me-2 flex-grow-1">
+                <input
+                  type="search"
+                  class="form-control form-control-sm w-100"
+                  formControlName="key"
+                  (input)="researchProducts()"
+                  placeholder="Rechercher...">
+              </form>
+
+
+            <!-- Boutons -->
+            <button class="btn btn-sm btn-outline-dark small me-1 d-flex align-items-center"
+                    *ngFor="let btn of allButtonsElements"
+                    (click)="openModalButton(btn)">
+                <i class="bi bi-{{btn.icon}} me-1"></i>
+                <span>{{btn.title}}</span>
+            </button>
+        </div>
+
+
+        <!--Présentation des médicaments-->
+        <div class="container py-4 overflow-y-auto" style="max-height:95vh">
+            <h5 class="h5 mb-4 text-start">Médicaments</h5>
+            <div class="d-flex flex-wrap justify-content-between">
+                <div *ngFor="let medoc of lesMedicaments"   [class]="medoc.etat=='NONRETIRE'? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+                   <div *ngIf="medoc.etat == 'NONRETIRE'">
+                     <div class="card-header p-0">
+                       <img [src]="medoc.image" class="card-img-top" alt="{{medoc.code}} {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
+                     </div>
+                     <div class="card-body">
+                       <h4 class="h4 small">Code: {{medoc.code}}</h4>
+                       <h5 class="h5 small">Libelle: {{medoc.libelle}}</h5>
+                       <h6 class="h6 small">Concentration: {{medoc.concentration}} {{medoc.uniteConcentration}}</h6>
+                       <h6 class="h6 small">Quantité disponible : {{medoc.quantiteStock}}</h6>
+                       <h6 class="h6 small">Prix: {{medoc.prixGenerique}}</h6>
+                     </div>
+                     <div [class]="medoc.quantiteStock > 10?'card-footer bg-success d-flex justify-content-between':'card-footer bg-dark d-flex justify-content-between'">
+                       <button *ngFor="let bt of productPresentationButtons"
+                               [title]="bt.title"
+                               class="btn btn-sm btn-outline-{{bt.color}} mx-1"
+                               (click)="onClickMedicineButton(bt,medoc)"
+                       >
+                         <i class="bi {{bt.icon}}"></i>
+                       </button>
+
+                     </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--Des fenetres modales-->
+
+
+<!--Fenetres modales pour la dci-->
+<div [class]="DciIsVisible ? 'show-modal' : 'modal'">
+    <div class="container card shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+            <h6>Gestion des catégories</h6>
+            <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[0])">
+                <span class="btn-close"></span>
+            </button>
+        </div>
+
+        <div class="card-body h-75 row">
+
+            <!-- Formulaire pour ajouter/modifier une catégorie -->
+            <div class="col-md-4 mt-2">
+                <h5 class="bg-black text-white p-2">Formulaire </h5>
+                <form [formGroup]="DciFormular" class="text-small-m" (submit)="saveDci()">
+                    <div class="mb-3">
+                        <label for="idDci" class="form-label">Nom de la catégorie</label>
+                        <input type="text" id="idDci"  formControlName="nomDci" class="form-control" placeholder="Entrer le nom">
+                    </div>
+
+                    <div class="d-flex flex-row justify-content-between">
+                        <button type="submit" class="btn btn-sm btn-dark w-25  text-small-m"
+                        [disabled]="!DciFormular.valid || DciFormular.value.id">Ajouter</button>
+                        <button type="button" class="btn btn-sm btn-success w-25 text-small-m"
+                                [disabled]="!DciFormular.value.id"
+                                (click)="saveModificationDci()"
+                                >Modifier</button>
+                        <button type="reset" class="btn btn-sm btn-danger w-25 text-small-m" >Effacer</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tableau des catégories -->
+            <div class="col-md-8 overflow-auto h-100">
+                <table class="table table-hover table-bordered ">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        <!-- Exemples de DCIs (remplacer par *ngFor si nécessaire) -->
+                        <tr *ngFor="let dci of listOfDCIs">
+                            <td>{{dci.id}}</td>
+                            <td>{{dci.nomDci}}</td>
+
+                            <td class="sm">
+                                <button class="btn btn-sm btn-outline-success" (click)="modifyDci(dci)">
+                                    <i class="bi bi-pencil"></i>
+                                </button></td>
+                            <td class="sm">
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteDci(dci)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+
+            <!--Mise en place de la pagination sur les DCIs-->
+           <div class="d-flex flex-row justify-content-end align-items-center ">
+                <select  class="mx-2" [(ngModel)]="sizeDci" (change)="choiceDciPaginationSize()">
+                    <option *ngFor="let op of paginationForDciSizes" [value]="op">{{op}}</option>
+                </select>
+
+                <h6 class="mx-2"> {{currentDCIsPage}} / {{totalPageOfDci}} pages</h6>
+
+                <button [class]="currentDCIsPage>1? 'btn btn-sm btn-success me-2':'btn btn-sm btn-danger me-2'"
+
+                    (click)="previousDciPage()">Précédent</button>
+                <button [class]="currentDCIsPage < totalPageOfDci? 'btn btn-sm btn-success me-2':'btn btn-sm btn-danger me-2'"
+                   (click)="nextDciPage()">Suivant</button>
+           </div>
+        </div>
+    </div>
+</div>
+
+<!--Fenetres modales pour la specialité-->
+<div [class]="specialityIsVisible ? 'show-modal' : 'modal'">
+    <div class="container card shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+            <h6>Gestion des specialités de produits</h6>
+            <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[1])">
+                <span class="btn-close"></span>
+            </button>
+        </div>
+
+        <div class="card-body h-75 row">
+
+            <!-- Formulaire pour ajouter/modifier un DCI -->
+            <div class="col-md-4 mt-2">
+                <h5 class="bg-black text-white p-2">Formulaire </h5>
+                <form [formGroup]="specialityFormular" class="text-small-m" (submit)="saveSpeciality()">
+
+
+                  <div class="mb-3">
+                    <label for="libelleSpecialitePharmaceutique" class="form-label">Libellé</label>
+                    <input id="libelleSpecialitePharmaceutique" formControlName="libelle" class="form-control" placeholder="Libellé"/>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="nomLaboratoire" class="form-label">Nom du fabricant</label>
+                    <input id="nomLaboratoire" formControlName="nomLaboratoire" class="form-control" placeholder="Nom du fabricant"/>
+                  </div>
+
+                    <div class="mb-3">
+                      <label for="dci" class="form-label ">DCI</label>
+                      <select id="dci" formControlName="dci" class="form-control ">
+                        <option *ngFor="let dci of listOfDCIs" [value]="dci.id">{{ dci.nomDci }}</option>
+                      </select>
+                    </div>
+
+
+
+                    <div class="d-flex flex-row justify-content-between">
+                        <button type="submit" class="btn btn-sm btn-dark w-25  text-small-m"
+                        [disabled]="!specialityFormular.valid || specialityFormular.value.id">Ajouter</button>
+                        <button type="button" class="btn btn-sm btn-success w-25 text-small-m"
+                                [disabled]="!specialityFormular.value.id"
+                                (click)="saveModificationSpeciality()"
+                                >Modifier</button>
+                        <button type="reset" class="btn btn-sm btn-danger w-25 text-small-m" >Effacer</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tableau des specialités -->
+            <div class="col-md-8 overflow-auto h-100">
+                <table class="table table-hover table-bordered ">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Libellé</th>
+                            <th>nom Laboratoire</th>
+                            <th>DCI</th>
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        <!-- Exemples de catégories (remplacer par *ngFor si nécessaire) -->
+                        <tr *ngFor="let speciality of listOfSpecialities">
+                            <td>{{speciality.id}}</td>
+                            <td>{{speciality.libelle}}</td>
+                            <td>{{speciality.nomLaboratoire}}</td>
+                            <td>{{speciality.dci.nomDci}}</td>
+                            <td class="sm">
+                                <button class="btn btn-sm btn-outline-success" (click)="modifySpeciality(speciality)">
+                                    <i class="bi bi-pencil"></i>
+                                </button></td>
+                            <td class="sm">
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteSpeciality(speciality)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+
+            <!--Mise en place de la pagination sur les specialités-->
+           <div class="d-flex flex-row justify-content-end align-items-center ">
+                <select  class="mx-2" [(ngModel)]="sizeSpeciality" (change)="choiceSpecialityPaginationSize()">
+                    <option *ngFor="let op of paginationForSpecialitySizes" [value]="op">{{op}}</option>
+                </select>
+
+                <h6 class="mx-2"> {{currentSpecialitiesPage}} / {{totalPageOfSpeciality}} pages</h6>
+
+                <button [class]="currentSpecialitiesPage>1? 'btn btn-sm btn-success me-2':'btn btn-sm btn-danger me-2'"
+
+                    (click)="previousSpecialityPage()">Précédent</button>
+                <button [class]="currentSpecialitiesPage < totalPageOfSpeciality? 'btn btn-sm btn-success me-2':'btn btn-sm btn-danger me-2'"
+                   (click)="nextSpecialityPage()">Suivant</button>
+           </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Fenetres modales pour la forme galénique-->
+<div [class]="formGaleniqueIsVisible ? 'show-modal' : 'modal'">
+    <div class="container card shadow-lg">
+        <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+            <h6>Gestion des formes génériques des produits</h6>
+            <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[2])">
+                <span class="btn-close"></span>
+            </button>
+        </div>
+
+        <div class="card-body h-75 row">
+
+            <!-- Formulaire pour ajouter/modifier une forme galénique -->
+            <div class="col-md-4 mt-2">
+                <h5 class="bg-black text-white p-2">Formulaire </h5>
+                <form [formGroup]="formGaleniqueFormular" class="text-small-m" (submit)="saveFormGalenique()">
+
+                    <div class="mb-3">
+                        <label for="nomFormeGalenique" class="form-label">Nom</label>
+                        <input id="nomFormeGalenique" formControlName="nomFormeGalenique" class="form-control"  placeholder="nom">
+                    </div>
+                    <div class="d-flex flex-row justify-content-between">
+                        <button type="submit" class="btn btn-sm btn-dark w-25  text-small-m"
+                        [disabled]="!formGaleniqueFormular.valid || formGaleniqueFormular.value.id">Ajouter</button>
+                        <button type="button" class="btn btn-sm btn-success w-25 text-small-m"
+                                [disabled]="!formGaleniqueFormular.value.id"
+                                (click)="saveModificationFormGalenique()"
+                                >Modifier</button>
+                        <button type="reset" class="btn btn-sm btn-danger w-25 text-small-m" >Effacer</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tableau des formes galéniques -->
+            <div class="col-md-8 overflow-auto h-100">
+                <table class="table table-hover table-bordered ">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom </th>
+
+                            <th>Modifier</th>
+                            <th>Supprimer</th>
+                        </tr>
+                    </thead>
+                    <tbody class="">
+                        <!-- Exemples de catégories (remplacer par *ngFor si nécessaire) -->
+                        <tr *ngFor="let forme of listOfFormGalenique">
+                            <td>{{forme.id}}</td>
+                            <td>{{forme.nomFormeGalenique}}</td>
+
+                            <td class="sm">
+                                <button class="btn btn-sm btn-outline-success" (click)="modifyFormGalenique(forme)">
+                                    <i class="bi bi-pencil"></i>
+                                </button></td>
+                            <td class="sm">
+                                <button class="btn btn-sm btn-outline-danger" (click)="deleteFormGalenique(forme)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer text-end">
+
+            <!--Mise en place de la pagination sur les forme galenique-->
+           <div class="d-flex flex-row justify-content-end align-items-center ">
+                <select  class="mx-2" [(ngModel)]="sizeFormGalenique" (change)="choiceFormGaleniquePaginationSize()">
+                    <option *ngFor="let op of paginationForFormGaleniqueSizes" [value]="op">{{op}}</option>
+                </select>
+
+                <h6 class="mx-2"> {{currentFormGaleniquesPage}} / {{totalPageOfFormGalenique}} pages</h6>
+
+                <button [class]="currentFormGaleniquesPage>1? 'btn btn-sm btn-success me-2':'btn btn-sm btn-danger me-2'"
+
+                    (click)="previousFormGaleniquePage()">Précédent</button>
+                <button [class]="currentFormGaleniquesPage < totalPageOfFormGalenique? 'btn btn-sm btn-success me-2':'btn btn-sm btn-danger me-2'"
+                   (click)="nextFormGaleniquePage()">Suivant</button>
+           </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Fenetres modales pour ajout d'un médicaments-->
+<div [class]="medicamentFormIsVisible ? 'show-modal' : 'modal'">
+
+    <div class="container card shadow-lg">
+      <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+        <h6>Ajouter un médicament</h6>
+        <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[3])">
+          <span class="btn-close"></span>
+        </button>
+      </div>
+
+      <div class="card-body h-100 row overflow-auto">
+        <form [formGroup]="medicamentFormular" class="p-3 bg-light rounded shadow-sm" (ngSubmit)="saveProduct()">
+
+          <div class="row">
+            <!-- Section Image -->
+            <div class="col-md-4 d-flex flex-column align-items-center">
+              <img [src]="medicamentImagePath" alt="ImageProduit" class="border rounded w-100 mb-2" style="max-height: 150px; object-fit: cover;">
+
+              <div class="form-group w-100">
+                <label for="productImage" class="form-label fw-bold text-muted small">Changer l'image du produit</label>
+                <input type="file" id="productImage" class="form-control form-control-sm" (change)="choiceProductImage($event)">
+              </div>
+
+
+
+              <!-- Boutons d'action -->
+              <div class="mt-5 row d-flex justify-content-between flex-row w-100">
+                <button type="submit" class="btn btn-sm btn-dark btn-block w-25" [disabled]="!medicamentFormular.valid">Ajouter</button>
+                <button type="reset" class="btn btn-sm btn-danger btn-block w-25">Annuler</button>
+              </div>
+            </div>
+
+            <!-- Section Champs du formulaire -->
+            <div class="col-md-8">
+              <div class="row">
+                <!-- Code et libellé -->
+                <div class="col-md-6 mb-2">
+                  <label for="code" class="form-label fw-bold small">Code</label>
+                  <input id="code" formControlName="code" class="form-control form-control-sm" placeholder="Entrez le code" />
+                </div>
+
+                <div class="col-md-6 mb-2">
+                  <label for="libelle" class="form-label fw-bold small">Libellé</label>
+                  <input id="libelle" formControlName="libelle" class="form-control form-control-sm" placeholder="Entrez le libellé" />
+                </div>
+
+                <div class="col-md-6 mb-2">
+                  <label for="concentration" class="form-label fw-bold small">concentration</label>
+                  <input id="concentration" type="number" formControlName="concentration" class="form-control form-control-sm" placeholder="Concentration" />
+                </div>
+
+                <div class="col-md-6 mb-2">
+                  <label for="unite-concentration" class="form-label fw-bold small">Unité</label>
+
+                  <select name="unite-concentration" id="unite-concentration" formControlName="uniteConcentration" class="form-control form-control-sm">
+                    <option value="" disabled selected>Choisir une unité de concentration</option>
+                    <option *ngFor="let op of unityLists" [value]="op">{{op}}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6 mb-2">
+                  <label for="prixGenerique" class="form-label fw-bold small">Prix</label>
+                  <input id="prixGenerique" type="number" formControlName="prixGenerique" class="form-control form-control-sm" placeholder="Concentration" />
+                </div>
+
+              </div>
+
+              <div class="row">
+                <!-- Forme galénique -->
+                <div class="col-md-6 mb-2">
+                  <label for="formGalenique" class="form-label fw-bold small">Forme galénique</label>
+                  <select id="formGalenique" formControlName="formeGalenique" class="form-control form-control-sm">
+                    <option value="" disabled selected>Choisir une forme</option>
+                    <option *ngFor="let form of listOfFormGalenique" [value]="form.id">{{ form.nomFormeGalenique }}</option>
+                  </select>
+                </div>
+
+                <!-- Spécialité  -->
+                <div class="col-md-6 mb-2">
+                  <label for="speciality" class="form-label fw-bold small">Spécialité</label>
+                  <select id="speciality" formControlName="specialite" class="form-control form-control-sm">
+                    <option value="" disabled selected>Choisir une specialité</option>
+                    <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelle }} {{speciality.dci.nomDci}}</option>
+                  </select>
+                </div>
+
+              </div>
+              <!-- Description seule sur une ligne complète -->
+              <div class="mb-2">
+                <label for="description" class="form-label fw-bold small">Description</label>
+                <textarea id="description" formControlName="description" class="form-control form-control-sm" rows="2" placeholder="Entrez la description du produit"></textarea>
+              </div>
+
+
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+<!--Fenetre modales pour enrégistrer un nouvel approvisionnement d'un produit-->
+<div *ngIf="procurementFormIsVisible"
+     [class]="procurementFormIsVisible? 'show-modal' : 'modal'">
+  <div class="container card shadow-lg">
+
+    <!--Entête de la fenêtre-->
+    <div class="card shadow-sm">
+        <!-- En-tête de la carte -->
+        <div class="card-header d-flex justify-content-between align-items-center bg-black text-white p-3">
+          <h6 class="mb-0">Approvisionnement du médicament : {{currentProcurementMedecine.libelle}}</h6>
+          <button class="btn btn-light btn-sm text-white" (click)="closeProcurementModal()">
+            <span class="btn-close"></span>
+          </button>
+        </div>
+
+        <!-- Corps de la carte -->
+        <div class="card-body row p-4">
+          <form [formGroup]="procurementFormular" (ngSubmit)="saveTheProcurement(currentProcurementMedecine)"  class="w-100">
+
+            <div class="row">
+              <!-- Image du produit -->
+              <div class="col-md-4">
+                <img alt="image du produit" src="assets/images/img.png" class="img-fluid rounded shadow-sm" />
+              </div>
+
+              <!-- Détails du produit -->
+              <div class="col-md-8">
+                <!-- Informations sur le produit -->
+                <div class="row mb-3">
+                  <div class="col-12 col-md-4 mb-2">
+                    <h6 class="h6 text-muted">Code :</h6>
+                    <p class="text-dark">{{currentProcurementMedecine.code}}</p>
+                  </div>
+                  <div class="col-12 col-md-4 mb-2">
+                    <h6 class="h6 text-muted">Libellé :</h6>
+                    <p class="text-dark">{{currentProcurementMedecine.libelle}}</p>
+                  </div>
+                  <div class="col-12 col-md-4 mb-2">
+                    <h6 class="h6 text-muted">Dosage :</h6>
+                    <p class="text-dark">{{currentProcurementMedecine.concentration}} {{currentProcurementMedecine.uniteConcentration}}</p>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-12 col-md-4 mb-2">
+                    <h6 class="h6 text-muted">Quantité disponible :</h6>
+                    <p class="text-dark">{{currentProcurementMedecine.quantiteStock}}</p>
+                  </div>
+
+                </div>
+
+                <!-- Saisie de la quantité et du prix -->
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="quantite" class="form-label text-muted">Quantité</label>
+                    <input type="number" id="quantite" formControlName="quantite" class="form-control shadow-sm" placeholder="Saisir la quantité" />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="dateExpirationProcurement" class="form-label text-muted">Date d'expiration</label>
+                    <input type="date" id="dateExpirationProcurement" formControlName="dateExpiration" class="form-control shadow-sm" />
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="prixA" class="form-label text-muted">Prix d'achat unitaire</label>
+                    <input type="number" id="prixA" formControlName="prixAchatUnitaire" class="form-control shadow-sm" placeholder="Saisir le prix" />
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="prixV" class="form-label text-muted">Prix de vente unitaire</label>
+                    <input type="number" id="prixV" formControlName="prixVenteUnitaire" class="form-control shadow-sm" placeholder="Saisir le prix" />
+                  </div>
+                </div>
+
+                <!-- Boutons d'action -->
+                <div class="row mt-4">
+                  <div class="col-md-6">
+                    <button type="submit" class="btn btn-success w-100 shadow-sm">Enrégistrer</button>
+                  </div>
+                  <div class="col-md-6">
+                    <button type="reset" class="btn btn-danger w-100 shadow-sm">Annuler</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+  </div>
+
+
+
+</div>
+
+
+
+<!--Fenetres modales pour modifier un produits-->
+<div [class]="medicamentModificationProductIsVisible ? 'show-modal' : 'modal'">
+
+  <div class="container card shadow-lg">
+    <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+      <h6>Modification</h6>
+      <button class="btn btn-light text-white" (click)="closeModificationProduct()">
+        <span class="btn-close"></span>
+      </button>
+    </div>
+
+    <div class="card-body h-100 row overflow-auto">
+      <form [formGroup]="medicamentModificationFormular" class="p-3 bg-light rounded shadow-sm" (ngSubmit)="saveProduct()">
+
+        <div class="row">
+          <!-- Section Image -->
+          <div class="col-md-4 d-flex flex-column align-items-center">
+            <img [src]="medicamentImagePath" alt="ImageProduit" class="border rounded w-100 mb-2" style="max-height: 150px; object-fit: cover;">
+
+            <div class="form-group w-100">
+              <label for="productImageM" class="form-label fw-bold text-muted small">Changer l'image du produit</label>
+              <input type="file" id="productImageM" class="form-control form-control-sm"
+                     (change)="choiceProductImage($event)"
+              >
+            </div>
+
+
+
+            <!-- Boutons d'action -->
+            <div class="mt-5 row d-flex justify-content-between flex-row w-100">
+              <button type="submit" class="btn btn-sm btn-dark btn-block w-25" [disabled]="!medicamentModificationFormular.valid">Modifier</button>
+              <button type="button" class="btn btn-sm btn-danger btn-block w-25"
+               (click)="closeModificationProduct()"
+              >Annuler</button>
+            </div>
+          </div>
+
+          <!-- Section Champs du formulaire -->
+          <div class="col-md-8">
+            <div class="row">
+              <!-- Nom générique et Nom commercial -->
+              <div class="col-md-6 mb-2">
+                <label for="codeM" class="form-label fw-bold small">Code</label>
+                <input id="codeM" formControlName="code" class="form-control form-control-sm" placeholder="Entrez le Code" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="libelleM" class="form-label fw-bold small">Libelle</label>
+                <input id="libelleM" formControlName="libelle" class="form-control form-control-sm" placeholder="Entrez le libellé" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="concentrationM" class="form-label fw-bold small">Concentration</label>
+                <input id="concentrationM" formControlName="concentration" class="form-control form-control-sm" placeholder="Concentration" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="prixGeneriqueM" class="form-label fw-bold small">Prix</label>
+                <input id="prixGeneriqueM" formControlName="prixGenerique" class="form-control form-control-sm" placeholder="prix" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="uniteconcentrationM" class="form-label fw-bold small">Unité</label>
+                <select name="uniteconcentrationM" id="uniteconcentrationM" formControlName="uniteConcentration" class="form-control form-control-sm">
+                  <option *ngFor="let op of unityLists" [value]="op">{{op}}</option>
+                </select>
+              </div>
+
+              <!-- Forme galénique -->
+              <div class="col-md-6 mb-2">
+                <label for="formGaleniqueM" class="form-label fw-bold small">Forme galénique</label>
+                <select id="formGaleniqueM" formControlName="formeGalenique" class="form-control form-control-sm">
+                  <option *ngFor="let form of listOfFormGalenique" [value]="form.id">{{ form.nomFormeGalenique }}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+
+
+              <!-- Spécialité  -->
+              <div class="col-md-6 mb-2">
+                <label for="specialityM" class="form-label fw-bold small">Spécialité</label>
+                <select id="specialityM" formControlName="specialite" class="form-control form-control-sm">
+                  <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelle}} {{speciality.dci.nomDci}}</option>
+                </select>
+              </div>
+
+            </div>
+            <!-- Description seule sur une ligne complète -->
+            <div class="mb-2">
+              <label for="descriptionM" class="form-label fw-bold small">Description</label>
+              <textarea id="descriptionM" formControlName="description" class="form-control form-control-sm" rows="2" placeholder="Entrez la description du produit"></textarea>
+            </div>
+
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
