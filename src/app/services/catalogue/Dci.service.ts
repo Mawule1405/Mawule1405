@@ -25,8 +25,8 @@ export class DciService {
   }
 
   saveDCI(dci: Dci):Observable<Dci>{
-    let d = {nomDci: dci.nomDci};
-    return this.http.post<Dci>(`${URL.BASE_URL}${URL.DCI_URL}/`, d);
+    let d = {nomDci: dci.nomDci, isDeleted : true};
+    return this.http.post<Dci>(`${URL.BASE_URL}${URL.DCI_URL}`, d);
   }
 
   deleteDci(dci: Dci){

@@ -1,0 +1,81 @@
+
+<div class="header-catalogue">
+    <app-client-nav-bar ></app-client-nav-bar>
+    <!--Présentation des filtres-->
+    <div class="filter-container p-1">
+        <form class="d-flex flex-wrap align-items-center justify-content-between w-100">
+            <!-- Recherche par nom de produit -->
+            <div class="me-3 flex-grow-1">
+                <input type="search" class="form-control form-control-sm" id="productName" name="productName" placeholder="Entrez le nom du produit">
+            </div>
+    
+            <!-- Spécialité -->
+            <div class="form-group w-25 me-3">
+                <label for="speciality" class="form-label"><i class="bi bi-heart"></i> Spécialité:</label>
+                <select name="speciality" id="speciality" class="form-select form-select-sm">
+                    <option value="0" selected>Toutes les spécialités</option>
+                    <option *ngFor="let spe of lesSpecialites"  value="{{spe.id}}">{{spe.libelleSpecialiteMedicament}} {{spe.dci.nomDci}}</option>
+                </select>
+            </div>
+    
+            <!-- Forme Galénique -->
+            <div class="form-group w-25">
+                <label for="galenicForm" class="form-label"><i class="bi bi-capsule"></i> Forme Galénique:</label>
+                <select name="galenicForm" id="galenicForm" class="form-select form-select-sm">
+                    <option value="0" selected>Toutes les formes galéniques</option>
+                    <option *ngFor="let form of lesFormGaleniques"  value="{{form.id}}">{{form.nomFormeGalenique}}</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+<main>
+    
+    
+    
+    
+
+
+    <!--Présentation des produits-->
+    <div class="product-display ">
+  
+
+        <div class="card-container">
+            <div class="product-card" *ngFor="let produit of lesProduits">
+
+                <img src="../../assets/images/img_1.png" alt="Nom du Produit 1" class="product-image">
+                <h3>{{ produit.libelle }}</h3>
+                <p><strong>{{ produit.specialitePharmaceutique.libelle }}</strong></p>
+                <p>{{ produit.Concentration }} {{ produit.unite }}</p>
+                <p><strong>Forme Galénique:</strong> {{ produit.formeGalenique.nomFormeGalenique }}</p>
+              
+                <div class="bg-success">
+                  <p class="availability-status">
+                    <strong>Disponibilité:</strong> 
+                    <span >
+                      {{ produit.quantiteStock? 'En stock' : 'Rupture de stock' }}
+                    </span>
+                  </p>
+                  <div class="button-group">
+                    <button class="detail-button" (click)="ajouterAuPanier(produit)" [disabled]="!produit.disponible">
+                      <i class="bi bi-cart-plus"></i> Ajouter au panier
+                    </button>
+                  </div>
+                </div>
+              
+              </div>
+              
+
+
+
+            <!-- Ajoute ici d'autres cartes de produits -->
+        </div>
+    </div>
+
+    
+        
+    
+</main>
+
+
+

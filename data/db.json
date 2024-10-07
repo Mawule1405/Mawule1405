@@ -15,8 +15,8 @@
     },
     {
       "id": "2",
-      "motDePasse": "client",
-      "nomUtilisateur": "client",
+      "motDePasse": "client24",
+      "nomUtilisateur": "client24",
       "nomStructure": "Hopital de santé d'OWENDO",
       "typeCompte": "client",
       "numeroAccreditation": "NB2541368952",
@@ -37,6 +37,92 @@
       "prenom": "Mathias"
     }
   ],
+  "paniersClients": [
+    {
+      "id": "1",
+      "nombreLigne": 4,
+      "client": {
+        "id": "1",
+        "motDePasse": "client",
+        "nomUtilisateur": "client",
+        "nomStructure": "Hopital de santé d'OWENDO",
+        "typeCompte": "client",
+        "numeroAccreditation": "NB2541368952",
+        "estOperationnel": false,
+        "email": "contact@owendo.chu",
+        "telephone": "+241 060 05 53 98",
+        "adresse": "OWENDO, Estuaire, Libreville BP:",
+        "preuve": ""
+      }
+    },
+    {
+      "id": "2",
+      "nombreLigne": 0,
+      "client": {
+        "id": "2",
+        "motDePasse": "client",
+        "nomUtilisateur": "client",
+        "nomStructure": "Hopital de santé d'OWENDO",
+        "typeCompte": "client",
+        "numeroAccreditation": "NB2541368952",
+        "estOperationnel": false,
+        "email": "contact@owendo.chu",
+        "telephone": "+241 060 05 53 98",
+        "adresse": "OWENDO, Estuaire, Libreville BP:",
+        "preuve": ""
+      }
+    }
+  ],
+  "lignesPanier": [
+    {
+      "id": "3",
+      "quantite": 250,
+      "panier": {
+        "id": 1
+      },
+      "article": {
+        "id": "3",
+        "libelle": "fdsdfff",
+        "prixGenerique": 5000
+      }
+    },
+    {
+      "id": "4",
+      "quantite": 250,
+      "panier": {
+        "id": 1
+      },
+      "article": {
+        "id": "4",
+        "libelle": "fgfdnggf",
+        "prixGenerique": 5000
+      }
+    },
+    {
+      "id": "4",
+      "quantite": 250,
+      "panier": {
+        "id": 1
+      },
+      "article": {
+        "id": "4",
+        "libelle": "fgfdnggf",
+        "prixGenerique": 5000
+      }
+    },
+    {
+      "id": "4",
+      "quantite": 250,
+      "panier": {
+        "id": 1
+      },
+      "article": {
+        "id": "4",
+        "libelle": "fgfdnggf",
+        "prixGenerique": 5000
+      }
+    }
+  ],
   "commandes": [
     {
       "id": "2888f",
@@ -45,8 +131,8 @@
       "dateCommande": "2024-05-14",
       "client": {
         "id": "1",
-        "motDePasse": "client",
-        "nomUtilisateur": "client",
+        "motDePasse": "client24",
+        "nomUtilisateur": "client24",
         "nomStructure": "Hopital de santé d'OWENDO",
         "typeCompte": "client",
         "numeroAccreditation": "NB2541368952",
@@ -77,52 +163,58 @@
       }
     }
   ],
-
   "reclamations": [
-      {
-        "id": 1,
-        "dateReclamation": "2024-05-16",
-        "etatReclamation": "NOUVEAU",
-        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
-        "preuve": "",
-        "commande":{"id":"2888f"}
-      },
-      
-      {
-        "id": 2,
-        "dateReclamation": "2024-05-16",
-        "etatReclamation": "NOUVEAU",
-        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
-        "preuve": "",
-        "commande":{"id":"2888f"}
-      },
-      {
-        "id": 3,
-        "dateReclamation": "2024-05-16",
-        "etatReclamation": "NOUVEAU",
-        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
-        "preuve": "",
-        "commande":{"id":"2888f"}
-      },
-      {
-        "id": 4,
-        "dateReclamation": "2024-05-16",
-        "etatReclamation": "NOUVEAU",
-        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
-        "preuve": "",
-        "commande":{"id":"2888f"}
-      },
-      {
-        "id": 5,
-        "dateReclamation": "2024-05-16",
-        "etatReclamation": "NOUVEAU",
-        "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
-        "preuve": "",
-        "commande":{"id":"2888f"}
+    {
+      "id": "1",
+      "dateReclamation": "2024-05-16",
+      "etatReclamation": "ARCHIVE",
+      "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "preuve": "",
+      "commande": {
+        "id": "2888f"
       }
+    },
+    {
+      "id": "2",
+      "dateReclamation": "2024-05-16",
+      "etatReclamation": "ARCHIVE",
+      "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "preuve": "",
+      "commande": {
+        "id": "2888f"
+      }
+    },
+    {
+      "id": "3",
+      "dateReclamation": "2024-05-16",
+      "etatReclamation": "LU",
+      "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "preuve": "",
+      "commande": {
+        "id": "2888f"
+      }
+    },
+    {
+      "id": "4",
+      "dateReclamation": "2024-05-16",
+      "etatReclamation": "NOUVEAU",
+      "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "preuve": "",
+      "commande": {
+        "id": "2888f"
+      }
+    },
+    {
+      "id": "5",
+      "dateReclamation": "2024-05-16",
+      "etatReclamation": "NOUVEAU",
+      "descriptionReclamation": "dhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "preuve": "",
+      "commande": {
+        "id": "2888f"
+      }
+    }
   ],
-
-
   "lignesCommandes": [
     {
       "id": "0473",
@@ -205,7 +297,7 @@
   ],
   "Medicaments": [
     {
-      "id": "dd75",
+      "id": "1",
       "code": "sddscs",
       "libelle": "cscdcs",
       "concentration": "10",
@@ -216,14 +308,15 @@
       "etat": "NONRETIRE",
       "image": "",
       "specialitePharmaceutique": {
-        "id": "71a2"
+        "id": "71a2",
+        "libelle": "jnjnlcndlncndcdncd"
       },
       "formeGalenique": {
         "id": "1be6"
       }
     },
     {
-      "id": "dee4",
+      "id": "2",
       "code": "sssdsd",
       "libelle": "xxxxxxxxxxxx",
       "concentration": "7",
@@ -241,7 +334,7 @@
       }
     },
     {
-      "id": "0473",
+      "id": "3",
       "code": "huyuuuu",
       "libelle": "yuuyitn",
       "concentration": "52",

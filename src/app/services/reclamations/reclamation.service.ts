@@ -23,7 +23,9 @@ export class ReclamationService {
     return this.http.get<Array<Reclamation>>(`${URL.BASE_URL}${URL.RECLAMATION_URL}?etatReclamation=ARCHIVE`)
   }
 
-  
+  update(recl: Reclamation):Observable<Reclamation>{
+    return this.http.patch<Reclamation>(`${URL.BASE_URL}${URL.RECLAMATION_URL}/${recl.id}`, recl)
+  }
 
 
 }

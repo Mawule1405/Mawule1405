@@ -21,6 +21,15 @@ import { AgentGestionStocksComponent } from './agent-gestion-stocks/agent-gestio
 import { AgentGestionCommandesComponent } from './agent-gestion-commandes/agent-gestion-commandes.component';
 import { AgentGestionReclamationsComponent } from './agent-gestion-reclamations/agent-gestion-reclamations.component';
 import { AgentGestionLivraisonsComponent } from './agent-gestion-livraisons/agent-gestion-livraisons.component';
+import { ClientComponent } from './client/client.component';
+import { ClientNavBarComponent } from './client-nav-bar/client-nav-bar.component';
+import { ClientCataloguesComponent } from './client-catalogues/client-catalogues.component';
+import { ClientNouvellesCommandesComponent } from './client-nouvelles-commandes/client-nouvelles-commandes.component';
+import { ClientAnciennesCommandesComponent } from './client-anciennes-commandes/client-anciennes-commandes.component';
+import { ClientNouvellesReclamationsComponent } from './client-nouvelles-reclamations/client-nouvelles-reclamations.component';
+import { ClientAnciennesReclamationsComponent } from './client-anciennes-reclamations/client-anciennes-reclamations.component';
+import { ClientProfilComponent } from './client-profil/client-profil.component';
+import { ClientCatalogueMedicamentsComponent } from './client-catalogue-medicaments/client-catalogue-medicaments.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +49,16 @@ import { AgentGestionLivraisonsComponent } from './agent-gestion-livraisons/agen
     AgentGestionStocksComponent,
     AgentGestionCommandesComponent,
     AgentGestionReclamationsComponent,
-    AgentGestionLivraisonsComponent
+    AgentGestionLivraisonsComponent,
+    ClientComponent,
+    ClientNavBarComponent,
+    ClientCataloguesComponent,
+    ClientNouvellesCommandesComponent,
+    ClientAnciennesCommandesComponent,
+    ClientNouvellesReclamationsComponent,
+    ClientAnciennesReclamationsComponent,
+    ClientProfilComponent,
+    ClientCatalogueMedicamentsComponent
   ],
   imports: [
     BrowserModule,

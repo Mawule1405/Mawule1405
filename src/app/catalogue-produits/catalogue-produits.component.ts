@@ -10,6 +10,7 @@ import {ProductService} from "../services/catalogue/product.service";
 import { Medicament } from '../model/Medicament';
 import {MouvementStock} from "../model/MouvementStock";
 import {MouvementStockService} from "../services/catalogue/mouvement-stock.service";
+import { DispositifMedical } from '../model/DispositifMedical';
 
 @Component({
   selector: 'app-catalogue-produits',
@@ -25,7 +26,7 @@ export class CatalogueProduitsComponent implements OnInit{
     {index:2, icon: "bi-boxes", title: "Specialités"},
     {index:3, icon: "bi-file-earmark-text", title: "Forme générique"},
     {index:4, icon: "bi-plus-circle", title: "Ajouter un médicament"},
-    {index:5, icon: "bi-plus-circle", title: "Autre produit"},
+    {index:5, icon: "bi-plus-circle", title: "Ajouter Dispositif médical"},
   ];
 
   public productPresentationButtons = [
@@ -39,7 +40,7 @@ export class CatalogueProduitsComponent implements OnInit{
   public paginationForDciSizes = [5, 10, 20 , 50, 100, 200, 500, 1000, 2000, 2500];
   public listOfDCIs : Array<Dci> = [];
   public currentDCIsPage = 1;
-  public sizeDci =200;
+  public sizeDci =5;
   public totalPageOfDci=1;
   public DciIsVisible: boolean = false;
   public DciFormular! : FormGroup;
@@ -48,7 +49,7 @@ export class CatalogueProduitsComponent implements OnInit{
    public paginationForSpecialitySizes = [5, 10, 20 , 50, 100, 200, 500, 1000, 2000, 2500];
    public listOfSpecialities : Array<SpecialitePharmaceutique> = [];
    public currentSpecialitiesPage = 1;
-   public sizeSpeciality =200;
+   public sizeSpeciality =5;
    public totalPageOfSpeciality=1;
    public specialityIsVisible: boolean = false;
    public specialityFormular! : FormGroup;
@@ -70,6 +71,14 @@ export class CatalogueProduitsComponent implements OnInit{
   public medicamentImageUrl! : any;
    public medicamentFormular! : FormGroup;
    public unityLists = ["g", "cg", "cl", "ml"];
+
+    //Gestion des médicaments
+    public lesDisposidifsMedicaux : Array<DispositifMedical> = [];
+    public dispositMedicalFormIsVisible : boolean = false;
+    public dispositfMedicalImagePath :string = "assets/images/img.png";
+    public  dispositifMedicalImageUrl! : any;
+    public dispositifMedicalFormular! : FormGroup;
+   
 
    //Gestion de l'approvisionnement des produits
    public procurementFormIsVisible =false;
@@ -195,10 +204,11 @@ export class CatalogueProduitsComponent implements OnInit{
     })
   }
 
+  //formulaire de création d'une spécialité
   createSpecialityFormular(){
     return this.formBuilder.group({
       id : this.formBuilder.control(null),
-      libelle : this.formBuilder.control("", Validators.required),
+      libelleSpecialiteMedicament : this.formBuilder.control("", Validators.required),
       nomLaboratoire : this.formBuilder.control("", Validators.required),
       dci : this.formBuilder.control("", Validators.required),
 
@@ -262,6 +272,8 @@ export class CatalogueProduitsComponent implements OnInit{
    * Méthodes pour la gestion des spécialités des produits
    */
 
+
+  //Récupération de toutes les spécialités
   getAllProductsSpecialities(){
       this.specialityService.getAllProductsSpecialities().subscribe({
         next: values=> this.listOfSpecialities = values,
@@ -269,13 +281,22 @@ export class CatalogueProduitsComponent implements OnInit{
       })
   }
 
+
+  //Enregistrement d'une spécialité pharmaceutique
   saveModificationSpeciality(){
       let speciality = this.specialityFormular.value;
       if(this.specialityFormular.value){
-        this.specialityService.updateSpeciality(speciality).subscribe({
-          next: value=> this.getAllProductsSpecialities(),
-          error: err=>console.log("Erreur de sauvegarde de la modification")
-        });
+        this.DciService.getDCI(speciality.dci).subscribe({
+          next: value=>{
+            let dci = value;
+            speciality.dci = dci;
+            this.specialityService.updateSpeciality(speciality).subscribe({
+              next: value=> this.getAllProductsSpecialities(),
+              error: err=>console.log("Erreur de sauvegarde de la modification")
+            });
+          }
+        })
+        
       }else{
         alert("Impossible de sauvegarder cette modification.")
       }
@@ -304,7 +325,7 @@ export class CatalogueProduitsComponent implements OnInit{
   modifySpeciality(speciality: SpecialitePharmaceutique){
     this.specialityFormular.setValue({
       id :speciality.id,
-      libelle : speciality.libelle,
+      libelleSpecialiteMedicament : speciality.libelleSpecialiteMedicament,
       nomLaboratoire : speciality.nomLaboratoire,
       dci: speciality.dci.id
     });
@@ -329,10 +350,13 @@ export class CatalogueProduitsComponent implements OnInit{
    * ====================================================================
    * Méthodes pour la gestion des formes génériques
    */
+
+  //Formulaire de création d'une forme galénique
   createFormGaleniqueForm(){
     return this.formBuilder.group({
       id: this.formBuilder.control(null),
       nomFormeGalenique : this.formBuilder.control("", Validators.required),
+      descriptionFormeGalenique: this.formBuilder.control('')
     })
   }
 
@@ -343,6 +367,7 @@ export class CatalogueProduitsComponent implements OnInit{
       })
   }
 
+  //Modifier une forme galénique
   saveModificationFormGalenique(){
     if(this.formGaleniqueFormular.valid){
       if(confirm('Confirmez-vous la sauvegarde de la modification?')){
@@ -357,6 +382,7 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
+  //Enrégistrer une nouvelle forme galénique
   saveFormGalenique(){
     if(this.formGaleniqueFormular.valid){
       if(confirm("Confirmez-vous les informations?")){
@@ -371,10 +397,12 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
+  //Lancer la modification d'une forme galénique
   modifyFormGalenique(formGalenique: FormeGalenique){
     this.formGaleniqueFormular.setValue({
       id: formGalenique.id,
-      nomFormeGalenique: formGalenique.nomFormeGalenique
+      nomFormeGalenique: formGalenique.nomFormeGalenique,
+      descriptionFormeGalenique : formGalenique.descriptionFormeGalenique
     });
   }
 
@@ -401,6 +429,9 @@ export class CatalogueProduitsComponent implements OnInit{
    * Gestion du catalogues
    */
 
+  
+
+  //Formulaire de création d'un produit
   createProductFormular() {
     return this.formBuilder.group({
       id: this.formBuilder.control(null),
@@ -415,6 +446,7 @@ export class CatalogueProduitsComponent implements OnInit{
     });
   }
 
+  //Formulaire de création d'un médicament
   createMedicamentFormular(){
     return this.formBuilder.group({
       id: this.formBuilder.control(""),
@@ -433,11 +465,32 @@ export class CatalogueProduitsComponent implements OnInit{
 
   }
 
+
+  //Recherche une forme galénique avec son id
+  rechercheDuneFormeGalenique(id: string) {
+    return this.listOfFormGalenique.find(formGalenique => formGalenique.id === id);
+  }
+
+
+  //Recherche une specialite galenique avec son id
+  rechercheDuneSpecialite(id: string){
+    return this.listOfSpecialities.find(specilite=>specilite.id==id);
+  }
+  
+
+  //Enrégistrer un produit
   saveProduct(){
     if(this.medicamentFormular.valid){
       if(confirm("Êtes vous certains de l'exactitude des informations")){
-        let value= this.medicamentFormular.value;
 
+        //Traitement des informations
+        let value= this.medicamentFormular.value;
+        value.etat = "NONRETIRE"
+        value.specialitePharmaceutique =this.rechercheDuneSpecialite(value.specialite)
+        value.formeGalenique = this.rechercheDuneFormeGalenique(value.formeGalenique)
+        
+
+        //Enrégistrement des informations
         this.productService.saveMedicament(value).subscribe({
           next: value=>{
             alert("Sauvegarde de produit effectuée avec succès")
@@ -453,6 +506,8 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
+
+  //Choisir l'image du médicament
   choiceProductImage(event:any){
     if(event.target.files && event.target.files.length>0){
       const file = event.target.files[0];
@@ -630,5 +685,19 @@ export class CatalogueProduitsComponent implements OnInit{
   updateMedicamentInformation(medoc : Medicament){
       console.log("MISE A JOUR ========>")
   }
+
+  //Formulaire de creation d'un dispositif médical
+  creerUnFormulaireDeDispositifMedical() {
+    return this.formBuilder.group({
+      id: this.formBuilder.control(null),
+      code : this.formBuilder.control("", [Validators.required]),
+      libelle: this.formBuilder.control('', [Validators.required]),
+      prixGenerique: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      quantiteStock: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      etat: this.formBuilder.control("NONRETIRE"),
+      paysFabricant: this.formBuilder.control("", Validators.required)
+    });
+  }
+
 
 }

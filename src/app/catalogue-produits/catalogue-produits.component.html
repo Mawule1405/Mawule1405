@@ -98,7 +98,7 @@
                 </form>
             </div>
 
-            <!-- Tableau des catégories -->
+            <!-- Tableau des DCI -->
             <div class="col-md-8 overflow-auto h-100">
                 <table class="table table-hover table-bordered ">
                     <thead class="table-dark">
@@ -112,7 +112,7 @@
                     <tbody class="">
                         <!-- Exemples de DCIs (remplacer par *ngFor si nécessaire) -->
                         <tr *ngFor="let dci of listOfDCIs">
-                            <td>{{dci.id}}</td>
+                            <td>{{listOfDCIs.indexOf(dci)+1}}</td>
                             <td>{{dci.nomDci}}</td>
 
                             <td class="sm">
@@ -155,7 +155,7 @@
 <div [class]="specialityIsVisible ? 'show-modal' : 'modal'">
     <div class="container card shadow-lg">
         <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
-            <h6>Gestion des specialités de produits</h6>
+            <h6>Gestion des specialités des produits</h6>
             <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[1])">
                 <span class="btn-close"></span>
             </button>
@@ -171,7 +171,7 @@
 
                   <div class="mb-3">
                     <label for="libelleSpecialitePharmaceutique" class="form-label">Libellé</label>
-                    <input id="libelleSpecialitePharmaceutique" formControlName="libelle" class="form-control" placeholder="Libellé"/>
+                    <input id="libelleSpecialitePharmaceutique" formControlName="libelleSpecialiteMedicament" class="form-control" placeholder="Libellé"/>
                   </div>
 
                   <div class="mb-3">
@@ -216,8 +216,8 @@
                     <tbody class="">
                         <!-- Exemples de catégories (remplacer par *ngFor si nécessaire) -->
                         <tr *ngFor="let speciality of listOfSpecialities">
-                            <td>{{speciality.id}}</td>
-                            <td>{{speciality.libelle}}</td>
+                            <td>{{listOfSpecialities.indexOf(speciality)+1}}</td>
+                            <td>{{speciality.libelleSpecialiteMedicament}}</td>
                             <td>{{speciality.nomLaboratoire}}</td>
                             <td>{{speciality.dci.nomDci}}</td>
                             <td class="sm">
@@ -261,7 +261,7 @@
 <div [class]="formGaleniqueIsVisible ? 'show-modal' : 'modal'">
     <div class="container card shadow-lg">
         <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
-            <h6>Gestion des formes génériques des produits</h6>
+            <h6>Gestion des formes galéniques des produits</h6>
             <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[2])">
                 <span class="btn-close"></span>
             </button>
@@ -277,6 +277,10 @@
                     <div class="mb-3">
                         <label for="nomFormeGalenique" class="form-label">Nom</label>
                         <input id="nomFormeGalenique" formControlName="nomFormeGalenique" class="form-control"  placeholder="nom">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descriptionFormeGalenique" class="form-label">Description</label>
+                        <textarea id="descriptionFormeGalenique" formControlName="descriptionFormeGalenique" class="form-control"  placeholder="nom"></textarea>
                     </div>
                     <div class="d-flex flex-row justify-content-between">
                         <button type="submit" class="btn btn-sm btn-dark w-25  text-small-m"
@@ -295,18 +299,16 @@
                 <table class="table table-hover table-bordered ">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
-                            <th>Nom </th>
-
-                            <th>Modifier</th>
-                            <th>Supprimer</th>
+                            <th *ngFor="let i of ['N°', 'Nom', 'Description', 'Modification', 'Supprimer']">{{i}}</th>
+                           
                         </tr>
                     </thead>
                     <tbody class="">
                         <!-- Exemples de catégories (remplacer par *ngFor si nécessaire) -->
                         <tr *ngFor="let forme of listOfFormGalenique">
-                            <td>{{forme.id}}</td>
+                            <td>{{listOfFormGalenique.indexOf(forme)+1}}</td>
                             <td>{{forme.nomFormeGalenique}}</td>
+                            <td>{{forme.descriptionFormeGalenique}}</td>
 
                             <td class="sm">
                                 <button class="btn btn-sm btn-outline-success" (click)="modifyFormGalenique(forme)">
@@ -429,7 +431,7 @@
                   <label for="speciality" class="form-label fw-bold small">Spécialité</label>
                   <select id="speciality" formControlName="specialite" class="form-control form-control-sm">
                     <option value="" disabled selected>Choisir une specialité</option>
-                    <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelle }} {{speciality.dci.nomDci}}</option>
+                    <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelleSpecialiteMedicament }} {{speciality.dci.nomDci}}</option>
                   </select>
                 </div>
 
@@ -633,7 +635,7 @@
               <div class="col-md-6 mb-2">
                 <label for="specialityM" class="form-label fw-bold small">Spécialité</label>
                 <select id="specialityM" formControlName="specialite" class="form-control form-control-sm">
-                  <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelle}} {{speciality.dci.nomDci}}</option>
+                  <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelleSpecialiteMedicament}} {{speciality.dci.nomDci}}</option>
                 </select>
               </div>
 

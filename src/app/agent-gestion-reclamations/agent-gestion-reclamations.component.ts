@@ -54,6 +54,28 @@ export class AgentGestionReclamationsComponent implements OnInit{
     })
   }
 
+  declarerTraiter(recl : Reclamation){
+    if(confirm("Etes vous certain de vouloir déclarer cette réclamation traitée?")){
+      recl.etatReclamation = "ARCHIVE"
+      this.reclamationService.update(recl).subscribe({
+        next: value=>{
+          this.getReclamationsNouvelles()  
+        },
+        error : err=>console.log("Erreur de modification")
+      })
+    }
+  }
+
+  declarerLu(recl: Reclamation){
+    recl.etatReclamation = "LU"
+    this.reclamationService.update(recl).subscribe({
+      next: value=>{
+        this.getReclamationsNouvelles()
+      },
+      error : err=>console.log("Erreur de modification")
+    })
+  }
+
   researchReclamationsNouvelles(){
 
   }

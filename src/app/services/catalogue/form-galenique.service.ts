@@ -17,9 +17,9 @@ export class FormGaleniqueService {
     return this.http.get<Array<FormeGalenique>>(`${URL.BASE_URL}${URL.FORM_GENERIQUE_URL}`);
   }
 
-  saveFormGalenique(formGrenerique : FormeGalenique):Observable<FormeGalenique>{
-    let form = {nomFormeGalenique: formGrenerique.nomFormeGalenique};
-    return this.http.post<FormeGalenique>(`${URL.BASE_URL}${URL.FORM_GENERIQUE_URL}/`, form);
+  saveFormGalenique(form : FormeGalenique):Observable<FormeGalenique>{
+    
+    return this.http.post<FormeGalenique>(`${URL.BASE_URL}${URL.FORM_GENERIQUE_URL}`, form);
   }
 
 

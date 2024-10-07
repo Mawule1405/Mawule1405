@@ -2,7 +2,7 @@ import {Dci} from "./Dci";
 
 export interface SpecialitePharmaceutique {
     id:string;
-    libelle :string;
+    libelleSpecialiteMedicament :string;
     nomLaboratoire :string;
     dci: Dci
 }

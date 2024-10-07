@@ -1,8 +1,7 @@
-export interface Client {
-    id: string
-    motDePasse: string
-    nomUtilisateur: string
-    typeCompte: string
+import { Utilisateur } from "./utilisateur"
+
+export interface Client extends Utilisateur{
+    
     nomStructure: string
     numeroAccreditation:string,
     estOperationnel: boolean,

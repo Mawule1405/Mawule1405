@@ -14,6 +14,8 @@ import {AgentGestionStocksComponent} from "./agent-gestion-stocks/agent-gestion-
 import {AgentGestionReclamationsComponent} from "./agent-gestion-reclamations/agent-gestion-reclamations.component";
 import {AgentGestionLivraisonsComponent} from "./agent-gestion-livraisons/agent-gestion-livraisons.component";
 import {AgentGestionCommandesComponent} from "./agent-gestion-commandes/agent-gestion-commandes.component";
+import { ClientComponent } from './client/client.component';
+import {ClientCataloguesComponent} from "./client-catalogues/client-catalogues.component";
 
 const routes: Routes = [
   {path: "home", component: HomeComponent},
@@ -29,7 +31,10 @@ const routes: Routes = [
   {path: "agent/gestion-stocks", component: AgentGestionStocksComponent},
   {path: "agent/gestion-reclamations", component : AgentGestionReclamationsComponent},
   {path: "agent/gestion-livraisons", component: AgentGestionLivraisonsComponent},
-  {path: "agent/gestion-commandes", component : AgentGestionCommandesComponent}
+  {path: "agent/gestion-commandes", component : AgentGestionCommandesComponent},
+  //Les composants client
+  {path: "client", component: ClientComponent},
+  {path: "client/catalogues/tous-les-produits", component: ClientCataloguesComponent}
 ];
 
 @NgModule({

@@ -50,7 +50,7 @@
                             <td>{{recl.commande.id}}</td>
                             <td>{{recl.descriptionReclamation}}</td>
                             <td class="text-center"><button class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></button></td>
-                            <td class="text-center"><button class="btn btn-sm btn-outline-success"><i class="bi bi-eye"></i></button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-success" (click)="declarerLu(recl)"><i class="bi bi-eye"></i></button></td>
                             <td class="text-center"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-chat"></i></button></td>
                         </tr>
                     </tbody>
@@ -96,7 +96,7 @@
                             <td>{{recl.commande.id}}</td>
                             <td>{{recl.descriptionReclamation}}</td>
                             <td class="text-center"><button class="btn btn-sm btn-outline-primary"><i class="bi bi-download"></i></button></td>
-                            <td class="text-center"><button class="btn btn-sm btn-outline-success"><i class="bi bi-eye"></i></button></td>
+                            <td class="text-center"><button class="btn btn-sm btn-outline-success" (click)="declarerTraiter(recl)"><i class="bi bi-eye"></i></button></td>
                             <td class="text-center"><button class="btn btn-sm btn-outline-danger"><i class="bi bi-chat"></i></button></td>
                         </tr>
                     </tbody>

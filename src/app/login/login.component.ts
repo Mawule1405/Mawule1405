@@ -4,6 +4,7 @@ import { ProfilService } from '../services/comptes/profil.service';
 import { Client } from '../model/Client';
 import { Agent } from '../model/Agent';
 import { Router, RouterOutlet } from '@angular/router';
+import { AuthService } from '../services/comptes/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { Router, RouterOutlet } from '@angular/router';
 })
 export class LoginComponent implements OnInit{
 
-
+  protected readonly JSON = JSON;
   passwordForget: boolean = false;
   time: number = 59;
   timeCurrent: number = 0;
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit{
 public constructor(
   private formBuilder: FormBuilder,
   private profilService: ProfilService,
-  private router: Router
+  private router: Router,
+  private authService: AuthService
 ){}
 
 
@@ -65,27 +67,32 @@ public constructor(
     })
   }
 
+
+
   login() {
     if (this.loginFormular.valid) {
       let cred = this.loginFormular.value;
-      
-      // Créer une liste combinée des comptes
+
       const comptes = [...this.agents, ...this.clients];
-  
-      let utilisateurTrouve = false; // Pour suivre si un utilisateur a été trouvé
-  
+
+      let utilisateurTrouve = false;
+
       comptes.forEach((compte) => {
         if (compte.nomUtilisateur === cred.identifiant && compte.motDePasse === cred.motDePasse) {
-          utilisateurTrouve = true; // Marquer comme trouvé
+          utilisateurTrouve = true;
+
+          // Utiliser AuthService pour stocker les informations du compte
+          this.authService.setCompteInfo(compte);
+          this.authService.stockPanier(compte)
+
           if (compte.typeCompte === "client") {
-            alert("C'est un client");
+            this.router.navigate(['/client/catalogues/tous-les-produits']);
           } else if (compte.typeCompte === "agent") {
             this.router.navigate(['/agent']);
           }
         }
       });
-  
-      // Si aucun utilisateur trouvé
+
       if (!utilisateurTrouve) {
         alert("Veuillez vérifier l'identifiant ou le mot de passe");
       }
@@ -93,11 +100,14 @@ public constructor(
       alert("Veuillez vérifier le formulaire de connexion");
     }
   }
-  
-  
 
-  
-
-
-  protected readonly JSON = JSON;
 }
+
+ 
+  
+
+  
+
+
+
+

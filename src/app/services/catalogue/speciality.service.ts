@@ -18,8 +18,8 @@ export class SpecialityService {
   }
 
   saveSpeciality(speciality : SpecialitePharmaceutique): Observable<SpecialitePharmaceutique>{
-    let spec = {libelle: speciality.libelle, nomLaboratoire: speciality.nomLaboratoire, dci: speciality.dci};
-    return this.http.post<SpecialitePharmaceutique>(`${URL.BASE_URL}${URL.SPECIALITY_URL}/`, spec);
+    ;
+    return this.http.post<SpecialitePharmaceutique>(`${URL.BASE_URL}${URL.SPECIALITY_URL}/${speciality.dci.id}`, speciality);
   }
 
   deleteSpeciality(speciality: SpecialitePharmaceutique){
@@ -27,7 +27,8 @@ export class SpecialityService {
   }
 
   updateSpeciality(speciality: SpecialitePharmaceutique):Observable<SpecialitePharmaceutique>{
-    return this.http.patch<SpecialitePharmaceutique>(`${URL.BASE_URL}${URL.SPECIALITY_URL}/${speciality.id}`, speciality);
+    alert(speciality)
+    return this.http.put<SpecialitePharmaceutique>(`${URL.BASE_URL}${URL.SPECIALITY_URL}`, speciality);
   }
 
 }

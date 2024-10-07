@@ -1,0 +1,173 @@
+.header-catalogue{
+  position: fixed;
+  z-index: 5;
+  width: 100%;
+}
+/* Style du conteneur du filtre */
+.filter-container {
+  display: flex;
+  justify-content: row;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  background-color: #fff;
+  z-index: 2;
+  margin: 0 auto;
+}
+
+/* Style des groupes de formulaire */
+.form-group {
+  
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+}
+
+/* Style des champs de texte et des listes déroulantes */
+input[type="search"], select {
+  padding: 5px;
+  border: 1px solid #002b5f;
+  border-radius: 1px;
+  font-size: .8rem;
+}
+
+input[type="search"]:focus, select:focus {
+  border-color: #5093db;
+  box-shadow: 0 0 8px rgba(80, 147, 219, 0.2);
+}
+
+/* Style des labels */
+.form-group label {
+  
+  font-size: .7rem;
+  font-weight: 500;
+  color: #002b5f;
+}
+
+/* Icônes */
+.form-group label i {
+  margin-right: 5px;
+  color: #5093db;
+}
+
+/* Ajout d'animation au focus */
+input[type="search"]:hover, select:hover {
+  transform: scale(1.02);
+  border-color: #3072a3;
+}
+
+
+
+
+/*===================================*/
+.card-container {
+    display: flex; /* Utilise flexbox pour disposer les cartes */
+    flex-wrap: wrap; /* Permet aux cartes de passer à la ligne */
+    margin-top: 1px; /* Espacement au-dessus des cartes */
+    justify-content: space-between;
+    gap:20px
+}
+
+.product-card {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  flex-direction: column;
+    background-color: #ffffff; /* Couleur de fond de la carte */
+    width: 250px; /* Largeur fixe pour chaque carte */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre portée pour un effet de profondeur */
+    text-align: center; /* Centrer le texte */
+}
+
+.product-card:hover {
+  transform: scale(1.05); /* Agrandissement au survol */
+  box-shadow: 0 4px 20px rgba(0, 43, 95, 0.5); /* Ombre avec une teinte bleu foncé */
+}
+
+.product-image {
+    width: 100%; /* Limite la largeur de l'image à la carte */
+    height: auto; /* Maintient les proportions de l'image */
+    
+}
+
+.button-group {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.detail-button,
+.add-to-cart-button {
+    width: 90%;
+    height: 2rem;
+    font-size: 0.85rem; /* Taille de police pour les boutons */
+    background-color: #02254b; /* Couleur de fond pour les boutons */
+    color: white; /* Couleur du texte pour les boutons */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Coins arrondis pour les boutons */
+    cursor: pointer; /* Changer le curseur en pointeur */
+    transition: background-color 0.3s; /* Transition pour l'effet de survol */
+}
+
+.detail-button:hover,
+.add-to-cart-button:hover {
+    background-color: #3072a3; /* Couleur au survol */
+}
+
+
+
+
+/*=============================================*/
+  
+  main {
+    display: flex; /* Affichage flexible pour organiser les éléments */
+    justify-content: space-between; /* Espacement entre les éléments principaux */
+    flex-direction: column;
+    align-items:center ;
+    position: relative;
+    top:200px
+  }
+  
+  
+  
+  /* Style pour la section d'affichage des produits */
+  .product-display {
+    flex: 1; /* Prendre le reste de l'espace disponible */
+    background-color: #ffffff; /* Couleur d'arrière-plan pour l'affichage des produits */
+    padding:50px 20px; /* Espacement interne */
+    
+    
+    
+   
+  }
+  
+  .product-display h2 {
+    margin-bottom: 5px; /* Espacement sous le titre */
+    font-size: 1.3rem; /* Taille de police pour le titre */
+    
+  }
+
+
+  /*animation*/
+  @keyframes infiniteAnimation {
+    0% {
+      transform: translateX(2%);
+      color: #002b5f; /* Couleur initiale */
+      
+    }
+    50% {
+      transform: translate(35%);
+      color: #5093db; /* Change de couleur */
+    }
+    100% {
+      transform: translate(70%);
+      color: #002b5f; 
+    }
+  }
+  
+  h2 {
+    padding-left: 15px;
+    animation: infiniteAnimation 25s infinite;
+    font-size: 0.7rem;
+  }
+  
+  
