@@ -1,5 +1,6 @@
 export interface FormeGalenique {
     id : string;
    nomFormeGalenique : string;
-   descriptionFormeGalenique: string
+   descriptionFormeGalenique: string,
+   isDeleted : Boolean,
 }

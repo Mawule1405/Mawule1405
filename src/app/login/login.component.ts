@@ -39,22 +39,10 @@ public constructor(
   ngOnInit(): void {
 
     this.loginFormular= this.createLoginFormular();
-    this.getAgents();
-    this.getClients();
+    
   }
 
-  getClients(){
-    this.profilService.getClientProfil().subscribe({
-      next:comptes=> this.clients = comptes,
-      error: err=>console.log("Erreur de chargement des clients")
-    })
-  }
-  getAgents(){
-    this.profilService.getAgentProfil().subscribe({
-      next:comptes=> this.agents = comptes,
-      error: err=>console.log("Erreur de chargement des agents")
-    })
-  }
+
 
   clickPassWordLink(){
     this.passwordForget =true;
@@ -71,36 +59,29 @@ public constructor(
 
   login() {
     if (this.loginFormular.valid) {
+
       let cred = this.loginFormular.value;
+      this.authService.connecter(cred).subscribe({
+        next: value=>{
+          if(value.type=='client'){
 
-      const comptes = [...this.agents, ...this.clients];
+            this.authService.stockCompteID(value)
+            this.router.navigate(['/client/catalogues/tous-les-produits'])
 
-      let utilisateurTrouve = false;
-
-      comptes.forEach((compte) => {
-        if (compte.nomUtilisateur === cred.identifiant && compte.motDePasse === cred.motDePasse) {
-          utilisateurTrouve = true;
-
-          // Utiliser AuthService pour stocker les informations du compte
-          this.authService.setCompteInfo(compte);
-          this.authService.stockPanier(compte)
-
-          if (compte.typeCompte === "client") {
-            this.router.navigate(['/client/catalogues/tous-les-produits']);
-          } else if (compte.typeCompte === "agent") {
-            this.router.navigate(['/agent']);
+          }else if(value.type == 'agent-opn'){
+            this.router.navigate(['/agent/catalogues'])
           }
+        },
+        error : err=> {
+          alert("Informations incorrectes")
         }
-      });
+      })
 
-      if (!utilisateurTrouve) {
-        alert("Veuillez vérifier l'identifiant ou le mot de passe");
-      }
-    } else {
-      alert("Veuillez vérifier le formulaire de connexion");
+    }else{
+      alert("Informations Incorrectes")
     }
-  }
 
+  }
 }
 
  

@@ -1,0 +1,38 @@
+.animated-text {
+    font-size: 2rem;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 2s forwards, underline 2.5s forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes underline {
+    0% {
+      border-bottom: 0px solid #000;
+    }
+    100% {
+      border-bottom: 2px solid #007bff;
+    }
+  }
+
+
+ /* Effet de survol sur les cartes de commande */
+.commande-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.commande-card:hover {
+  transform: scale(1.05); /* Agrandissement léger */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Ombre plus intense */
+}
+

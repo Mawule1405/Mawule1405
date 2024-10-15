@@ -30,6 +30,9 @@ import { ClientNouvellesReclamationsComponent } from './client-nouvelles-reclama
 import { ClientAnciennesReclamationsComponent } from './client-anciennes-reclamations/client-anciennes-reclamations.component';
 import { ClientProfilComponent } from './client-profil/client-profil.component';
 import { ClientCatalogueMedicamentsComponent } from './client-catalogue-medicaments/client-catalogue-medicaments.component';
+import { CreateCompteClientComponent } from './create-compte-client/create-compte-client.component';
+import { ClientPanierComponent } from './client-panier/client-panier.component';
+import { ClientCatalogueDispositifsMedicauxComponent } from './client-catalogue-dispositifs-medicaux/client-catalogue-dispositifs-medicaux.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { ClientCatalogueMedicamentsComponent } from './client-catalogue-medicame
     ClientNouvellesReclamationsComponent,
     ClientAnciennesReclamationsComponent,
     ClientProfilComponent,
-    ClientCatalogueMedicamentsComponent
+    ClientCatalogueMedicamentsComponent,
+    CreateCompteClientComponent,
+    ClientPanierComponent,
+    ClientCatalogueDispositifsMedicauxComponent
   ],
   imports: [
     BrowserModule,

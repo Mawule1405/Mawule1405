@@ -6,8 +6,10 @@ export interface Article {
     prixGenerique : number;
     description: string;
     quantiteStock: number;
+    quantiteStockSeuil: number;
     etat: string;
-    image: string ;
+    cheminImage: string ;
+    isDeleted : boolean;
 }
 
 

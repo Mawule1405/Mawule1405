@@ -4,13 +4,14 @@ export enum URL {
     SPECIALITY_URL = "/specialites-pharmaceutiques",
     FORM_GENERIQUE_URL = "/formes-galeniques",
     MEDICAMENT_URL = "/medicaments",
-    AGENT_PROFIL_URL = "/ComptesAgents",
-    CLIENT_PROFIL_URL = "/ComptesClients",
+    AGENT_PROFIL_URL = "/agent-opn",
+    CLIENT_PROFIL_URL = "/client",
     MOUVEVEMENT_STOCK_URL= "/mouvementStocks",
     COMMANDE_URL = "/commandes",
     LIGNECOMMANDE_URL = "/lignesCommandes",
     RECLAMATION_URL = "/reclamations",
     PANIER_URL="/paniersClients",
     LIGNEPANIER_URL="/lignesPanier",
-    DISPOSITIF_MEDICAL_URL="dispositifs-medicaux"
+    DISPOSITIF_MEDICAL_URL="/dispositifs-medicaux",
+    CONNEXION_URL = "/auth/connexion",
 }

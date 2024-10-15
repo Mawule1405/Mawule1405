@@ -28,12 +28,12 @@
 
         <!--Présentation des médicaments-->
         <div class="container py-4 overflow-y-auto" style="max-height:95vh">
-            <h5 class="h5 mb-4 text-start">Médicaments</h5>
+  
             <div class="d-flex flex-wrap justify-content-between">
-                <div *ngFor="let medoc of lesMedicaments"   [class]="medoc.etat=='NONRETIRE'? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
-                   <div *ngIf="medoc.etat == 'NONRETIRE'">
+                <div *ngFor="let medoc of lesMedicaments"   [class]="medoc.etat=='NON_RETIRE'? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+                   <div *ngIf="medoc.etat == 'NON_RETIRE'">
                      <div class="card-header p-0">
-                       <img [src]="medoc.image" class="card-img-top" alt="{{medoc.code}} {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
+                       <img src="../../assets/images/img_1.png" class="card-img-top" alt="{{medoc.code}} {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
                      </div>
                      <div class="card-body">
                        <h4 class="h4 small">Code: {{medoc.code}}</h4>
@@ -42,11 +42,38 @@
                        <h6 class="h6 small">Quantité disponible : {{medoc.quantiteStock}}</h6>
                        <h6 class="h6 small">Prix: {{medoc.prixGenerique}}</h6>
                      </div>
-                     <div [class]="medoc.quantiteStock > 10?'card-footer bg-success d-flex justify-content-between':'card-footer bg-dark d-flex justify-content-between'">
+                     <div [class]="medoc.quantiteStock > medoc.quantiteStockSeuil ?'card-footer bg-success d-flex justify-content-between':'card-footer bg-dark d-flex justify-content-between'">
                        <button *ngFor="let bt of productPresentationButtons"
                                [title]="bt.title"
                                class="btn btn-sm btn-outline-{{bt.color}} mx-1"
                                (click)="onClickMedicineButton(bt,medoc)"
+                       >
+                         <i class="bi {{bt.icon}}"></i>
+                       </button>
+
+                     </div>
+                   </div>
+                </div>
+
+
+                <!--Affichage des dispositfs médicaux-->
+                <div *ngFor="let disp of lesDisposidifsMedicaux"   [class]="disp.etat=='NON_RETIRE'? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+                   <div *ngIf="disp.etat == 'NON_RETIRE'">
+                     <div class="card-header p-0">
+                       <img src="../../assets/images/img_3.png" class="card-img-top" alt="{{disp.code}} {{disp.libelle}}" style="height: 150px; object-fit: cover;">
+                     </div>
+                     <div class="card-body">
+                       <h4 class="h4 small">Code: {{disp.code}}</h4>
+                       <h5 class="h5 small">Libelle: {{disp.libelle}}</h5>
+                       <h6 class="h6 small">Pays: {{disp.paysFabrication}}</h6>
+                       <h6 class="h6 small">Quantité disponible : {{disp.quantiteStock}}</h6>
+                       <h6 class="h6 small">Prix: {{disp.prixGenerique}}</h6>
+                     </div>
+                     <div [class]="disp.quantiteStock > disp.quantiteStockSeuil ?'card-footer bg-success d-flex justify-content-between':'card-footer bg-dark d-flex justify-content-between'">
+                       <button *ngFor="let bt of productPresentationButtons"
+                               [title]="bt.title"
+                               class="btn btn-sm btn-outline-{{bt.color}} mx-1"
+                               (click)="onClickDispositifMedicalButton(bt,disp)"
                        >
                          <i class="bi {{bt.icon}}"></i>
                        </button>
@@ -414,6 +441,11 @@
                   <input id="prixGenerique" type="number" formControlName="prixGenerique" class="form-control form-control-sm" placeholder="Concentration" />
                 </div>
 
+                <div class="col-md-6 mb-2">
+                  <label for="quantiteSeuil" class="form-label fw-bold small">Quantité Seuil</label>
+                  <input id="quantiteSeuil" type="number" formControlName="quantiteStockSeuil" class="form-control form-control-sm" placeholder="Quantité seuil" />
+                </div>
+
               </div>
 
               <div class="row">
@@ -429,7 +461,7 @@
                 <!-- Spécialité  -->
                 <div class="col-md-6 mb-2">
                   <label for="speciality" class="form-label fw-bold small">Spécialité</label>
-                  <select id="speciality" formControlName="specialite" class="form-control form-control-sm">
+                  <select id="speciality" formControlName="specialitePharmaceutique" class="form-control form-control-sm">
                     <option value="" disabled selected>Choisir une specialité</option>
                     <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelleSpecialiteMedicament }} {{speciality.dci.nomDci}}</option>
                   </select>
@@ -551,7 +583,7 @@
 
 
 
-<!--Fenetres modales pour modifier un produits-->
+<!--Fenetres modales pour modifier un médicament-->
 <div [class]="medicamentModificationProductIsVisible ? 'show-modal' : 'modal'">
 
   <div class="container card shadow-lg">
@@ -563,12 +595,12 @@
     </div>
 
     <div class="card-body h-100 row overflow-auto">
-      <form [formGroup]="medicamentModificationFormular" class="p-3 bg-light rounded shadow-sm" (ngSubmit)="saveProduct()">
+      <form [formGroup]="medicamentModificationFormular" class="p-3 bg-light rounded shadow-sm" (ngSubmit)="miseAjourMedicament()">
 
         <div class="row">
           <!-- Section Image -->
           <div class="col-md-4 d-flex flex-column align-items-center">
-            <img [src]="medicamentImagePath" alt="ImageProduit" class="border rounded w-100 mb-2" style="max-height: 150px; object-fit: cover;">
+            <img src="../../assets/images/img_1.png" alt="ImageProduit" class="border rounded w-100 mb-2" style="max-height: 150px; object-fit: cover;">
 
             <div class="form-group w-100">
               <label for="productImageM" class="form-label fw-bold text-muted small">Changer l'image du produit</label>
@@ -591,6 +623,7 @@
           <!-- Section Champs du formulaire -->
           <div class="col-md-8">
             <div class="row">
+
               <!-- Nom générique et Nom commercial -->
               <div class="col-md-6 mb-2">
                 <label for="codeM" class="form-label fw-bold small">Code</label>
@@ -613,11 +646,21 @@
               </div>
 
               <div class="col-md-6 mb-2">
+                <label for="quantiteSeuil" class="form-label fw-bold small">Quantité seuil</label>
+                <input id="quantiteSeuil" formControlName="quantiteStockSeuil" class="form-control form-control-sm" placeholder="Quantité seuil" />
+              </div>
+
+              <div class="col-md-6 mb-2">
                 <label for="uniteconcentrationM" class="form-label fw-bold small">Unité</label>
                 <select name="uniteconcentrationM" id="uniteconcentrationM" formControlName="uniteConcentration" class="form-control form-control-sm">
                   <option *ngFor="let op of unityLists" [value]="op">{{op}}</option>
                 </select>
               </div>
+
+              
+            </div>
+
+            <div class="row">
 
               <!-- Forme galénique -->
               <div class="col-md-6 mb-2">
@@ -626,20 +669,18 @@
                   <option *ngFor="let form of listOfFormGalenique" [value]="form.id">{{ form.nomFormeGalenique }}</option>
                 </select>
               </div>
-            </div>
-
-            <div class="row">
-
 
               <!-- Spécialité  -->
               <div class="col-md-6 mb-2">
                 <label for="specialityM" class="form-label fw-bold small">Spécialité</label>
-                <select id="specialityM" formControlName="specialite" class="form-control form-control-sm">
+                <select id="specialityM" formControlName="specialitePharmaceutique" class="form-control form-control-sm">
                   <option *ngFor="let speciality of listOfSpecialities" [value]="speciality.id">{{ speciality.libelleSpecialiteMedicament}} {{speciality.dci.nomDci}}</option>
                 </select>
               </div>
 
             </div>
+
+
             <!-- Description seule sur une ligne complète -->
             <div class="mb-2">
               <label for="descriptionM" class="form-label fw-bold small">Description</label>
@@ -655,6 +696,175 @@
 </div>
 
 
+<!--Fenetre modales pour enrégistrer un nouveau dispositif médical-->
+<div [class]="dispositifMedicalFormIsVisible? 'show-modal' : 'modal'">
+
+  <div class="container card shadow-lg">
+    <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+      <h6>Ajouter un dispositif médical</h6>
+      <button class="btn btn-light text-white" (click)="closeModalButton(allButtonsElements[4])">
+        <span class="btn-close"></span>
+      </button>
+    </div>
+
+    <div class="card-body h-100 row overflow-auto">
+      <form [formGroup]="dispositifMedicalFormular" class="p-3 bg-light rounded shadow-sm" (ngSubmit)="enregistrerUnDispositifMedical()">
+
+        <div class="row">
+          <!-- Section Image -->
+          <div class="col-md-4 d-flex flex-column align-items-center">
+            <img [src]="medicamentImagePath" alt="ImageProduit" class="border rounded w-100 mb-2" style="max-height: 150px; object-fit: cover;">
+
+            <div class="form-group w-100">
+              <label for="productImageB" class="form-label fw-bold text-muted small">Changer l'image du produit</label>
+              <input type="file" id="productImageB" class="form-control form-control-sm" (change)="choiceProductImage($event)">
+            </div>
+
+
+
+            <!-- Boutons d'action -->
+            <div class="mt-5 row d-flex justify-content-between flex-row w-100">
+              <button type="submit" class="btn btn-sm btn-dark btn-block w-25" [disabled]="!dispositifMedicalFormular.valid">Ajouter</button>
+              <button type="reset" class="btn btn-sm btn-danger btn-block w-25">Annuler</button>
+            </div>
+          </div>
+
+          <!-- Section Champs du formulaire -->
+          <div class="col-md-8">
+            <div class="row">
+              <!-- Code et libellé -->
+              <div class="col-md-6 mb-2">
+                <label for="codeB" class="form-label fw-bold small">Code</label>
+                <input id="codeB" formControlName="code" class="form-control form-control-sm" placeholder="Entrez le code" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="libelleB" class="form-label fw-bold small">Libellé</label>
+                <input id="libelleB" formControlName="libelle" class="form-control form-control-sm" placeholder="Entrez le libellé" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="paysFabricant" class="form-label fw-bold small">Pays fabricant</label>
+                <input id="paysFabricant" type="text" formControlName="paysFabrication" class="form-control form-control-sm" placeholder="Entrez le pays fabricant" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="prixGenerique" class="form-label fw-bold small">Prix</label>
+                <input id="prixGenerique" type="number" formControlName="prixGenerique" class="form-control form-control-sm" placeholder="Prix" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="quantiteStockSeuilD" class="form-label fw-bold small">Quantité seuil</label>
+                <input id="quantiteStockSeuilD" type="number" formControlName="quantiteStockSeuil" class="form-control form-control-sm" placeholder="Quantité seuil" />
+              </div>
+
+            </div>
+
+            <div class="row">
+
+             
+
+
+            </div>
+            <!-- Description seule sur une ligne complète -->
+            <div class="mb-2">
+              <label for="description" class="form-label fw-bold small">Description</label>
+              <textarea id="description" formControlName="description" class="form-control form-control-sm" rows="2" placeholder="Entrez la description du produit"></textarea>
+            </div>
+
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--Formulaire de modification d'un dispositif médical-->
+<div [class]="dispositifMedicalModificationProductIsVisible ? 'show-modal' : 'modal'">
+
+  <div class="container card shadow-lg">
+    <div class="card-header d-flex justify-content-between align-items-center bg-black text-white">
+      <h6>Modification</h6>
+      <button class="btn btn-light text-white" (click)="closeModificationProduct()">
+        <span class="btn-close"></span>
+      </button>
+    </div>
+
+    <div class="card-body h-100 row overflow-auto">
+      <form [formGroup]="dispositifMedicalModificationFormular" class="p-3 bg-light rounded shadow-sm" (ngSubmit)="miseAjourDispositif()">
+
+        <div class="row">
+          <!-- Section Image -->
+          <div class="col-md-4 d-flex flex-column align-items-center">
+            <img src="../../assets/images/img_3.png" alt="ImageProduit" class="border rounded w-100 mb-2" style="max-height: 150px; object-fit: cover;">
+
+            <div class="form-group w-100">
+              <label for="productImageC" class="form-label fw-bold text-muted small">Changer l'image du produit</label>
+              <input type="file" id="productImageC" class="form-control form-control-sm"
+                     (change)="choiceProductImage($event)"
+              >
+            </div>
+
+
+
+            <!-- Boutons d'action -->
+            <div class="mt-5 row d-flex justify-content-between flex-row w-100">
+              <button type="submit" class="btn btn-sm btn-dark btn-block w-25" [disabled]="!dispositifMedicalModificationFormular.valid">Modifier</button>
+              <button type="button" class="btn btn-sm btn-danger btn-block w-25"
+               (click)="closeModificationProduct()"
+              >Annuler</button>
+            </div>
+          </div>
+
+          <!-- Section Champs du formulaire -->
+          <div class="col-md-8">
+            <div class="row">
+
+              <!-- Nom générique et Nom commercial -->
+              <div class="col-md-6 mb-2">
+                <label for="codeC" class="form-label fw-bold small">Code</label>
+                <input id="codeC" formControlName="code" class="form-control form-control-sm" placeholder="Entrez le Code" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="libelleC" class="form-label fw-bold small">Libelle</label>
+                <input id="libelleC" formControlName="libelle" class="form-control form-control-sm" placeholder="Entrez le libellé" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="paysC" class="form-label fw-bold small">Pays fabricant</label>
+                <input id="paysC" formControlName="paysFabrication" class="form-control form-control-sm" placeholder="Pays fabricant" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="prixC" class="form-label fw-bold small">Prix</label>
+                <input id="prixC" formControlName="prixGenerique" class="form-control form-control-sm" placeholder="prix" />
+              </div>
+
+              <div class="col-md-6 mb-2">
+                <label for="quantiteSeuilC" class="form-label fw-bold small">Quantité seuil</label>
+                <input id="quantiteSeuilC" formControlName="quantiteStockSeuil" class="form-control form-control-sm" placeholder="Quantité seuil" />
+              </div>
+
+             
+            </div>
+
+
+            <!-- Description seule sur une ligne complète -->
+            <div class="mb-2">
+              <label for="descriptionC" class="form-label fw-bold small">Description</label>
+              <textarea id="descriptionC" formControlName="description" class="form-control form-control-sm" rows="2" placeholder="Entrez la description du produit"></textarea>
+            </div>
+
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 

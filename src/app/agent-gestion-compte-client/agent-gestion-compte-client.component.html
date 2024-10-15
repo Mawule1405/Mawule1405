@@ -59,47 +59,56 @@
         <table class="table table-striped table-bordered border">
             <thead>
                 <tr>
-                    <th class="bg-black text-light text-small-m">ID</th>
-                    <th class="bg-black text-light text-small-m">Identifiant</th>
-                    <th class="bg-black text-light text-small-m">Password</th>
-                    <th class="bg-black text-light text-small-m">Structure</th>
-                    <th class="bg-black text-light text-small-m">Email</th>
-                    <th class="bg-black text-light text-small-m">N° Accr</th>
-                    <th class="bg-black text-light text-small-m">Telephone</th>
-                    <th class="bg-black text-light text-small-m">Adresse</th>
-                    <th class="bg-black text-light text-small-m">Preuve</th>
-                    <th class="bg-black text-light text-small-m">Action</th>
+                    <th *ngFor="let op of ['ID', 'Identifiant', 'Structure','Type', 'Email', 'N° Accr', 'Tél'
+                        , 'Adresse', 'Nom Resp', 'Tél resp', 'Preuve', 'Active', 'Supprimer'
+                    ]"
+                     class="bg-black text-light text-small-m">{{op}}</th>
+                    
                 </tr>
             </thead>
             <tbody>
                 <tr class="text-small-m" *ngFor="let client of lesClients">
-                    <td>{{client.id}}</td>
-                    <td>{{client.nomUtilisateur}}</td>
-                    <td>{{client.motDePasse}}</td>
-                    <td>{{client.nomStructure}}</td>
+                    <td>{{lesClients.indexOf(client) + 1}}</td>
+                    <td>{{client.identifiant}}</td>
+                    <td>{{client.nomEntreprise}}</td>
+                    <td>{{client.typeStructure}}</td>
+                    
                     <td>{{client.email}}</td>
                     <td>{{client.numeroAccreditation}}</td>
-                    <td>{{client.telephone}}</td>
+                    <td>{{client.numeroTelephone}}</td>
                     <td>{{client.adresse}}</td>
+                    <td>{{client.nomDuResponsable}}</td>
+                    <td>{{client.numeroContactResponsable}}</td>
                     <td>
                         <button class="btn btn-sm btn-outline-success"><i class="bi bi-download"></i></button>
                     </td>
 
                     <td>
-                        <button *ngIf="!client.estOperationnel" 
+                        <button *ngIf="client.isActive" 
                                 class="btn btn-sm btn-outline-success"
                                 (click)="validateClientRegistration(client)"
+                                title="Activer le compte du client"
                                 >
                             
                             <i class="bi bi-pencil"></i>
                         </button>
                     
-                        <button *ngIf="client.estOperationnel" 
+                        <button *ngIf="!client.isActive" 
                             class="btn btn-sm btn-outline-danger"
                             (click)="desactivateClientAccount(client)"
+                            title="Désactiver le compte du client"
                             >
-                            <i class="bi bi-trash"></i>
+                            <i class="bi bi-pencil"></i>
                         </button>
+                    </td>
+                    <td>
+                        <button *ngIf="client.isDeleted" 
+                          class="btn btn-sm btn-outline-danger"
+                          
+                          title="Désactiver le compte du client"
+                          >
+                          <i class="bi bi-trash"></i>
+                      </button>
                     </td>
 
                 </tr>

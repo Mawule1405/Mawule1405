@@ -2,10 +2,13 @@
 
 <div class="screen-show">
     <div class="d-flex justify-content-end my-3">
-        <button class="btn btn-sm btn-outline-dark small mx-2"
+        <button 
+          [class]="basculAccount=='client'?'btn btn-sm btn-dark small mx-2':
+          'btn btn-sm btn-outline-dark small mx-2'"
                (click)="openClientAccountManager()">Gestion des Comptes Clients 
         </button>
-        <button class="btn btn-sm btn-outline-dark small mx-2"
+        <button [class]="basculAccount=='agent'?'btn btn-sm btn-dark small mx-2':
+          'btn btn-sm btn-outline-dark small mx-2'"
                 (click)="openAgentAccountManager()">Gestion des Comptes Agents
         </button>
       </div>

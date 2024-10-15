@@ -16,6 +16,14 @@ import {AgentGestionLivraisonsComponent} from "./agent-gestion-livraisons/agent-
 import {AgentGestionCommandesComponent} from "./agent-gestion-commandes/agent-gestion-commandes.component";
 import { ClientComponent } from './client/client.component';
 import {ClientCataloguesComponent} from "./client-catalogues/client-catalogues.component";
+import { CreateCompteClientComponent } from './create-compte-client/create-compte-client.component';
+import { ClientPanierComponent } from './client-panier/client-panier.component';
+import { ClientCatalogueMedicamentsComponent } from './client-catalogue-medicaments/client-catalogue-medicaments.component';
+import { ClientCatalogueDispositifsMedicauxComponent } from './client-catalogue-dispositifs-medicaux/client-catalogue-dispositifs-medicaux.component';
+import { ClientNouvellesCommandesComponent } from './client-nouvelles-commandes/client-nouvelles-commandes.component';
+import { ClientAnciennesCommandesComponent } from './client-anciennes-commandes/client-anciennes-commandes.component';
+import { ClientAnciennesReclamationsComponent } from './client-anciennes-reclamations/client-anciennes-reclamations.component';
+import { ClientNouvellesReclamationsComponent } from './client-nouvelles-reclamations/client-nouvelles-reclamations.component';
 
 const routes: Routes = [
   {path: "home", component: HomeComponent},
@@ -34,7 +42,15 @@ const routes: Routes = [
   {path: "agent/gestion-commandes", component : AgentGestionCommandesComponent},
   //Les composants client
   {path: "client", component: ClientComponent},
-  {path: "client/catalogues/tous-les-produits", component: ClientCataloguesComponent}
+  {path: "client/catalogues/tous-les-produits", component: ClientCataloguesComponent},
+  {path: "sinscrire/client", component : CreateCompteClientComponent},
+  {path: "client/panier/detail", component: ClientPanierComponent},
+  {path: "client/catalogues/medicaments", component: ClientCatalogueMedicamentsComponent},
+  {path: "client/catalogues/dispositifs-medicaux", component: ClientCatalogueDispositifsMedicauxComponent},
+  {path: "client/commandes/nouvelles-commandes", component: ClientNouvellesCommandesComponent},
+  {path: "client/commandes/anciennes-commandes", component: ClientAnciennesCommandesComponent},
+  {path: "client/reclamations/anciennes-reclamations", component: ClientAnciennesReclamationsComponent},
+  {path: "client/reclamations/nouvelles-reclamations", component: ClientNouvellesReclamationsComponent}
 ];
 
 @NgModule({

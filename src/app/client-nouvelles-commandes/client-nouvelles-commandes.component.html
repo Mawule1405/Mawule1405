@@ -1,1 +1,70 @@
-<p>client-nouvelles-commandes works!</p>
+<app-client-nav-bar ></app-client-nav-bar>
+
+<!-- Conteneur principal avec texte et cases à cocher -->
+<div class="text-center my-4">
+    <!-- Texte avec animation -->
+    <h2 class="animated-text">Les nouvelles commandes</h2>
+
+    <!-- Cases à cocher pour filtrer les commandes -->
+    <div class="form-check form-check-inline">
+        <input class="form-check-input custom-checkbox" type="checkbox" id="tous" (change)="filtrerCommandes('TOUS')">
+        <label class="form-check-label" for="tous">
+            <span class="text-primary">Toutes les nouvelles commandes</span>
+        </label>
+    </div>
+
+    <div class="form-check form-check-inline">
+        <input class="form-check-input custom-checkbox" type="checkbox" id="enAttente" (change)="filtrerCommandes('EN_ATTENTE')">
+        <label class="form-check-label" for="enAttente">
+            <span class="text-danger">Commandes en Attente</span>
+        </label>
+    </div>
+    
+    <div class="form-check form-check-inline">
+        <input class="form-check-input custom-checkbox" type="checkbox" id="enCours" (change)="filtrerCommandes('EN_COURS')">
+        <label class="form-check-label" for="enCours">
+            <span class="text-success">Commandes en Cours</span>
+        </label>
+    </div>
+</div>
+
+
+
+<!--Présentation des commandes-->
+<div class="container p-3" *ngIf="lesCommandes">
+    <div *ngFor="let pair of getCommandesParPaire()" class="row">
+      <!-- Affiche chaque commande dans une colonne -->
+      <div *ngFor="let commande of pair" class="col-md-6 mb-3 commande-card">
+        <div class="card shadow-sm">
+          <!-- Card Header avec couleur dynamique selon l'état -->
+          <div class="card-header bold text-white" [ngClass]="{
+            'bg-danger text-light': commande.etatCommande === 'EN_ATTENTE',
+            'bg-success text-light': commande.etatCommande === 'EN_COURS'
+          }">
+            Commande N° : {{ lesCommandes.indexOf(commande) + 1 }}
+          </div>
+  
+          <!-- Card Body -->
+          <div class="card-body">
+            <p class="card-text">
+              <strong>Date : </strong>{{ commande.dateCommande }}<br>
+              <strong>Montant Total : </strong>{{ commande.montantTotalCommande }} FCFA
+            </p>
+            <div class="d-flex justify-content-between">
+              <!-- Bouton Voir Détails -->
+              <button class="btn btn-outline-primary" (click)="voirDetails(commande)">
+                <i class="fas fa-info-circle"></i> Voir détails
+              </button>
+              <!-- Bouton Annuler -->
+              <button
+                class="btn btn-outline-danger"
+                (click)="annulerCommande(commande)">
+                <i class="fas fa-times"></i> Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

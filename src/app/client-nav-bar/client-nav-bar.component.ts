@@ -6,6 +6,7 @@ import { Client } from '../model/Client';
 import { PanierService } from '../services/paniers/panier.service';
 import { Panier } from '../model/Panier';
 import { LignePanier } from '../model/LignePanier';
+import { ProfilService } from '../services/comptes/profil.service';
 
 @Component({
   selector: 'app-client-nav-bar',
@@ -17,7 +18,7 @@ export class ClientNavBarComponent implements OnInit {
     {index:0, title:"Catalogues", router:"/client/catalogues/tous-les-produits"},
     {index:1, title:"Tous les produits", router:"/client/catalogues/tous-les-produits"},
     {index:2, title:"Médicaments", router:"/client/catalogues/medicaments"},
-    {index:3, title:"Autres produits", router:"/client/catalogues/autres-produits"},
+    {index:3, title:"Dispositifs Médicaux", router:"/client/catalogues/dispositifs-medicaux"},
     {index:4, title:"Commandes", router:"/client/commandes/nouvelles-commandes"},
     {index:5, title:"Nouvelles commandes", router:"/client/commandes/nouvelles-commandes"},
     {index:6, title:"Anciennes commandes", router:"/client/commandes/anciennes-commandes"},
@@ -26,28 +27,27 @@ export class ClientNavBarComponent implements OnInit {
     {index:9, title:"Anciennes reclamations", router:"/client/commandes/anciennes-reclamations"},
 
   ]
-   utilisateur! : Client;
+   compte! : Client;
    panierClient! : Panier;
-   lesLignesPaniers : LignePanier[] =[]
-   panierEstAfficher = false;
-   ligneCourant! : LignePanier | null;
+  
    
 
   
   constructor(private authService: AuthService,
               private panierService: PanierService,
+              private profilService: ProfilService,
+              private router: Router
               ){}
 
   ngOnInit(): void {
-    const userData = this.authService.getCompteInfo()
-    if (userData) {
-      this.utilisateur = userData;
-      this.getPanierClient(this.utilisateur)
-      this.getLignesPanier(this.panierClient)
+    const ID = this.authService.getCompteID()
+    if (ID) {
+      this.recupererLesInformationsDuClients(ID.id);
+     
       
       
     } else {
-      this.deconnexion()
+      //this.deconnexion()
     }
   }
 
@@ -56,6 +56,20 @@ export class ClientNavBarComponent implements OnInit {
     
   }
 
+  //recuperer les informations du clients
+  recupererLesInformationsDuClients(id : string){
+    this.profilService.recupererUnCompteClient(id).subscribe({
+      next: value=>{
+        this.compte = value
+        //this.getPanierClient(this.compte)
+        
+      },
+      error: err=> console.log("Erreur de récupération du compte client")
+    })
+  }
+
+
+  //Recupérer le panier du client
   getPanierClient(client : Client){
     this.panierService.trouverPanier(client)
       let valeurStocker = this.panierService.getPanierDuStock()
@@ -63,56 +77,13 @@ export class ClientNavBarComponent implements OnInit {
         this.panierClient = valeurStocker
       
       }else{
-        this.deconnexion()
+        
       }
   }
 
+  //Accéder à l'interface de présentation du panier du client
   voirPanier(){
-      this.panierEstAfficher = true
-      this.getLignesPanier(this.panierClient)
-  }
-
-  getLignesPanier(panier: Panier){
-    this.panierService.getLignePanier(panier).subscribe({
-      next: value=> this.lesLignesPaniers = value,
-      error: err=> console.log("Erreur de chargement des lignes paniers")
-    })
-  }
-
-  retirerDuPanier(ligne: LignePanier){
-      if(confirm("Voulez vous retirer ce produit?")){
-        this.panierService.deleteLignePanier(ligne).subscribe({
-          next: ligne=> this.getLignesPanier(this.panierClient),
-          error: err=> console.log("Erreur de chargement")
-      })
-      }
-  }
-
-  positionnerLesFormulaires(ligne: LignePanier) {
-    let formElement = document.getElementById(`form-${ligne.id}`);
-  
-    if (formElement) {
-      // Appliquer des styles CSS pour centrer le formulaire
-      formElement.style.position = 'fixed'; // Utiliser 'fixed' pour le garder centré même en défilant
-      formElement.style.top = '50%'; // Placer le centre de l'élément à 50% de la hauteur
-      formElement.style.left = '50%'; // Placer le centre de l'élément à 50% de la largeur
-
-    }
-  }
-  
-
-  changerLaQuantite(ligne: LignePanier){
-    this.ligneCourant = ligne,
-    this.positionnerLesFormulaires(ligne)
-    
-  }
-
-  fermerFormulaireLigne(){
-    this.ligneCourant = null;
-  }
-
-  fermerPanier(){
-    this.panierEstAfficher = false
+    this.router.navigate(['/client/panier/detail'])
   }
 
 }

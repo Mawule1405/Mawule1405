@@ -61,36 +61,39 @@ export class AgentGestionCommandesComponent implements OnInit{
   }
 
   getCommandesEnAttentes(){
-    this.commandeService.getCommandesEnAttente().subscribe({
-      next: values => this.lesCommandes = values,
+    this.commandeService.recupererLesCommandes().subscribe({
+      next: values => {
+        this.lesCommandes = values.filter((commande=> commande.etatCommande == 'EN_ATTENTE'))
+      },
       error: err=> console.log("Erreur de chargement des commandes en attentes")
     })
   }
+
   getCommandesEnCours(){
-    this.commandeService.getCommandesEnCours().subscribe({
-      next: values => this.lesCommandes = values,
-      error: err=> console.log("Erreur de chargement des commandes en attentes")
+    this.commandeService.recupererLesCommandes().subscribe({
+      next: values => this.lesCommandes = values.filter((commande=> commande.etatCommande == 'EN_COURS')),
+      error: err=> console.log("Erreur de chargement des commandes en cours")
     })
   }
 
   getCommandesTraitees(){
-    this.commandeService.getCommandesTraitees().subscribe({
-      next: values => this.lesCommandes = values,
-      error: err=> console.log("Erreur de chargement des commandes en attentes")
+    this.commandeService.recupererLesCommandes().subscribe({
+      next: values => this.lesCommandes = this.lesCommandes = values.filter((commande=> commande.etatCommande == 'TRAITEE')),
+      error: err=> console.log("Erreur de chargement des commandes traitées")
     })
   }
 
   getCommandesLivrees(){
-    this.commandeService.getCommandesLivree().subscribe({
-      next: values => this.lesCommandes = values,
-      error: err=> console.log("Erreur de chargement des commandes en attentes")
+    this.commandeService.recupererLesCommandes().subscribe({
+      next: values => this.lesCommandes = values.filter((commande=> commande.etatCommande == 'EN_LIVRAISON')),
+      error: err=> console.log("Erreur de chargement des commandes en livraisons")
     })
   }
 
   getCommandesAnnulees(){
-    this.commandeService.getCommandesAnnulees().subscribe({
-      next: values => this.lesCommandes = values,
-      error: err=> console.log("Erreur de chargement des commandes en attentes")
+    this.commandeService.recupererLesCommandes().subscribe({
+      next: values => this.lesCommandes = values.filter((commande=> commande.etatCommande == 'ANNULEE')),
+      error: err=> console.log("Erreur de chargement des commandes en annulées")
     })
   }
 
@@ -105,6 +108,7 @@ export class AgentGestionCommandesComponent implements OnInit{
       })
       
   }
+
   closeModalButton(){
     this.afficherLesDetailsCommande = false
   }
@@ -113,7 +117,7 @@ export class AgentGestionCommandesComponent implements OnInit{
     if(this.boutonCourant.index==0){
       if(confirm("Confirmer vous avoir reçu cette commande")){
         order.etatCommande = "EN_COURS"
-        this.commandeService.updateCommande(order).subscribe({
+        this.commandeService.changeEtatCommande(order).subscribe({
           next : value => this.getCommandesEnAttentes(),
           error: err=> console.log("Erreur dans le procédure d'acceptation de la commande")
         })
@@ -121,7 +125,7 @@ export class AgentGestionCommandesComponent implements OnInit{
     }else if(this.boutonCourant.index==1){
       if(confirm("Confirmer vous que la commande a été traité?")){
         order.etatCommande = "TRAITEE"
-        this.commandeService.updateCommande(order).subscribe({
+        this.commandeService.changeEtatCommande(order).subscribe({
           next : value => this.getCommandesEnCours(),
           error: err=> console.log("Erreur dans le procédure d'acceptation de la commande")
         })
@@ -131,7 +135,7 @@ export class AgentGestionCommandesComponent implements OnInit{
     else if(this.boutonCourant.index==2){
       if(confirm("Confirmer vous que la commande est déjà traitée?")){
         order.etatCommande = "LIVREE"
-        this.commandeService.updateCommande(order).subscribe({
+        this.commandeService.changeEtatCommande(order).subscribe({
           next : value => this.getCommandesEnCours(),
           error: err=> console.log("Erreur dans le procédure d'acceptation de la commande")
         })
@@ -141,7 +145,7 @@ export class AgentGestionCommandesComponent implements OnInit{
     else if(this.boutonCourant.index==3){
       if(confirm("Confirmer vous que la commande est près à être livrée?")){
         order.etatCommande = "EN_LIVRAISON"
-        this.commandeService.updateCommande(order).subscribe({
+        this.commandeService.changeEtatCommande(order).subscribe({
           next : value => this.getCommandesEnCours(),
           error: err=> console.log("Erreur dans le procédure d'acceptation de la commande")
         })

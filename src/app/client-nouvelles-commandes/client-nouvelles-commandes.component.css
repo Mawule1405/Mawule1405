@@ -1,0 +1,77 @@
+.card {
+    border-radius: 10px;
+    background-color: #ffffff;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    margin-bottom: 10px;
+  }
+  
+
+  .animated-text {
+    font-size: 2rem;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeIn 2s forwards, underline 2.5s forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes underline {
+    0% {
+      border-bottom: 0px solid #000;
+    }
+    100% {
+      border-bottom: 2px solid #007bff;
+    }
+  }
+  
+
+  /* Rouge pour les commandes en attente */
+#enAttente:checked + label .text-danger {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Vert pour les commandes en cours */
+#enCours:checked + label .text-success {
+    color: #28a745;
+    font-weight: bold;
+}
+
+#tous:checked + label .text-primary{
+    color: #007bff;
+    font-weight: bold;
+}
+/* Optionnel : personnalisation des cases à cocher */
+.custom-checkbox {
+    width: 1.2rem;
+    height: 1.2rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+
+/* Effet de survol sur les cartes de commande */
+.commande-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.commande-card:hover {
+    transform: scale(1.05); /* Agrandissement léger */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Ombre plus intense */
+}

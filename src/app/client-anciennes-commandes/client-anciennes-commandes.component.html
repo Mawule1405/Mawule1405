@@ -1,1 +1,65 @@
-<p>client-anciennes-commandes works!</p>
+<app-client-nav-bar ></app-client-nav-bar>
+
+<!-- Texte avec animation -->
+<!-- Conteneur principal avec texte, cases à cocher et animation -->
+<div class="text-center my-4">
+    <!-- Texte avec animation -->
+    <h2 class="animated-text">Les anciennes commandes</h2>
+
+    <!-- Cases à cocher pour filtrer les commandes par état -->
+    <div class="form-check form-check-inline">
+        <input class="form-check-input custom-checkbox" type="checkbox" id="annulee" (change)="filtrerCommandes('ANNULEE')">
+        <label class="form-check-label" for="annulee">
+            <span class="text-danger">Commandes Annulées</span>
+        </label>
+    </div>
+    
+    <div class="form-check form-check-inline">
+        <input class="form-check-input custom-checkbox" type="checkbox" id="traitee" (change)="filtrerCommandes('TRAITEE')">
+        <label class="form-check-label" for="traitee">
+            <span class="text-success">Commandes Traitées</span>
+        </label>
+    </div>
+    
+    <div class="form-check form-check-inline">
+        <input class="form-check-input custom-checkbox" type="checkbox" id="enLivraison" (change)="filtrerCommandes('EN_LIVRAISON')">
+        <label class="form-check-label" for="enLivraison">
+            <span class="text-primary">Commandes en Livraison</span>
+        </label>
+    </div>
+</div>
+
+
+<!--Affichage des commandes-->
+<div class="container p-3" *ngIf="lesCommandes">
+    <div *ngFor="let pair of getCommandesParPaire()" class="row">
+      <!-- Affiche chaque commande dans une colonne -->
+      <div *ngFor="let commande of pair" class="col-md-6 mb-3 commande-card">
+        <div class="card   shadow-sm">
+          <!-- Card Header avec couleur dynamique selon l'état -->
+          <div class="card-header" [ngClass]="{
+            'bg-danger text-white': commande.etatCommande === 'ANNULEE',
+            'bg-success text-white': commande.etatCommande === 'TRAITEE',
+            'bg-primary text-white': commande.etatCommande === 'EN_LIVRAISON'
+          }">
+            Commande N° : {{ lesCommandes.indexOf(commande) + 1 }}
+          </div>
+          
+          <!-- Card Body -->
+          <div class="card-body">
+            <p class="card-text">
+              <strong>Date : </strong>{{ commande.dateCommande }}<br>
+              <strong>Montant Total : </strong>{{ commande.montantTotalCommande }} FCFA
+            </p>
+            <div class="d-flex justify-content-between">
+              <!-- Bouton Voir Détails -->
+              <button class="btn btn-outline-primary" (click)="voirDetails(commande)">
+                <i class="fas fa-info-circle"></i> Voir détails
+              </button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

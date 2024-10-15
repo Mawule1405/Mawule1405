@@ -13,7 +13,7 @@ export class DciService {
   constructor(private http: HttpClient) { }
 
   getAllDCIs():Observable<Array<Dci>>{
-    return this.http.get<Array<Dci>>(`${URL.BASE_URL}${URL.DCI_URL}/`);
+    return this.http.get<Array<Dci>>(`${URL.BASE_URL}${URL.DCI_URL}`);
   }
 
   getDCI(id : string): Observable<Dci>{
@@ -29,7 +29,7 @@ export class DciService {
     return this.http.post<Dci>(`${URL.BASE_URL}${URL.DCI_URL}`, d);
   }
 
-  deleteDci(dci: Dci){
+  deleteDci(dci: Dci):Observable<any>{
     return this.http.delete(`${URL.BASE_URL}${URL.DCI_URL}/${dci.id}`);
   }
 

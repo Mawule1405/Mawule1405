@@ -4,6 +4,7 @@ import {Medicament} from "../model/Medicament";
 import {ProductService} from "../services/catalogue/product.service";
 import {MouvementStockService} from "../services/catalogue/mouvement-stock.service";
 import {MouvementStock} from "../model/MouvementStock";
+import { DispositifMedical } from '../model/DispositifMedical';
 
 @Component({
   selector: 'app-agent-gestion-stocks',
@@ -31,8 +32,9 @@ export class AgentGestionStocksComponent implements OnInit{
   years: number[] = Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i);
 
 
-  researchMedicamentsFormular!: FormGroup;
+  researchProduitsFormular!: FormGroup;
   lesMedicaments: Array<Medicament>= [];
+  lesDispositfsMedicaux: Array<DispositifMedical> = []
   lesMouvementsStock: Array<MouvementStock> = []
 
   allButtonsElements: Array<any>=[
@@ -53,12 +55,14 @@ export class AgentGestionStocksComponent implements OnInit{
 
   ngOnInit(): void {
     this.getAllMedicament();
+    this.recupererLesDispositifsMedicaux()
 
     this.affichageCourant = this.allButtonsElements[0];
     this.formulaireFiltre = this.createFiltreFormular();
-    this.researchMedicamentsFormular = this.createFormulaireDeRechercheDansCatalogue();
+    this.researchProduitsFormular = this.createFormulaireDeRechercheDansCatalogue();
   }
 
+  //Fonction pour créer un formulaire de filtre
   createFiltreFormular(){
     return this.formBuilder.group({
       valeurDeRecherche : this.formBuilder.control(""),
@@ -68,17 +72,22 @@ export class AgentGestionStocksComponent implements OnInit{
     })
   }
 
+
+  //Fonction pour créer un formulaire de recherche dans le catalogue
   createFormulaireDeRechercheDansCatalogue(){
     return this.formBuilder.group({
       cle : this.formBuilder.control("")
     })
   }
 
-  researchMouvements() {
+  //Rechercher un  de produits retiré du catalogue
+  researchProduits() {
 
     //Formule de recherche sur les médicaments retirés du catalogues
-    let cle = this.researchMedicamentsFormular.value.cle
+    let cle = this.researchProduitsFormular.value.cle
     console.log(cle)
+
+
     this.productService.getTousLesMedicaments().subscribe({
       next: (medocs) => {
         this.lesMedicaments = medocs.filter(medoc=>
@@ -89,8 +98,20 @@ export class AgentGestionStocksComponent implements OnInit{
       error: err=> console.log("Erreur de recherche")
     })
 
-  }
+    this.productService.recupererTousLesDispositifsMedicaux().subscribe({
+      next: (dispos) => {
+        this.lesDispositfsMedicaux = dispos.filter(dispo=>
+          dispo.code.toLowerCase().includes(cle.toLowerCase()) ||
+          dispo.libelle.toLowerCase().includes(cle.toLowerCase())
+        )
+      },
+      error: err=> console.log("Erreur de recherche")
+    })
 
+  }
+ 
+
+  //Récupérer tous les médicaments
   getAllMedicament(){
     this.productService.getTousLesMedicaments().subscribe({
       next : (medicaments)=> this.lesMedicaments = medicaments,
@@ -98,9 +119,11 @@ export class AgentGestionStocksComponent implements OnInit{
     })
   }
 
+
+  //Réajouter un médicament au catalogue après retrait
   reAjouterMedicamentAuCatalogue(medoc: Medicament) {
     if(confirm("Êtes vous certain d'ajouter ce médicament au catalogues?")){
-      medoc.etat = "NONRETIRE"
+      medoc.etat = "NON_RETIRE"
       this.productService.updateMedicament(medoc).subscribe({
         next: (medoc)=>{
           this.getAllMedicament();
@@ -112,6 +135,7 @@ export class AgentGestionStocksComponent implements OnInit{
   }
 
 
+  //Recupérer tous les mouvements de stocks
   getAllMouvementStock(){
     this.mouvementService.getAll().subscribe({
       next: (mouvements)=>{
@@ -125,6 +149,8 @@ export class AgentGestionStocksComponent implements OnInit{
     })
   }
 
+
+  //Mise en action des boutons principales
   changeLesElementsAffiches(btn: any) {
     if(btn.index == 1){this.affichageCourant = this.allButtonsElements[0]}
     if(btn.index == 2){
@@ -133,6 +159,7 @@ export class AgentGestionStocksComponent implements OnInit{
     }
   }
 
+  //rechercher un mouvement de stock par un mot clé
   rechercheDunMouvementParCle(){
     let contenuForm = this.formulaireFiltre.value
     let cle = contenuForm.valeurDeRecherche
@@ -146,6 +173,7 @@ export class AgentGestionStocksComponent implements OnInit{
     })
   }
 
+  //Rechecher un mouvement de stock par mois
   rechercheDeMouvementParMois(){
 
     let contenuForm = this.formulaireFiltre.value
@@ -162,6 +190,8 @@ export class AgentGestionStocksComponent implements OnInit{
 
   }
 
+
+  //Rechercher un mouvement de stock par année
   rechercheDeMouvementParAnnee(){
 
     let contenuForm = this.formulaireFiltre.value
@@ -178,6 +208,8 @@ export class AgentGestionStocksComponent implements OnInit{
 
   }
 
+
+  //Passer un filtre sur les approvisionnemments
   filtrerLesApprovisionnements(){
     let contenuForm = this.formulaireFiltre.value
     let  nombre = contenuForm.nombreRecent
@@ -185,6 +217,28 @@ export class AgentGestionStocksComponent implements OnInit{
     this.getAllMouvementStock()
 
   }
+
+
+  //Recupérer touts les dispositifs médicaux
+  recupererLesDispositifsMedicaux(){
+    this.productService.recupererTousLesDispositifsMedicaux().subscribe({
+      next : dispos=> this.lesDispositfsMedicaux = dispos,
+      error: err=> console.log("Erreur de chargement des dispositifs médicaux===>", err)
+    })
+  }
+
+
+  //réajouter un dispositif médical au catalogue
+  reAjouterDispositifMedicalAuCatalogue(dispo : DispositifMedical){
+    if(confirm("Confirmer l'ajout du dispositif au catalogue!")){
+      dispo.etat = "NON_RETIRE"
+      this.productService.modifierUnDispositifMedical(dispo).subscribe({
+        next: value=> this.recupererLesDispositifsMedicaux(),
+        error: err=> console.log("Erreur lors de l'ajout du dispositif au catalogue")
+      })
+    }
+  }
+
 
   protected readonly JSON = JSON;
 }

@@ -40,7 +40,7 @@
               <div class="card-body commande-en-attente">
                 <h5 class="card-title">Commande N° {{ order.id }}</h5>
                 <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
-                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomEntreprise }}</p>
                 <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
 
                 <!-- Boutons d'action sous forme d'icônes -->
@@ -88,7 +88,7 @@
               <div class="card-body commande-en-cours">
                 <h5 class="card-title">Commande N° {{ order.id }}</h5>
                 <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
-                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomEntreprise }}</p>
                 <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
 
                 <!-- Boutons d'action sous forme d'icônes -->
@@ -136,7 +136,7 @@
               <div class="card-body commande-traite">
                 <h5 class="card-title">Commande N° {{ order.id }}</h5>
                 <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
-                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomEntreprise }}</p>
                 <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
 
                 <!-- Boutons d'action sous forme d'icônes -->
@@ -184,7 +184,7 @@
               <div class="card-body commande-en-livraison">
                 <h5 class="card-title">Commande N° {{ order.id }}</h5>
                 <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
-                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomEntreprise }}</p>
                 <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
 
                 <!-- Boutons d'action sous forme d'icônes -->
@@ -232,7 +232,7 @@
               <div class="card-body commande-annulee">
                 <h5 class="card-title">Commande N° {{ order.id }}</h5>
                 <p class="card-text"><strong>Montant :</strong> {{ order.montantTotalCommande }} FCFA</p>
-                <p class="card-text"><strong>Client :</strong> {{ order.client.nomStructure }}</p>
+                <p class="card-text"><strong>Client :</strong> {{ order.client.nomEntreprise }}</p>
                 <p class="card-text"><strong>Date :</strong> {{ order.dateCommande | date }}</p>
 
                 <!-- Boutons d'action sous forme d'icônes -->
@@ -281,7 +281,7 @@
             <!-- Informations du client -->
             <div class="row mt-2">
               <div class="col-6">
-                <strong>Client:</strong> {{commandeCourante.client.nomStructure}}
+                <strong>Client:</strong> {{commandeCourante.client.nomEntreprise}}
               </div>
               <div class="col-6 text-end">
                 <strong>Email:</strong> {{commandeCourante.client.email}}
@@ -293,7 +293,7 @@
                 <strong>Adresse:</strong> {{commandeCourante.client.adresse}}
               </div>
               <div class="col-6 text-end">
-                <strong>Téléphone:</strong> {{commandeCourante.client.telephone}}
+                <strong>Téléphone:</strong> {{commandeCourante.client.numeroTelephone}}
               </div>
             </div>
           </div>
@@ -315,7 +315,7 @@
               <tbody>
                 <tr *ngFor="let ligne of lesLignesCommandes">
                   <td> {{ ligne.medicament.libelle }}</td>
-                  <td> {{ligne.medicament.specialitePharmaceutique.libelle}}</td>
+                  <td> {{ligne.medicament.specialitePharmaceutique.libelleSpecialiteMedicament}}</td>
                   <td> {{ligne.medicament.formeGalenique.nomFormeGalenique}}</td>
                   <td> {{ligne.medicament.concentration}} {{ligne.medicament.uniteConcentration}}</td>
                   <td> {{ ligne.quantiteLigneCommande }} </td>

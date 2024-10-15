@@ -13,28 +13,30 @@
       </button>
     </div>
 
-    <!--Affichage des médicaments retirés du catalo-->
+    <!--Affichage des médicaments et dispositifs retirés du catalogue-->
     <div *ngIf="affichageCourant==allButtonsElements[0]" class="container py-4 overflow-y-auto" style="max-height:95vh">
       <div class="d-flex justify-content-between flex-row">
-        <h5 class="h5 mb-4 me-5 text-start">Les médicaments retirés du catalogues</h5>
+        <h5 class="h5 mb-4 me-5 text-start">Les médicaments et dispositifs médicaux retirés du catalogues</h5>
 
-        <form [formGroup]="researchMedicamentsFormular" class=" flex-grow-1">
+        <form [formGroup]="researchProduitsFormular" class=" flex-grow-1">
           <label  for="searchInput" class="visually-hidden">Recherche de médicaments</label>
           <input
             id="searchInput"
             type="search"
             class="form-control form-control-sm w-100"
             formControlName="cle"
-            (input)="researchMouvements()"
+            (input)="researchProduits()"
             placeholder="Rechercher...">
         </form>
       </div>
 
+
+      <!--Les médicaments retirés du catalogues-->
       <div class="d-flex flex-wrap justify-content-between">
         <div *ngFor="let medoc of lesMedicaments" [class]="medoc.etat=='RETIRE' ? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
           <div *ngIf="medoc.etat == 'RETIRE'">
             <div class="card-header p-0">
-              <img src="assets/images/img.png" class="card-img-top" alt="Image de {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
+              <img src="assets/images/img_1.png" class="card-img-top" alt="Image de {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
             </div>
             <div class="card-body">
               <h4 class="h4 small">code: {{medoc.code}}</h4>
@@ -47,6 +49,32 @@
                 title="Réajouter le produit au catalogue"
                 class="btn btn-sm btn-light mx-1"
                 (click)="reAjouterMedicamentAuCatalogue(medoc)">
+                <i class="bi bi-plus-circle"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      
+
+
+      <!--Les dispositifs médicaux retirés du catalogues-->
+      
+        <div *ngFor="let dispo of lesDispositfsMedicaux" [class]="dispo.etat=='RETIRE' ? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+          <div *ngIf="dispo.etat == 'RETIRE'">
+            <div class="card-header p-0">
+              <img src="assets/images/img_3.png" class="card-img-top" alt="Image de {{dispo.libelle}}" style="height: 150px; object-fit: cover;">
+            </div>
+            <div class="card-body">
+              <h4 class="h4 small">code: {{dispo.code}}</h4>
+              <h5 class="h5 small">Libellé: {{dispo.libelle}}</h5>
+              <h6 class="h6 small">Pays: {{dispo.paysFabrication}}</h6>
+              <h6 class="h6 small">Quantité disponible: {{dispo.quantiteStock}}</h6>
+            </div>
+            <div [class]="10 < dispo.quantiteStock ? 'card-footer bg-success d-flex justify-content-between' : 'card-footer bg-dark d-flex justify-content-between'">
+              <button
+                title="Réajouter le produit au catalogue"
+                class="btn btn-sm btn-light mx-1"
+                (click)="reAjouterDispositifMedicalAuCatalogue(dispo)">
                 <i class="bi bi-plus-circle"></i>
               </button>
             </div>

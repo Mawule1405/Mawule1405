@@ -12,7 +12,13 @@ export class CommandeService {
 
   constructor(private http: HttpClient) { }
 
-  getCommandesEnAttente():Observable<Array<Commande>>{
+  //recuperation de toutes les commandes
+  recupererLesCommandes():Observable<Array<any>>{
+    return this.http.get<Array<any>>(`${URL.BASE_URL}${URL.COMMANDE_URL}`)
+  }
+
+  /**
+   * getCommandesEnAttente():Observable<Array<Commande>>{
     return this.http.get<Array<Commande>>(`${URL.BASE_URL}${URL.COMMANDE_URL}?etatCommande=EN_ATTENTE`)
   }
   getCommandesEnCours():Observable<Array<Commande>>{
@@ -27,9 +33,13 @@ export class CommandeService {
   getCommandesAnnulees():Observable<Array<Commande>>{
     return this.http.get<Array<Commande>>(`${URL.BASE_URL}${URL.COMMANDE_URL}?etatCommande=ANNULEE`)
   }
+  */
+  
 
-  updateCommande(commande: Commande): Observable<Commande>{
-    return this.http.patch<Commande>(`${URL.BASE_URL}${URL.COMMANDE_URL}/${commande.id}`, commande)
+
+  //Modifier l'état de la commande
+  changeEtatCommande(commande: Commande): Observable<Commande>{
+    return this.http.put<Commande>(`${URL.BASE_URL}${URL.COMMANDE_URL}/${commande.id}/etat?etat=${commande.etatCommande}`,{})
   }
 
   /*Les lignes commandes*/

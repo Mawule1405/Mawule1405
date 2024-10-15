@@ -1,12 +1,12 @@
-import { Utilisateur } from "./utilisateur"
+import { Utilisateur } from "./Utilisateur"
 
 export interface Client extends Utilisateur{
     
-    nomStructure: string
+    nomEntreprise: string
     numeroAccreditation:string,
-    estOperationnel: boolean,
-    email: string
-    telephone:string
-    adresse:string
-    preuve:string
+    typeStructure: string,
+    nomDuResponsable: string,
+    numeroContactResponsable: string
+    
   }
+

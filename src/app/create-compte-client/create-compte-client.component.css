@@ -1,0 +1,9 @@
+
+
+.form-control-sm {
+    font-size: 12px;
+    padding: 5px;
+  }
+  label .text-danger {
+    font-weight: normal;
+  }

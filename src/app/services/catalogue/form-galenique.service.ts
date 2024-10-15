@@ -28,7 +28,7 @@ export class FormGaleniqueService {
   }
 
   updateFormGalenique(form: FormeGalenique):Observable<FormeGalenique>{
-    return this.http.patch<FormeGalenique>(`${URL.BASE_URL}${URL.FORM_GENERIQUE_URL}/${form.id}`, form);
+    return this.http.put<FormeGalenique>(`${URL.BASE_URL}${URL.FORM_GENERIQUE_URL}`, form);
   }
 
 }

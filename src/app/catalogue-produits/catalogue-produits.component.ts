@@ -72,12 +72,15 @@ export class CatalogueProduitsComponent implements OnInit{
    public medicamentFormular! : FormGroup;
    public unityLists = ["g", "cg", "cl", "ml"];
 
-    //Gestion des médicaments
+    //Gestion des dispositifs Médicaux
     public lesDisposidifsMedicaux : Array<DispositifMedical> = [];
-    public dispositMedicalFormIsVisible : boolean = false;
+    public dispositifMedicalFormIsVisible : boolean = false;
     public dispositfMedicalImagePath :string = "assets/images/img.png";
     public  dispositifMedicalImageUrl! : any;
     public dispositifMedicalFormular! : FormGroup;
+    dispositifMedicalModificationFormular! : FormGroup;
+    currentProcurementDispositif! : DispositifMedical
+    dispositifMedicalModificationProductIsVisible : boolean = false
    
 
    //Gestion de l'approvisionnement des produits
@@ -92,6 +95,7 @@ export class CatalogueProduitsComponent implements OnInit{
    public medicamentModificationProductIsVisible = false;
    public medicamentModificationFormular! : FormGroup;
 
+  
    image = new File([""], "assets/images/img.png")
 
   public constructor(
@@ -112,6 +116,7 @@ export class CatalogueProduitsComponent implements OnInit{
     //Chargement des specialités
     this.getAllProductsSpecialities();
     this.getAllMedicine();
+    this.recupererLesdispositifsMedicaux()
 
     //Chargement des formes pharmaceutiques
     this.getAllProductsFormGaleniques();
@@ -122,6 +127,8 @@ export class CatalogueProduitsComponent implements OnInit{
     this.medicamentFormular = this.createMedicamentFormular();
     this.researchProductsFormular = this.createResearchFormular();
     this.medicamentModificationFormular = this.createMedicamentFormular();
+    this.dispositifMedicalFormular = this.createDispositifMedicalFormular();
+    this.dispositifMedicalModificationFormular = this.createDispositifMedicalFormular();
   }
 
   openModalButton(bouton:any){
@@ -129,6 +136,7 @@ export class CatalogueProduitsComponent implements OnInit{
     if(bouton.index == 2){ this.specialityIsVisible = true;}
     if(bouton.index == 3){ this.formGaleniqueIsVisible = true;}
     if(bouton.index == 4){ this.medicamentFormIsVisible  = true;}
+    if(bouton.index == 5){this.dispositifMedicalFormIsVisible = true;}
 
   }
 
@@ -137,6 +145,7 @@ export class CatalogueProduitsComponent implements OnInit{
     if(bouton.index == 2){ this.specialityIsVisible= false;}
     if(bouton.index == 3){ this.formGaleniqueIsVisible = false;}
     if(bouton.index == 4){ this.medicamentFormIsVisible  = false;}
+    if(bouton.index == 5){ this.dispositifMedicalFormIsVisible = false;}
 
   }
 
@@ -221,9 +230,9 @@ export class CatalogueProduitsComponent implements OnInit{
           let dci = this.DciFormular.value;
           this.DciService.saveDCI(dci).subscribe({
             next: value=>{
-              dci = value;
-              this.DciFormular.reset();
+              
               this.getProductsDCIs();
+              this.DciFormular.reset();
             }
           })
         }
@@ -240,19 +249,29 @@ export class CatalogueProduitsComponent implements OnInit{
       if(confirm("Veuillez confirmer la suppression")){
         this.DciService.deleteDci(Dci).subscribe({
           next: value=>{
+            
             this.getProductsDCIs();
-            alert("La catégorie a été supprimer avec succès");
+            alert("La Dci a été supprimer avec succès");
           },
-          error: err=>console.log('Article Dci deleting error')
+          error: err=>{
+            console.log('Article Dci deleting error')
+            alert("Cette DCI ne peut pas être supprimer!")
+          }
         })
       }
   }
 
   saveModificationDci(){
-    let dci = this.DciFormular.value;
-    if(this.DciFormular.valid){
+    let nouvelleInformationDci = this.DciFormular.value;
+    let ancienneInformationDci = this.listOfDCIs.find(dci=>dci.id=nouvelleInformationDci.id);
+    if(ancienneInformationDci){
+      ancienneInformationDci.nomDci = nouvelleInformationDci.nomDci;
+    }
+        
+
+    if(this.DciFormular.valid && ancienneInformationDci){
        if(confirm("Souhaitez vous sauvegarder la modification")){
-        this.DciService.updateDci(dci).subscribe({
+        this.DciService.updateDci(ancienneInformationDci).subscribe({
           next: value=>{
             this.getProductsDCIs();
           },
@@ -282,7 +301,7 @@ export class CatalogueProduitsComponent implements OnInit{
   }
 
 
-  //Enregistrement d'une spécialité pharmaceutique
+  //Enregistrement de la modification d'une spécialité pharmaceutique
   saveModificationSpeciality(){
       let speciality = this.specialityFormular.value;
       if(this.specialityFormular.value){
@@ -291,7 +310,9 @@ export class CatalogueProduitsComponent implements OnInit{
             let dci = value;
             speciality.dci = dci;
             this.specialityService.updateSpeciality(speciality).subscribe({
-              next: value=> this.getAllProductsSpecialities(),
+              next: value=> {this.getAllProductsSpecialities()
+                this.specialityFormular.reset()
+              },
               error: err=>console.log("Erreur de sauvegarde de la modification")
             });
           }
@@ -302,26 +323,29 @@ export class CatalogueProduitsComponent implements OnInit{
       }
   }
 
+
+  //Enrégistrement d'une nouvelle spécialité
   saveSpeciality(){
     let special = this.specialityFormular.value;
     if(this.specialityFormular.valid){
       if(confirm("Confirmez-vous les information?")){
-        this.DciService.getDCI(special.dci).subscribe({
-          next: dci =>{
-              special.dci = dci;
+        
               this.specialityService.saveSpeciality(special).subscribe({
-                next: values=>  this.getAllProductsSpecialities(),
-                error: err=> console.log("Article SpecialitePharmaceutique Saving")
+                next: values=>  {
+                  this.getAllProductsSpecialities()
+                  this.specialityFormular.reset()
+                },
+                error: err=> console.log("Erreur de sauvegarde de la spécialité")
               })
-          },
-          error: err=> console.log("Erreur de recherche du DCI")
-        })
+         
       }
     }else{
       alert("Information incorrecte!");
     }
   }
 
+
+  //Lancement de la modification d'une spécialité
   modifySpeciality(speciality: SpecialitePharmaceutique){
     this.specialityFormular.setValue({
       id :speciality.id,
@@ -331,6 +355,8 @@ export class CatalogueProduitsComponent implements OnInit{
     });
   }
 
+
+  //Suppression d'une spécialité
   deleteSpeciality(speciality: SpecialitePharmaceutique){
     if(confirm("Confirmez-vous la suppression?")){
       this.specialityService.deleteSpeciality(speciality).subscribe({
@@ -351,6 +377,43 @@ export class CatalogueProduitsComponent implements OnInit{
    * Méthodes pour la gestion des formes génériques
    */
 
+  
+  //Formulaire de création d'un dispositif médical
+  createDispositifMedicalFormular(){
+    return this.formBuilder.group({
+      id: this.formBuilder.control(""),
+      code : this.formBuilder.control("", [Validators.required]),
+      libelle: this.formBuilder.control('', [Validators.required]),
+      paysFabrication : this.formBuilder.control("", [Validators.required]),
+      prixGenerique : this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      quantiteStockSeuil: this.formBuilder.control(0, [Validators.required]),
+      quantiteStock: this.formBuilder.control(0),
+      etat: this.formBuilder.control("NON_RETIRE"),
+      description: this.formBuilder.control(""),
+      cheminImage: this.formBuilder.control("")
+    })
+  }
+
+
+  //Enrégistrer un disposif médical
+  enregistrerUnDispositifMedical(){
+    if(this.dispositifMedicalFormular.valid){
+      let value = this.dispositifMedicalFormular.value
+      value.quantiteStock =0
+      value.etat = "NON_RETIRE"
+      if(confirm("Confirmez vous les informations!")){
+          this.productService.enregistrerUnDispositifMedical(value).subscribe({
+            next: value=>{
+              this.recupererLesdispositifsMedicaux()
+              this.dispositifMedicalFormular.reset()
+              alert("Enrégistrement effectuée avec succès!")
+            }
+          })
+      }
+    }
+  }
+
+
   //Formulaire de création d'une forme galénique
   createFormGaleniqueForm(){
     return this.formBuilder.group({
@@ -360,6 +423,8 @@ export class CatalogueProduitsComponent implements OnInit{
     })
   }
 
+
+  //Récupérer toutes les formes galéniques
   getAllProductsFormGaleniques(){
       this.formGaleniqueService.getAllFormGaleniques().subscribe({
         next: value=>  this.listOfFormGalenique = value,
@@ -367,20 +432,34 @@ export class CatalogueProduitsComponent implements OnInit{
       })
   }
 
-  //Modifier une forme galénique
+
+  //Enrégistrer la modification d'une forme galénique
   saveModificationFormGalenique(){
     if(this.formGaleniqueFormular.valid){
       if(confirm('Confirmez-vous la sauvegarde de la modification?')){
         let formGalenique= this.formGaleniqueFormular.value;
-        this.formGaleniqueService.updateFormGalenique(formGalenique).subscribe({
-          next: value=>{
-            this.getAllProductsFormGaleniques();
-          },
-          error: err=>console.log("Erreur de sauvegarde de la modification.")
-        })
-      }
+        let ancienneInformation = this.listOfFormGalenique.find(forme=>forme.id= formGalenique.id)
+
+        if(ancienneInformation)
+        {
+          ancienneInformation.nomFormeGalenique = formGalenique.nomFormeGalenique;
+          ancienneInformation.descriptionFormeGalenique = formGalenique.descriptionFormeGalenique
+
+          this.formGaleniqueService.updateFormGalenique(ancienneInformation).subscribe({
+            next: value=>{
+              this.formGaleniqueFormular.reset()
+              this.getAllProductsFormGaleniques();
+            },
+            error: err=>console.log("Erreur de sauvegarde de la modification.")
+          })
+        }
+
+      }else(
+        alert("Modification Impossible")
+      )
     }
   }
+
 
   //Enrégistrer une nouvelle forme galénique
   saveFormGalenique(){
@@ -397,6 +476,7 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
+
   //Lancer la modification d'une forme galénique
   modifyFormGalenique(formGalenique: FormeGalenique){
     this.formGaleniqueFormular.setValue({
@@ -406,15 +486,21 @@ export class CatalogueProduitsComponent implements OnInit{
     });
   }
 
+
+  //Supprimer une forme galénique
   deleteFormGalenique(formGalenique : FormeGalenique){
     if(confirm("Confirmez-vous la suppression?")){
-      this.formGaleniqueService.deleteFormGalenique(formGalenique).subscribe({
-        next: value=>{
-          this.getAllProductsFormGaleniques();
-          alert("Forme générique supprimer avec succès!");
-        },
-        error: err=>console.log("Erreur de suppression de la forme générique.")
-      })
+      if(formGalenique.isDeleted){
+        this.formGaleniqueService.deleteFormGalenique(formGalenique).subscribe({
+          next: value=>{
+            this.getAllProductsFormGaleniques();
+            alert("Forme générique supprimer avec succès!");
+          },
+          error: err=>console.log("Erreur de suppression de la forme générique.")
+        })
+      }else{
+        alert("Impossible de supprimer cette forme galénique!")
+      }
     }
   }
 
@@ -439,6 +525,7 @@ export class CatalogueProduitsComponent implements OnInit{
       libelle: this.formBuilder.control('', [Validators.required]),
       prixGenerique: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
       quantiteStock: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
+      quantiteStockSeuil: this.formBuilder.control(0, [Validators.required]),
       etat: this.formBuilder.control("NONRETIRE"),
       formePharmaceutique: this.formBuilder.control(null, [Validators.required]),
       description: this.formBuilder.control(''),
@@ -456,11 +543,12 @@ export class CatalogueProduitsComponent implements OnInit{
       uniteConcentration: this.formBuilder.control("", [Validators.required]),
       prixGenerique : this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
       quantiteStock: this.formBuilder.control(0),
-      etat: this.formBuilder.control("NONRETIRE"),
+      quantiteStockSeuil: this.formBuilder.control(0, [Validators.required]),
+      etat: this.formBuilder.control("NON_RETIRE"),
       formeGalenique: this.formBuilder.control("", [Validators.required]),
       description: this.formBuilder.control(''),
-      image: this.formBuilder.control(''),
-      specialite: this.formBuilder.control("", [Validators.required])
+      cheminImage: this.formBuilder.control(''),
+      specialitePharmaceutique: this.formBuilder.control("", [Validators.required])
     });
 
   }
@@ -470,6 +558,7 @@ export class CatalogueProduitsComponent implements OnInit{
   rechercheDuneFormeGalenique(id: string) {
     return this.listOfFormGalenique.find(formGalenique => formGalenique.id === id);
   }
+
 
 
   //Recherche une specialite galenique avec son id
@@ -485,9 +574,9 @@ export class CatalogueProduitsComponent implements OnInit{
 
         //Traitement des informations
         let value= this.medicamentFormular.value;
-        value.etat = "NONRETIRE"
-        value.specialitePharmaceutique =this.rechercheDuneSpecialite(value.specialite)
-        value.formeGalenique = this.rechercheDuneFormeGalenique(value.formeGalenique)
+        value.etat = "NON_RETIRE"
+        value.specialitePharmaceutique ={id: value.specialitePharmaceutique}
+        value.formeGalenique = {id: value.formeGalenique}
         
 
         //Enrégistrement des informations
@@ -545,12 +634,11 @@ export class CatalogueProduitsComponent implements OnInit{
     });
   }
 
-
+  //Récupérer tous les médicaments
   getAllMedicine(){
     this.productService.getTousLesMedicaments().subscribe({
       next: values=>{
           this.lesMedicaments = values;
-
       },
       error: err=>{
         console.log("Erreur de récupération des médiments");
@@ -558,17 +646,31 @@ export class CatalogueProduitsComponent implements OnInit{
     })
   }
 
+  //Rechercher un produit par libellé et par code
   researchProducts(){
       let key = this.researchProductsFormular.value;
-      console.log(key.key)
+      
       this.productService.researchMedicament(key).subscribe({
         next: value=> {
+          
           this.lesMedicaments = value.filter(medoc =>
             medoc.libelle.toLowerCase().includes(key.key.toLowerCase()) ||
             medoc.code.toLowerCase().includes(key.key.toLowerCase())
           );},
         error: err=> console.log("Error lors de la recherche")
-      })
+      });
+
+      //Filtre sur les dispositifs médicals
+      this.productService.rechercherDesDispisitifs(key).subscribe({
+        next: value=> {
+          this.lesDisposidifsMedicaux = value.filter(medoc =>
+            medoc.libelle.toLowerCase().includes(key.key.toLowerCase()) ||
+            medoc.code.toLowerCase().includes(key.key.toLowerCase())
+          );},
+        error: err=> console.log("Error lors de la recherche")
+      });
+
+      
   }
 
   updateMedicament(medoc: Medicament){
@@ -592,6 +694,7 @@ export class CatalogueProduitsComponent implements OnInit{
     })
   }
 
+
   closeProcurementModal(){
     this.procurementFormIsVisible = false
   }
@@ -601,8 +704,8 @@ export class CatalogueProduitsComponent implements OnInit{
     if(bt.index == 1){
 
       this.medicamentModificationProductIsVisible = true
-      console.log(medoc)
-      this.medicamentImagePath = medoc.image
+      
+      this.medicamentImagePath = medoc.cheminImage
       this.medicamentModificationFormular.setValue({
             id: medoc.id,
             code : medoc.code,
@@ -611,16 +714,17 @@ export class CatalogueProduitsComponent implements OnInit{
             etat: medoc.etat,
             prixGenerique: medoc.prixGenerique,
             concentration: medoc.concentration,
+            quantiteStockSeuil: medoc.quantiteStockSeuil,
             uniteConcentration: medoc.uniteConcentration,
-            specialite: medoc.specialitePharmaceutique.id,
+            specialitePharmaceutique: medoc.specialitePharmaceutique.id,
             formeGalenique: medoc.formeGalenique.id,
             description : medoc.description,
-            image: medoc.image
+            cheminImage: medoc.cheminImage
       });
 
 
 
-      this.updateMedicamentInformation(medoc);
+      
     }else if(bt.index == 2){
       this.retirerLeMedicament(medoc);
     }
@@ -631,13 +735,64 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
-  /**
-   * méthode d'enregistrement d'un approvisionnement
-   * @param medoc : element à approvisionner
-   */
+  //Action réaliser par les trois boutons d'un dispositif médical
+  onClickDispositifMedicalButton(bt: any,dispo: DispositifMedical){
+    if(bt.index == 1){
+      
+      this.dispositifMedicalModificationProductIsVisible = true
+      
+      this.medicamentImagePath = dispo.cheminImage
+      this.dispositifMedicalModificationFormular.setValue({
+            id: dispo.id,
+            code : dispo.code,
+            libelle : dispo.libelle,
+            paysFabrication : dispo.paysFabrication,
+            quantiteStock: dispo.quantiteStock,
+            quantiteStockSeuil: dispo.quantiteStockSeuil,
+            etat: dispo.etat,
+            prixGenerique: dispo.prixGenerique,
+            description : dispo.description,
+            cheminImage: dispo.cheminImage
+      });
+
+
+      
+      this.updateDispositifMedicalInformation(dispo);
+    }else if(bt.index == 2){
+      this.retirerLeDispositifMedical(dispo);
+    }
+    else if(bt.index == 3){
+      this.procurementFormular = this.createProcurementFormular()
+      this.procurementFormIsVisible = true
+      this.currentProcurementDispositif = dispo;
+    }
+  }
+
+
+  //Modifier les informations d'un dispositf médical
+  updateDispositifMedicalInformation(dispo: DispositifMedical){
+
+  }
+
+
+  //Retirer le dispositif du catalogue
+  retirerLeDispositifMedical(dispo : DispositifMedical){
+      
+      if(confirm("Êtes vous certain de retirer ce produit du catalogue?")){
+        dispo.etat= "RETIRE"
+        this.productService.modifierUnDispositifMedical(dispo).subscribe({
+          next: value=> this.recupererLesdispositifsMedicaux(),
+          error: err=> console.log("Erreur de modification", err)
+        })
+      }
+  }
+
+
   closeModificationProduct(){
     this.medicamentModificationProductIsVisible = false
+    this.dispositifMedicalModificationProductIsVisible = false
   }
+
   saveTheProcurement(medoc: Medicament) {
     if (this.procurementFormular.valid) {
 
@@ -668,6 +823,7 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
+
   retirerLeMedicament(medoc:Medicament){
     if(confirm("Vous êtes sur de retirer le médicament:\n"+
       "Code : "+medoc.code+"\n"+
@@ -682,21 +838,56 @@ export class CatalogueProduitsComponent implements OnInit{
     }
   }
 
-  updateMedicamentInformation(medoc : Medicament){
-      console.log("MISE A JOUR ========>")
+  
+
+  //Mise à jour d'un médicament
+  miseAjourMedicament(){
+      
+      if(this.medicamentModificationFormular.valid){
+        if(confirm("Confirmer la modification")){
+          let medicament = this.medicamentModificationFormular.value
+
+
+
+          this.productService.updateMedicament(medicament).subscribe({
+            next: value=> {
+              this.getAllMedicine()
+              this.medicamentModificationProductIsVisible = false
+            },
+            error: err=> console.log("Erreur de mise à jour")
+          })
+        }
+      }
+      
   }
 
-  //Formulaire de creation d'un dispositif médical
-  creerUnFormulaireDeDispositifMedical() {
-    return this.formBuilder.group({
-      id: this.formBuilder.control(null),
-      code : this.formBuilder.control("", [Validators.required]),
-      libelle: this.formBuilder.control('', [Validators.required]),
-      prixGenerique: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
-      quantiteStock: this.formBuilder.control(0, [Validators.required, Validators.min(0)]),
-      etat: this.formBuilder.control("NONRETIRE"),
-      paysFabricant: this.formBuilder.control("", Validators.required)
-    });
+  //Mise à jour d'un dispositif médical
+  miseAjourDispositif(){
+    if(this.dispositifMedicalModificationFormular.valid){
+      if(confirm("Confirmer la modification")){
+        let dispositof = this.dispositifMedicalModificationFormular.value
+
+
+
+        this.productService.updateMedicament(dispositof).subscribe({
+          next: value=> {
+            this.recupererLesdispositifsMedicaux()
+            this.dispositifMedicalModificationProductIsVisible = false
+          },
+          error: err=> console.log("Erreur de mise à jour")
+        })
+      }
+    }
+  }
+
+
+
+  //Recupérer tous les dispositifs médicaux
+  recupererLesdispositifsMedicaux(){
+    this.productService.recupererTousLesDispositifsMedicaux().subscribe({
+      next: values=> this.lesDisposidifsMedicaux = values,
+      error: err=> console.log(err)
+    })
   }
 
 

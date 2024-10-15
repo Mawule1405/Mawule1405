@@ -1,1 +1,104 @@
-<p>client-catalogue-medicaments works!</p>
+
+<div class="header-catalogue">
+    <app-client-nav-bar ></app-client-nav-bar>
+    <!--Présentation des filtres-->
+    <div class="filter-container p-1">
+        <form class="d-flex flex-wrap align-items-center justify-content-between w-100">
+            <!-- Recherche par nom de produit -->
+            <div class="me-3 flex-grow-1">
+                <input type="search" class="form-control form-control-sm" id="productName" name="productName" placeholder="Entrez le nom du produit">
+            </div>
+    
+            <!-- Spécialité -->
+            <div class="form-group w-25 me-3">
+                <label for="speciality" class="form-label"><i class="bi bi-heart"></i> Spécialité:</label>
+                <select name="speciality" id="speciality" class="form-select form-select-sm">
+                    <option value="0" selected>Toutes les spécialités</option>
+                    <option *ngFor="let spe of lesSpecialites"  value="{{spe.id}}">{{spe.libelleSpecialiteMedicament}} {{spe.dci.nomDci}}</option>
+                </select>
+            </div>
+    
+            <!-- Forme Galénique -->
+            <div class="form-group w-25">
+                <label for="galenicForm" class="form-label"><i class="bi bi-capsule"></i> Forme Galénique:</label>
+                <select name="galenicForm" id="galenicForm" class="form-select form-select-sm">
+                    <option value="0" selected>Toutes les formes galéniques</option>
+                    <option *ngFor="let form of lesFormGaleniques"  value="{{form.id}}">{{form.nomFormeGalenique}}</option>
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+<main>
+    
+    
+    
+    
+
+
+    <!--Présentation des produits-->
+    <div class="product-display ">
+
+        <div class="card-container">
+
+            <!--Présentation des médicaments-->
+            <div class="product-card" *ngFor="let produit of lesMedicaments">
+
+                <img src="../../assets/images/img_1.png" alt="Nom du Produit 1" class="product-image">
+                <h6>{{ produit.libelle }}</h6>
+                <p><strong>Spécialité: </strong>{{ produit.specialitePharmaceutique.libelleSpecialiteMedicament }}</p>
+                <p><strong>Concentration: </strong>{{ produit.concentration }} {{ produit.uniteConcentration }}</p>
+                <p><strong>Forme Galénique:</strong> {{ produit.formeGalenique.nomFormeGalenique }}</p>
+                <p><strong>Prix: </strong> {{produit.prixGenerique}}</p>
+                
+                  
+                  <div class="button-group">
+                    <button class="detail-button" (click)="ajouterAuPanier(produit)" >
+                      <i class="bi bi-cart-plus"></i> Ajouter au panier
+                  </button>
+                  
+                </div>
+              
+              </div>
+
+        </div>
+
+    </div>
+
+    <!--formulaire pour ajouter un produit au panier-->
+    <div [class]="estVisibleLefFormulaireDajout ? 'modal  show ' : 'modal fade'" [style.display]="estVisibleLefFormulaireDajout ? 'block' : 'none'" *ngIf="produitAjouter">
+      <div class="modal-dialog modal-dialog-centered custom-modal-width">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="fas fa-box"></i> {{produitAjouter.libelle.toLocaleLowerCase()}}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="estVisibleLefFormulaireDajout = false"></button>
+          </div>
+          <div class="modal-body" >
+            <form [formGroup]="formulaireAjoutAuPanier">
+              <!-- Quantité Input -->
+              <div class="mb-3">
+                <label for="quantite" class="form-label">Quantité <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" formControlName="quantite" id="quantite" placeholder="Entrez la quantité" required>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <!-- Bouton Annuler -->
+            <button type="button" class="btn btn-outline-danger" (click)="estVisibleLefFormulaireDajout = false">
+              <i class="fas fa-times"></i> Annuler
+            </button>
+            <!-- Bouton Valider -->
+            <button type="button" class="btn btn-outline-success" (click)="validerQuantite()">
+              <i class="fas fa-check"></i> Valider
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+        
+    
+</main>
+
+
+

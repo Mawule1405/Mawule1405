@@ -1,7 +1,10 @@
-import { Utilisateur } from "./utilisateur"
+import { Utilisateur } from "./Utilisateur"
 
 export interface Agent extends Utilisateur {
    
-    nom: string
-    prenom: string
+    matriculeAgent: string
+    nomAgent: string
+    prenomAgent: string
   }
+
+  
