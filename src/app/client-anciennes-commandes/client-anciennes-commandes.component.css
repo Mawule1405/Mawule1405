@@ -1,7 +1,7 @@
 .animated-text {
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
-    opacity: 0;
+    color: #002b5f;
     animation: fadeIn 2s forwards, underline 2.5s forwards;
   }
   
@@ -33,6 +33,14 @@
 
 .commande-card:hover {
   transform: scale(1.05); /* Agrandissement léger */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Ombre plus intense */
+  box-shadow: 0 4px 20px rgba(19, 2, 109, 0.5); /* Ombre plus intense */
+}
+
+.neant{
+  background-color: #002b5f;
+  color: #fff;
+  font-size: 5rem;
+  font-weight: bold;
+  border-radius: 10px;
 }
 

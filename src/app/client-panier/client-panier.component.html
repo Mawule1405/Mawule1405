@@ -1,74 +1,92 @@
 <app-client-nav-bar ></app-client-nav-bar>
 
-<!--Présentation des détails-->
-<div [ngClass]="{'show-modal-client': !panierEstAfficher, 'modal':panierEstAfficher}">
-    <div class="header-panier">
-        <div class="d-flex justify-content-between flex-row">
-            <h6 class = "h6 mx-2 py-2">Votre panier est disponible!</h6>
+<div class="container panier-card mt-2">
+  <h4 class="mb-3 title"><strong>Votre panier d'achat</strong></h4>
+    <!-- Les informations globales sur le panier -->
+    <div class="container p-3 ligne-commande-title bold panier-card-header">
+        <div class="row mb-4 align-items-center container">
+            <!-- Colonne avec les informations du panier -->
+            <div class="col-md-6">
+                
+                <p><strong>Nombre total d'articles :</strong> {{ 50 }}</p>
+                <p><strong>Montant total :</strong> {{ 560000 }} FCFA</p>
+                <p><strong>Date :</strong> {{date }}</p>
+            </div>
+        
+            <!-- Colonne avec les boutons d'actions -->
+            <div class="col-md-6 text-md-end text-center mt-3 mt-md-0">
+                <button class="btn btn-light me-2" (click)="validerPanier()">
+                    <i class="fas fa-check"></i> Valider le Panier
+                </button>
+                <button class="btn btn-danger" (click)="viderPanier()">
+                    <i class="fas fa-trash"></i> Vider le Panier
+                </button>
+            </div>
         </div>
-        <div class="d-flex justify-content-between flex-row align-items-center">
-            
-            <h6 class="h6 me-4">Montant total du panier: {{500000}} FCFA</h6> 
-            <button class="btn btn-sm bg-success hover">Soumettre la commande</button>
+    </div>
+    
 
-        </div>
-        <div class="d-flex justify-content-between flex-row align-items-center">
-            <h6 class="h6 me-5">Nombre d'articles: {{lesLignesPaniers.length}}</h6>
-            <button class="btn btn-outline-danger m-2" (click)="fermerPanier()">&times;</button>
+    <!-- Présentation des lignes de panier sous forme de card -->
+    <div class="row">
+        <div *ngFor="let ligne of lignesPanier" class="col-md-4 mb-4 ligne-card">
+            <div class="card shadow-sm">
+                <div class="card-header ligne-commande-title hover bold text-white">
+                    Produit : {{ ligne.produit.nom }}
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Quantité :</strong> {{ ligne.quantite }}<br>
+                        <strong>Prix unitaire :</strong> {{ ligne.produit.prix }} FCFA<br>
+                        <strong>Sous-total :</strong> {{ ligne.quantite * ligne.produit.prix }} FCFA
+                    </p>
+                    <div class="d-flex justify-content-between">
+                        
+                        <button class="btn btn-sm btn-outline-success" (click)="ModifierLaQuantite(ligne)">
+                            <i class="fas fa-pencil"></i> Ajouter
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="supprimerLigne(ligne)">
+                            <i class="fas fa-times"></i> Supprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="body-panier d-flex justify-content-between flex-wrap ">
-        <!-- Utilisation de flexbox pour organiser les cartes -->
-        <div class="card m-2 p-2 shadow-sm" *ngFor="let ligne of lesLignesPaniers" style="width: 18rem;">
-          <div class="card-body d-flex flex-column align-items-between">
-            <img src="../../assets/images/img_1.png" alt="" srcset="">
 
-            <h5 class="">{{ ligne.article.libelle }}</h5>
-      
-            <!-- Détails du produit -->
-            <!--<p class="small"><strong class="text-success">Spécialité:</strong> {{ ligne.article.specialitePharmaceutique.libelle }}</p>
-            <p class="small"><strong class="text-success">Forme Galénique:</strong> {{ ligne.article.formeGalenique.nomFormeGalenique }}</p>
-            <p class="small"><strong class="text-success">Concentration:</strong> {{ ligne.article.concentration }}</p> -->
-            <p class="text-start small"><strong class="text-success">Quantité:</strong> {{ ligne.quantite }}</p>
-            <p class="text-start small"><strong class="text-success">Prix unitaire:</strong> {{ ligne.article.prixGenerique}} FCFA</p>
-            <p class="text-start small"><strong class="text-success">Total:</strong> {{ ligne.quantite * ligne.article.prixGenerique }} FCFA</p>
-      
-            <!-- Boutons d'action -->
-            <div class="d-flex justify-content-between mt-3">
-              <button id="btn-{{ ligne.id }}" class="btn btn-sm hover" (click)="retirerDuPanier(ligne)">
-                <i class="bi bi-trash"></i> Retirer
-              </button>
-              <button class="btn btn-sm hover bg-success" (click)="changerLaQuantite(ligne)">
-                <i class="bi bi-pencil"></i> Modifier
-              </button>
-            </div>
-          </div>
+</div>
 
-          <!--Formulaire de changement de la quantite du produit-->
-          <div id="form-{{ligne.id}}" [class]="ligneCourant==ligne?'show-modal-ligne-quantite':'modal'" class="p-3 bg-light border rounded">
-            <!-- En-tête avec le titre et le bouton de fermeture -->
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="h6 text-start">Changer la quantité commandée <br><strong>{{ligne.article.libelle}}</strong></h6>
-                <button class="btn btn-outline-danger btn-sm"  (click)="fermerFormulaireLigne()">&times;</button>
+
+  <!--Fenetre modal pour modifier la quantite d'une ligne-->
+  <div [class]="estVisibleLeFormulaireDajout ? 'modal  show ' : 'modal fade'" [style.display]="estVisibleLeFormulaireDajout ? 'block' : 'none'" *ngIf="ligneCourant">
+    <div class="modal-dialog modal-dialog-centered custom-modal-width">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="fas fa-box"></i> {{ligneCourant.produit.nom}}</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="estVisibleLeFormulaireDajout = false"></button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="formulaireModificationLignePanier">
+            <!-- Quantité Input -->
+            <div class="mb-3">
+              <label for="quantite" class="form-label">Quantité <span class="text-danger">*</span></label>
+              <input type="number" class="form-control" formControlName="quantite" id="quantite" placeholder="Entrez la quantité" required>
             </div>
-        
-        <!-- Formulaire -->
-        <form class="w-100">
-            <!-- Nouvelle quantité -->
-            <div class="form-group mb-3">
-                <label for="quantite">Nouvelle quantité <sup class="text-danger">*</sup></label>
-                <input id="quantite" type="number" class="form-control" placeholder="0" required min="0">
-            </div>
-            
-            <!-- Bouton d'enregistrement -->
-            <div class="text-end">
-                <button type="submit" class="btn btn-success">Enregistrer</button>
-            </div>
-        </form>
-        
-    </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <!-- Bouton Annuler -->
+          <button type="button" class="btn btn-outline-danger" (click)="estVisibleLeFormulaireDajout = false">
+            <i class="fas fa-times"></i> Annuler
+          </button>
+          <!-- Bouton Valider -->
+          <button type="button" class="btn btn-outline-success" (click)="validerQuantite()">
+            <i class="fas fa-check"></i> Valider
+          </button>
         </div>
       </div>
-      
-</div>
+    </div>
+  </div>
+
+
+

@@ -2,24 +2,25 @@
 <div class="w-100 text-black">
   
   <!-- Header of the page -->
-  <div class="bg-image d-flex flex-column align-items-center text-center">
+  <div class="bg-image d-flex flex-column align-items-center text-center pb-5">
     <div class="d-flex flex-column justify-content-center align-items-center py-5">
       <div class="content">
-        <h1 class="display-4">Bienvenue à l'OPN</h1>
-        <h3 class="mb-3">Votre point de ravitaillement</h3>
-        <h6>Ensemble sauvons des vies</h6>
+        <h1 class="display-5 title"><strong>Office Pharmaceutique National</strong></h1>
+        <h3 class="mb-3 sub-title"><strong>Votre point de ravitaillement</strong></h3>
+        
       </div>
-      <button class="btn btn-primary color-1 mt-4" routerLink="/about">
+
+      <button class="btn btn-primary color-1 mt-2" routerLink="/about">
         Qui sommes-nous ?
       </button>
     </div>
 
     <!-- Section with images and text -->
-    <div class="mt-5 text-light">
-      <div class="row gx-4 mx-1"> <!-- Added gx-4 to manage gutters -->
+    <div class="mt- text-light">
+      <div class="d-flex flex-row justify-content-center gx-4"> <!-- Added gx-4 to manage gutters -->
         <!-- Notre Histoire -->
-        <div class="col-12 col-md-6 d-flex align-items-center py-3 mb-1 color-1 hover">
-          <img src="path/to/image1.jpg" alt="Notre Histoire" class="img-fluid me-3">
+        <div class="col-12 col-md-6 d-flex align-items-center p-3 mb-1 mx-3 color-1 hover">
+          <img src="../../assets/images/img.png" alt="Notre Histoire" class="img-fluid me-3">
           <div>
             <h4>Notre Histoire</h4>
             <p>didunt ut labore et dolore magna aliqua.</p>
@@ -27,8 +28,8 @@
         </div>
 
         <!-- Nos Services -->
-        <div class="col-12 col-md-6 d-flex align-items-center py-3 mb-1 color-1 hover">
-          <img src="path/to/image2.jpg" alt="Nos services" class="img-fluid me-3">
+        <div class="col-12 col-md-6 d-flex align-items-center p-3 mb-1 mx-3 color-1 hover">
+          <img src="../../assets/images/img.png" alt="Nos services" class="img-fluid me-3">
           <div>
             <h4>Nos services</h4>
             <p>incididunt ut labore et dolore magna aliqua.</p>
@@ -40,45 +41,113 @@
 
   <!-- Presentation of the service of OPN -->
   <div class="container my-5">
-    <div class="row gx-4 justify-content-center"> <!-- Added gx-4 to manage gutters -->
-      <!-- Carte -->
-      <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex justify-content-center" *ngFor="let service of listOfService">
-        <div class="card" style="width: 100%;">
-          <div class="card-image">
-            <img [src]="service.image" alt="Photo_1" class="card-img-top">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{service.title}}</h5>
-            <p class="card-text">{{service.description}}</p>
-          </div>
-          <div class="card-footer text-center">
-            <button class="btn btn-outline-primary">En savoir plus</button>
-          </div>
+    <div class="row justify-content-center"> <!-- Added gx-4 to manage gutters -->
+      <div class="col-md-6  text-center">
+        <img src="../../assets/images/img.png" alt="" srcset="" class="image-directeur">
+      </div>
+
+      <div class="col-md-6">
+        <p class="mot-directeur">
+          <strong >Mots du directeur</strong><br>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor recusandae sequi quod, quis eum adipisci assumenda. Repudiandae mollitia, eligendi similique autem qui quasi asperiores vitae sit itaque quam nesciunt id.
+          Necessitatibus, architecto animi? Quasi molestias vitae quae, excepturi laboriosam soluta facilis, velit cupiditate blanditiis quis quas quam delectus. Quae pariatur quia tempora quaerat aliquam reprehenderit eaque debitis dolore illum cum.
+          Amet saepe mollitia sed, soluta similique illo laudantium, ad consequuntur ea tempora iusto praesentium recusandae provident reiciendis, incidunt omnis laborum debitis sequi aperiam pariatur nesciunt! Eaque nostrum dignissimos necessitatibus saepe.
+          Est quaerat quae nisi assumenda fugit corporis minus dicta deleniti nam id iste, in exercitationem odit, dignissimos at reprehenderit, eaque inventore totam repellendus impedit voluptas laboriosam mollitia soluta iusto? Vitae?
+          Quo qui nobis corrupti, officia dolore, deserunt quidem culpa iusto voluptates cupiditate, quasi sint et reiciendis laboriosam! Earum odit omnis laborum autem doloremque tempore reprehenderit sed laboriosam, ab maxime eveniet.
+        </p>
+      </div>
+      
+    </div>
+  </div>
+
+
+  <!--Nos Services-->
+
+  <div class="container">
+    <div>
+      <h6 class="service-title"><strong>Nos services</strong></h6>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center flex-row text-center my-5">
+      <strong class="chevron" (click)="trioDeServicesPrecedents()">&lt;</strong>
+      <div *ngFor="let service of listOfServices" class="col-md-3 service hover" [ngClass]="{ 'hidden': isAnimating, 'visible': !isAnimating }">
+          <img src="{{service.image}}" alt="" srcset="" class="">
+          <p>
+            <strong>{{service.title}}</strong> <br>
+            {{service.description}}
+          </p>
+
+          <button class="btn-style-1"> <i class="fa fa-info-circle"></i> Plus de détail ...</button>
+
+      </div>
+      <strong class="chevron" (click)="trioDeServicesSuivants()">&gt;</strong>
+    </div>
+
+    
+  
+  </div>
+
+  <!--Actualité et nouvelles-->
+  <div class="container mb-5">
+    <div>
+      <h6 class="actualite-title"><strong>Nouvelles & Actualités</strong></h6>
+    </div>
+
+    <div class="d-flex justify-content-between flex-row">
+      <div class="col-md-4 actualite-xxl">
+          <img src="../../assets/images/img_1.png" alt="" srcset="">
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed, doloremque provident illum explicabo expedita dolorem voluptates unde corporis laudantium assumenda consequuntur, et sequi distinctio omnis totam deserunt sapiente architecto animi.
+            Dolorum ipsam dignissimos eveniet, neque molestias exercitationem distinctio suscipittur fugit minima inventore ipsa earum a, tempora obcaecati quam magni blanditiis, distinctio veniam officiis repudiandae, ad neque cumque!
+          </p>
+      </div>
+
+      <div class="col-md-8 d-flex align-items-center flex-column">
+        <div class="d-flex text-end w-100 flex-row mb-3 actualite-xl" *ngFor="let i of [1, 2, 3]">
+          <img src="../../assets/images/directeur.jpeg" alt="" srcset="">
+          <p class="">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita explicabo, sunt est facilis reiciendis harum  Aperiam eaque minima dolor accusantium odio libero? Sequi necessitatibus aut quod provident nisi laboriosam. Cumque quam a ut sint dolores dignissimos perferendis ex.
+          </p>
         </div>
       </div>
     </div>
-  </div>
-
-  <!--Actualité-->
-  <div>
-    <div class="content">
-      <h6 class="h6">Nouvelles & Actualités</h6>
-    </div>
   
-    <div>
-      <div class="big-actuality">
-        <img src="assets/images/img_2.png" alt="Actualités" srcset="" class="">
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-          Voluptatibus velit deserunt blanditiis quasi? Et, porro.
-           Unde quia libero, doloribus, impedit,
-           at alias esse aperiam quo dolor eveniet numquam.
-            Aspernatur, possimus!
-        </p>
-      </div>
+    
+  </div>
 
 
+  <!--Newsletter-->
+  <div class="color-1 d-flex justify-content-center flex-row mt-5">
+    <div class="col-md-4 m-5 newsletter  text-white">
+      <strong>Contacter-nous</strong><br>
+      <form  >
+          <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required placeholder="Entrez votre email">
+          </div>
+          <div class="form-group">
+              <label for="message">Message</label>
+              <textarea class="form-control" id="message" name="message" rows="4" required placeholder="Écrivez votre message"></textarea>
+          </div>
+          <button type="submit" class="btn btn-light mt-3">
+            <i class="fa fa-paper-plane "></i> Envoyer
+        </button>
+        
+      </form>
+  </div>
+  
+
+    <div class="col-md-6">
+        <div class="w-50 adresse">
+          <img src="../../assets/images/immeuble_opn.jpeg" alt="" srcset="">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Earum, sint, veniam accusantium magni optio ab? Voluptates!
+            Reprehenderit culpa expedita nesciunt necessitatibus inventore  iusto odio perferendis, placeat id modi voluptas facilis voluptatibus saepe distinctio earum ullam! Aliquid, facere.
+          </p>
+        </div>
     </div>
   </div>
 
+  
+<app-footer></app-footer>
 </div>

@@ -3,6 +3,7 @@ import { Facture } from "./Facture";
 
 export interface Commande{
     id: string,
+    numeroCommande: string,
     montantTotalCommande : number,
     dateCommande : Date,
     etatCommande : string,

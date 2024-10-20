@@ -14,9 +14,9 @@
   
 
   .animated-text {
-    font-size: 2rem;
+    font-size: 3rem;
+    color: #002b5f;
     font-weight: bold;
-    opacity: 0;
     animation: fadeIn 2s forwards, underline 2.5s forwards;
   }
   
@@ -39,24 +39,32 @@
       border-bottom: 2px solid #007bff;
     }
   }
-  
+
+  #enAttente, #enCours, #tous{
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
 
   /* Rouge pour les commandes en attente */
 #enAttente:checked + label .text-danger {
     color: #dc3545;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 
 /* Vert pour les commandes en cours */
 #enCours:checked + label .text-success {
     color: #28a745;
+    font-size: 1.1rem;
     font-weight: bold;
 }
 
 #tous:checked + label .text-primary{
     color: #007bff;
+    font-size: 1.1rem;
     font-weight: bold;
 }
+
 /* Optionnel : personnalisation des cases à cocher */
 .custom-checkbox {
     width: 1.2rem;
@@ -74,4 +82,13 @@
 .commande-card:hover {
     transform: scale(1.05); /* Agrandissement léger */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Ombre plus intense */
+}
+
+
+.neant{
+  background-color: #002b5f;
+  color: #fff;
+  font-size: 5rem;
+  font-weight: bold;
+  border-radius: 10px;
 }

@@ -1,31 +1,36 @@
 <app-client-nav-bar ></app-client-nav-bar>
 
 <!-- Conteneur principal avec texte et cases à cocher -->
-<div class="text-center my-4">
+<div class="container text-start text-light py-4">
     <!-- Texte avec animation -->
     <h2 class="animated-text">Les nouvelles commandes</h2>
 
     <!-- Cases à cocher pour filtrer les commandes -->
-    <div class="form-check form-check-inline">
-        <input class="form-check-input custom-checkbox" type="checkbox" id="tous" (change)="filtrerCommandes('TOUS')">
-        <label class="form-check-label" for="tous">
-            <span class="text-primary">Toutes les nouvelles commandes</span>
-        </label>
-    </div>
-
-    <div class="form-check form-check-inline">
-        <input class="form-check-input custom-checkbox" type="checkbox" id="enAttente" (change)="filtrerCommandes('EN_ATTENTE')">
-        <label class="form-check-label" for="enAttente">
-            <span class="text-danger">Commandes en Attente</span>
-        </label>
-    </div>
     
-    <div class="form-check form-check-inline">
-        <input class="form-check-input custom-checkbox" type="checkbox" id="enCours" (change)="filtrerCommandes('EN_COURS')">
-        <label class="form-check-label" for="enCours">
-            <span class="text-success">Commandes en Cours</span>
-        </label>
-    </div>
+
+    <div class="btn-group" role="group" aria-label="Commandes">
+         <!-- Commandes nouvelles -->
+         <button type="button" class="btn btn-sm small btn-outline-success d-flex align-items-center" (click)="filtrerCommandes('CONFIRMEE')">
+          <i class="fas fa-check-circle me-2"></i> <!-- Icône pour traitées -->
+          <span>Nouvelles commandes</span>
+        </button>
+
+      <!-- Commandes en attente -->
+      <button type="button" class="btn btn-sm small btn-outline-danger d-flex align-items-center" (click)="filtrerCommandes('EN_ATTENTE')">
+          <i class="fas fa-hourglass-start me-2"></i> <!-- Icône pour en attente -->
+          <span>Commandes en attente</span>
+      </button>
+  
+      <!-- Commandes en cours de traitement -->
+      <button type="button" class="btn btn-sm small btn-outline-primary d-flex align-items-center" (click)="filtrerCommandes('EN_COURS')">
+          <i class="fas fa-sync-alt me-2"></i> <!-- Icône pour en cours de traitement -->
+          <span>Commandes en cours de traitement</span>
+      </button>
+      
+   
+  </div>
+  
+
 </div>
 
 
@@ -34,14 +39,15 @@
 <div class="container p-3" *ngIf="lesCommandes">
     <div *ngFor="let pair of getCommandesParPaire()" class="row">
       <!-- Affiche chaque commande dans une colonne -->
-      <div *ngFor="let commande of pair" class="col-md-6 mb-3 commande-card">
+      <div *ngFor="let commande of pair" class="col-md-4 mb-3 commande-card">
         <div class="card shadow-sm">
           <!-- Card Header avec couleur dynamique selon l'état -->
           <div class="card-header bold text-white" [ngClass]="{
-            'bg-danger text-light': commande.etatCommande === 'EN_ATTENTE',
-            'bg-success text-light': commande.etatCommande === 'EN_COURS'
+            'bg-danger text-light bold': commande.etatCommande === 'EN_ATTENTE',
+            'bg-success text-light bold': commande.etatCommande === 'CONFIRME',
+            'bg-primary text-light bold': commande.etatCommande === 'EN_COURS'
           }">
-            Commande N° : {{ lesCommandes.indexOf(commande) + 1 }}
+            Commande N° : {{ commande.numeroCommande}}
           </div>
   
           <!-- Card Body -->
@@ -52,12 +58,18 @@
             </p>
             <div class="d-flex justify-content-between">
               <!-- Bouton Voir Détails -->
-              <button class="btn btn-outline-primary" (click)="voirDetails(commande)">
+              <button class="btn btn-sm btn-outline-success" (click)="voirDetails(commande)">
                 <i class="fas fa-info-circle"></i> Voir détails
               </button>
+              
+              <!-- Passer une réclamation -->
+              <button class="btn btn-sm btn-outline-primary" (click)="passerUneReclamation(commande)">
+                <i class="fas fa-exclamation-circle"></i> Réclamer
+              </button>
+
               <!-- Bouton Annuler -->
               <button
-                class="btn btn-outline-danger"
+                class="btn btn-sm btn-outline-danger"
                 (click)="annulerCommande(commande)">
                 <i class="fas fa-times"></i> Annuler
               </button>
@@ -68,3 +80,11 @@
     </div>
   </div>
   
+
+  <!--Ce qu'il faut afficher s'il n'y a rien-->
+
+  <div class="container neant color-1 text-center p-5" *ngIf="lesCommandes.length === 0">
+      <p class="">
+        <strong>Néant</strong>
+      </p>
+  </div>

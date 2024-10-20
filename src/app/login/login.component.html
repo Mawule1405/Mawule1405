@@ -1,10 +1,9 @@
 <app-nav-bar ></app-nav-bar>
 
 <div class=" d-flex justify-content-center align-items-center min-vh-100 bg-image">
-  <div class="card mx-1 p-4 shadow-lg" style="width: 400px;">
-    <h3 class="text-center mb-4">Connexion</h3>
+  <div class=" forulaire-connexion" >
+    <h3 class="text-center mb-4"><strong>Connexion</strong></h3>
     <form [formGroup]="loginFormular" (submit)="login()">
-      <p>{{JSON.stringify(loginFormular.value)}}</p>
       <!-- Email -->
       <div class="mb-3">
         <label for="identifiant" class="form-label">Nom utilisateur ou Adresse e-mail</label>
@@ -43,3 +42,5 @@
     </form>
   </div>
 </div>
+
+<app-footer></app-footer>

@@ -2,47 +2,45 @@
 
 <!-- Texte avec animation -->
 <!-- Conteneur principal avec texte, cases à cocher et animation -->
-<div class="text-center my-4">
-    <!-- Texte avec animation -->
-    <h2 class="animated-text">Les anciennes commandes</h2>
+<div class="container text-start my-4">
+  <!-- Texte avec animation -->
+  <h2 class="animated-text my-4"><strong>Vos anciennes commandes</strong></h2>
 
-    <!-- Cases à cocher pour filtrer les commandes par état -->
-    <div class="form-check form-check-inline">
-        <input class="form-check-input custom-checkbox" type="checkbox" id="annulee" (change)="filtrerCommandes('ANNULEE')">
-        <label class="form-check-label" for="annulee">
-            <span class="text-danger">Commandes Annulées</span>
-        </label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input custom-checkbox" type="checkbox" id="traitee" (change)="filtrerCommandes('TRAITEE')">
-        <label class="form-check-label" for="traitee">
-            <span class="text-success">Commandes Traitées</span>
-        </label>
-    </div>
-    
-    <div class="form-check form-check-inline">
-        <input class="form-check-input custom-checkbox" type="checkbox" id="enLivraison" (change)="filtrerCommandes('EN_LIVRAISON')">
-        <label class="form-check-label" for="enLivraison">
-            <span class="text-primary">Commandes en Livraison</span>
-        </label>
-    </div>
+  <!-- Boutons pour filtrer les commandes par état -->
+  <div class="btn-group" role="group" aria-label="Commandes">
+      
+      
+      <!-- Commandes reçus -->
+      <button type="button" class="btn btn-sm btn-outline-success d-flex align-items-center" (click)="filtrerCommandes('TRAITEE')">
+          <i class="fas fa-check-circle me-2"></i> <!-- Icône pour traitées -->
+          <span>Commandes reçus</span>
+      </button>
+      
+      
+      <!-- Commandes Annulées -->
+      <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center" (click)="filtrerCommandes('ANNULEE')">
+        <i class="fas fa-times-circle me-2"></i> <!-- Icône pour annulation -->
+        <span>Commandes Annulées</span>
+      </button>
+
+  </div>
 </div>
+
 
 
 <!--Affichage des commandes-->
 <div class="container p-3" *ngIf="lesCommandes">
     <div *ngFor="let pair of getCommandesParPaire()" class="row">
       <!-- Affiche chaque commande dans une colonne -->
-      <div *ngFor="let commande of pair" class="col-md-6 mb-3 commande-card">
+      <div *ngFor="let commande of pair" class="col-md-3 mb-3 commande-card">
         <div class="card   shadow-sm">
           <!-- Card Header avec couleur dynamique selon l'état -->
           <div class="card-header" [ngClass]="{
             'bg-danger text-white': commande.etatCommande === 'ANNULEE',
             'bg-success text-white': commande.etatCommande === 'TRAITEE',
-            'bg-primary text-white': commande.etatCommande === 'EN_LIVRAISON'
+            
           }">
-            Commande N° : {{ lesCommandes.indexOf(commande) + 1 }}
+            <strong class="text-white">Commande N° : {{ commande.numeroCommande }}</strong>
           </div>
           
           <!-- Card Body -->
@@ -53,8 +51,12 @@
             </p>
             <div class="d-flex justify-content-between">
               <!-- Bouton Voir Détails -->
-              <button class="btn btn-outline-primary" (click)="voirDetails(commande)">
+              <button class="btn btn-sm btn-outline-primary" (click)="voirDetails(commande)">
                 <i class="fas fa-info-circle"></i> Voir détails
+              </button>
+
+              <button class="btn btn-sm btn-outline-success" *ngIf="commande.etatCommande==='ANNULEE'" (click)="relancerLaCommande(commande)">
+                <i class="fas fa-plus"></i> Relancer
               </button>
               
             </div>
@@ -63,3 +65,11 @@
       </div>
     </div>
   </div>
+
+  <!--Ce qu'il faut afficher s'il n'y a rien-->
+
+  <div class="container neant color-1 text-center p-5" *ngIf="lesCommandes.length === 0">
+    <p class="">
+      <strong>Néant</strong>
+    </p>
+</div>

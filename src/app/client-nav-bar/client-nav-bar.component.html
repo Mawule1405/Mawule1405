@@ -1,6 +1,6 @@
 <header>
-    <div>
-        Bienvenue sur la page officielle de l'Office National des Pharmacies
+    <div class="animated-text">
+        Bienvenue sur la page officielle de l'<strong>Office Pharmaceutique National</strong>    Tel: (+241) XX XX XX XX      Adresse: Gabon-Libreville-Estuaire
     </div>
     <nav>
         <img src="../../assets/images/logo.png" alt="" srcset="" width="32px" height="32px">
@@ -38,14 +38,17 @@
             <div>
                 <button class="btn btn-outline-success bg-success"
                 (click)="voirPanier()"
-                ><i class="bi bi-cart-plus"></i><!--{{panierClient.nombreLigne}} --></button>
+                ><i class="bi bi-cart-plus"></i><Strong >15</Strong></button>
             </div>
-            <div>
+            <div class="panier">
                 <a href="#" *ngIf="compte" >{{compte.nomEntreprise}}</a>
             </div>
             <div>
-                <button (click)="deconnexion()">Déconnecter</button>
+                <button (click)="deconnexion()">
+                    <i class="fa fa-sign-out-alt"></i> <!-- Icône de déconnexion -->
+                </button>
             </div>
+            
         </div>
     </nav>
 

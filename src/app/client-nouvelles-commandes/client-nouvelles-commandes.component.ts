@@ -15,6 +15,8 @@ export class ClientNouvellesCommandesComponent implements OnInit{
 
   client!: Client
   lesCommandes : Commande[] = []
+  lesCommandesInitiaux : Commande[] = []
+  ID : any;
 
   constructor(
     private authService: AuthService,
@@ -26,11 +28,11 @@ export class ClientNouvellesCommandesComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    const ID = this.authService.getCompteID();
+    this.ID = this.authService.getCompteID();
 
-    if(ID){
+    if(this.ID){
       
-      this.recupererLesInformationsDuClients(ID.id)
+      this.recupererLesInformationsDuClients(this.ID.id)
       
       
     }else{
@@ -55,8 +57,8 @@ export class ClientNouvellesCommandesComponent implements OnInit{
   //Obtenir les commandes deux à deux
   getCommandesParPaire() {
     const groupes = [];
-    for (let i = 0; i < this.lesCommandes.length; i += 2) {
-      groupes.push(this.lesCommandes.slice(i, i + 2));
+    for (let i = 0; i < this.lesCommandes.length; i += 3) {
+      groupes.push(this.lesCommandes.slice(i, i + 3));
     }
     return groupes;
   }
@@ -65,7 +67,8 @@ export class ClientNouvellesCommandesComponent implements OnInit{
   recupererLesCommandesDuClient(){
     this.commandeService.recupererLesCommandes().subscribe({
       next: commandes=>{
-        this.lesCommandes = commandes.filter(com=> com.etatCommande !== "ANNULEE" && com.etatCommande !=="TRAITEE" && com.client.id === this.client.id)
+        this.lesCommandesInitiaux = commandes.filter(com=>  com.client.id === this.ID.id )
+        this.lesCommandes = this.lesCommandesInitiaux.filter(com=>com.etatCommande === "CONFIRME") 
       },
       error: err=> console.log("Erreur de chargement des commandes")
     })
@@ -90,10 +93,18 @@ export class ClientNouvellesCommandesComponent implements OnInit{
   //Filtrer les commandes
   filtrerCommandes(etat: string) {
     // Logique pour filtrer les commandes en fonction de l'état sélectionné
-    if (etat === 'EN_ATTENTE') {
-      this.lesCommandes = this.lesCommandes.filter(commande => commande.etatCommande === 'EN_ATTENTE');
-    } else if (etat === 'EN_COURS') {
-      this.lesCommandes = this.lesCommandes.filter(commande => commande.etatCommande === 'EN_COURS');
+    if (etat === 'CONFIRMEE') {
+      this.lesCommandes = this.lesCommandesInitiaux.filter(commande => commande.etatCommande === 'CONFIRMEE')
+    } else if (etat === 'EN_ATTENTE') {
+      this.lesCommandes = this.lesCommandesInitiaux.filter(commande => commande.etatCommande === 'EN_ATTENTE');
     }
+     else if (etat === 'EN_COURS') {
+      this.lesCommandes = this.lesCommandesInitiaux.filter(commande => commande.etatCommande === 'EN_COURS');
+    }
+  }
+
+  //Passer une réclamation sur une commande donnée
+  passerUneReclamation(commande : Commande){
+
   }
 }

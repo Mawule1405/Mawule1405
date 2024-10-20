@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
 /* definition des couleur*/
 .color-1{
   background-color: #002b5f;
@@ -11,7 +12,7 @@
 }
 
 .shadow{
-  box-shadow: 2px 1px 0px 0px rgba(0, 0, 0, .5);
+  box-shadow: 2px 5px 0px 0px rgba(0, 0, 0, .5);
 }
 
 .small {
@@ -20,6 +21,8 @@
   font-size: 0.3rem;
   border-radius: 0;
 }
+
+
 
 
 .text-small-m{
@@ -32,8 +35,8 @@
 .mini-aside{
   position: fixed;
   top:0;
-  left:18.5%;
-  width: 80%;
+  left: 200px;
+  width: calc(100% - 200px);
 }
 
 .show {
@@ -52,27 +55,62 @@
 
 
 /*hover class*/
+.hover{
+  border-radius: 5px;
+  box-shadow:  3px 3px 3px rgba(26, 2, 99, .9);
+}
+
 .hover:hover{
-  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, .5);
-  transform: scale(1.1);
+ 
+  transform: scale(1.05);
+  box-shadow: 6px 10px 10px rgba(26, 2, 99, 0.9);
+
 }
 
 
 
 /* Barre de navigation */
 .navbar {
-  background-color: #002b5f;
+  background-color: #fff;
+  
+  height: 92px;
 }
 
-.nav-item-active{
-  text-decoration: underline;
+.nav-link{
+  padding: 2.3rem  50px;
   font-size: 1rem;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.nav-link:active{
+  color:#fff;
+}
+
+.nav-link:hover{
+  padding: 2.3rem  50px;
+  font-size: 1rem;
+  background-color: #086ae2;
+  color: #fff;
+}
+
+
+.nav-link-active{
+  background-color: #002b5f;
+  padding: 2.3rem  50px;
+  font-size: 1rem;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
   font-weight: bold;
 }
 
 /* background image*/
 .bg-image{
-  background-image: url("assets/images/img_3.png");
+  background-image: url("assets/images/immeuble_opn.jpeg");
   background-size: cover; /* Ajuste la taille de l'image pour couvrir l'élément */
   background-position: center; /* Centre l'image */
   background-repeat: no-repeat; /* Évite la répétition de l'image */
@@ -80,10 +118,6 @@
   height: auto;
 }
 
-.bg-image:hover{
-  background-image: url("assets/images/img_2.png");
-  height: auto;
-}
 
 /* Style pour le contenu */
 .content h1 {
@@ -105,11 +139,11 @@
 .show-modal {
   position: fixed;
   top: 0;
-  left: 18.5%;
+  left: 0;
   z-index: 1050;
-  width: calc(100vw - 18.5%);
+  width:100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* Couleur de fond semi-transparente */
+  background-color: rgba(24, 4, 119, 0.7); /* Couleur de fond semi-transparente */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,6 +151,16 @@
 
 .modal {
   display: none;
+}
+
+.scroller-card{
+  overflow-y: auto;
+  height: 90vh;
+}
+
+.bg-opn-1{
+  background-color: #d8dbdd;
+
 }
 
 /* Media query pour les écrans de moins de 768px (tablettes et mobiles) */
@@ -145,4 +189,21 @@
     font-size: 1rem; /* Taille de la police pour le slogan */
     margin-bottom: 2rem; /* Espace sous le slogan */
   }
+}
+
+.btn-style-1{
+  background-color: #002b5f;
+  border-radius: 10px;
+  color: #fff;
+  font-size: .9rem;
+  padding: 5px;
+}
+
+.btn-style-1:hover{
+  background-color: #207ced;
+}
+
+.btn-style-1-active{
+  background-color: #fff;
+  color: #000;
 }

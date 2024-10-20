@@ -2,15 +2,14 @@
 header {
     background-color: #002b5f;
     color: white;
-    padding: 0px;
-    
-   
-    
+    align-items: center;  
 }
+
 /* Style initial */
 header > div {
-    background-color: #5093db;
-    font-size: 0.6rem !important;
+    background-color: #020a11;
+    font-size: 0.9rem !important;
+    font-weight: bold;
     padding: 10px;
     color: white;
     transition: background-color 0.5s ease, font-size 0.5s ease;
@@ -59,11 +58,13 @@ nav ul li a {
     color: white;
     text-decoration: none;
     font-size: 0.9rem;
+    font-weight: bold;
     transition: color 0.3s ease;
 }
 
 nav ul li a:hover {
-    color: #fc9d05;
+    color: #d7fc05;
+    font-weight: bold;
 }
 
 /* Dropdown */
@@ -95,7 +96,8 @@ nav ul li ul li a {
 }
 
 nav ul li ul li a:hover {
-    background-color: #0771f3;
+    background-color: #fff;
+    color: #000;
 }
 
 /* Style pour le profil et le bouton de déconnexion */
@@ -105,7 +107,7 @@ nav div:last-child div {
 
 button {
     padding: 5px 10px;
-    background-color: #fc2008;
+    background-color: #002b5f;
     color: white;
     border: none;
     cursor: pointer;
@@ -113,7 +115,7 @@ button {
 }
 
 button:hover {
-    background-color: #a52618;
+    color: #a52618;
 }
 
 /* Style responsive */
@@ -175,5 +177,12 @@ button:hover {
     width:  25%;
     height: auto;
     background-color: #fff;
+  }
+
+  .panier a{
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    font-weight: bold;
   }
 

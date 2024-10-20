@@ -1,1 +1,43 @@
-<p>client-anciennes-reclamations works!</p>
+<app-client-nav-bar></app-client-nav-bar>
+
+<div class="container">
+    <div class="title-card">
+        <p><strong>Les anciennes réclamations</strong></p>
+    </div>
+
+    <!--Les réclamations-->
+    <div class="d-flex flex-wrap">
+        <div class="reclamation-card col-md-6 my-3 p-4 shadow-sm rounded" *ngFor="let reclamation of listeReclamations" >
+            <h2 class="reclamation-title mb-4">Détails de la Réclamation</h2>
+          
+            <div class="reclamation-details">
+              <p><strong>ID Réclamation :</strong> {{ reclamation.id }}</p>
+              <p><strong>Description :</strong> {{ reclamation.descriptionReclamation }}</p>
+              <p><strong>Date de Réclamation :</strong> {{ reclamation.dateReclamation | date: 'dd/MM/yyyy' }}</p>
+              <p><strong>État :   </strong> 
+                <span class="badge" [ngClass]="{
+                  'bg-warning': reclamation.etatReclamation === 'EN_COURS',
+                  'bg-success': reclamation.etatReclamation === 'TRAITÉE',
+                  'bg-danger': reclamation.etatReclamation === 'REJETÉE'
+                }">{{ reclamation.etatReclamation }}</span>
+              </p>
+              <p><strong>Commande associée :</strong> {{ reclamation.commande.id }} ({{ reclamation.commande.nomProduit }})</p>
+            </div>
+          
+            <div class="reclamation-actions mt-4 d-flex justify-content-between">
+              <button class="btn btn-sm btn-primary" (click)="voirDetailsCommande(reclamation.commande)">
+                <i class="bi bi-box-seam"></i> Voir la commande
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="annulerReclamation(reclamation)">
+                <i class="bi bi-x-circle"></i> Annuler la réclamation
+              </button>
+            </div>
+          </div>
+    </div>
+      
+
+</div>
+
+
+
+

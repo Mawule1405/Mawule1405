@@ -28,11 +28,13 @@ export class ClientCataloguesComponent implements OnInit {
   produitCourant : any
   lesMedicaments : Medicament[] =[]
   lesDispositifsMedicaux : DispositifMedical[]= []
+  lesMedicamentsInitiaux : Medicament[] =[]
+  lesDispositifsMedicauxInitiaux : DispositifMedical[]= []
 
   lesSpecialites : Array<SpecialitePharmaceutique> = []
   lesFormGaleniques: Array<FormeGalenique> = []
 
-  formulaireDeRechercheEtFiltre! : FormGroup
+  formulaireDeRecherche! : FormGroup
   formulaireAjoutAuPanier! : FormGroup
 
   produitAjouter! : Medicament | DispositifMedical
@@ -57,6 +59,7 @@ export class ClientCataloguesComponent implements OnInit {
       
       this.recupererLesInformationsDuClients(ID.id)
       this.formulaireAjoutAuPanier = this.creerLeFormulaireDajoutDunProduitAuPanier()
+      this.formulaireDeRecherche = this.creerLeFormulaireDeRecherche()
       
     }else{
      
@@ -81,8 +84,7 @@ export class ClientCataloguesComponent implements OnInit {
         this.recupererLesMedicaments()
         this.recupererLesDispositifsMedicaux()
         this.getPanierClient()
-        this.getFormeGaleniques()
-        this.getSpecialites()
+     
       },
       error: err=> console.log("Erreur de récupération du compte client")
     })
@@ -111,7 +113,10 @@ export class ClientCataloguesComponent implements OnInit {
   //Recupérer tous les médicaments
   recupererLesMedicaments(){
     this.productService.getTousLesMedicaments().subscribe({
-      next : medicaments=> this.lesMedicaments = medicaments.filter(medoc=> medoc.etat=='NON_RETIRE'),
+      next : medicaments=>{ 
+        this.lesMedicaments = medicaments.filter(medoc=> medoc.etat=='NON_RETIRE');
+        this.lesMedicamentsInitiaux = [...this.lesMedicaments]
+      },
       error: err => console.log("Erreur de chargement des médicaments")
 
     })
@@ -120,31 +125,34 @@ export class ClientCataloguesComponent implements OnInit {
   //Récupérer tous les dispositifs médicaux
   recupererLesDispositifsMedicaux(){
     this.productService.recupererTousLesDispositifsMedicaux().subscribe({
-      next: values=> this.lesDispositifsMedicaux = values.filter(dispo=> dispo.etat=='NON_RETIRE'),
+      next: values=>{ 
+        this.lesDispositifsMedicaux = values.filter(dispo=> dispo.etat=='NON_RETIRE');
+        this.lesDispositifsMedicauxInitiaux = [...this.lesDispositifsMedicaux]
+      
+      },
       error: err=> console.log("Erreur de récupération des dispositifs médicaux")
     })
   }
 
-  //Récupérer de toutes les spécialités
-  getSpecialites(){
-    this.specialteService.getAllProductsSpecialities().subscribe({
-      next: spec => this.lesSpecialites = spec,
-      error: err=> console.log("=============>"+err)
+ //Créer le formulaire de recherche
+ creerLeFormulaireDeRecherche(){
+    return this.fb.group({
+      key : this.fb.control('')
     })
-  }
-
-
-  //Récupération de toutes les formes galéniques
-  getFormeGaleniques(){
-    this.formeGaleniqueService.getAllFormGaleniques().subscribe({
-      next: formes=> this.lesFormGaleniques = formes,
-      error: err=> console.log("============>"+err)
-    })
-  }
+ }
 
   //Recherche par mot cle
   rechercherParMotCle(){
+    let key = this.formulaireDeRecherche.value.key
+    if (key){
+        this.lesDispositifsMedicaux = this.lesDispositifsMedicauxInitiaux.filter(dispo=>
+          dispo.libelle.toLowerCase().includes(key.toLowerCase()))
 
+        this.lesMedicaments = this.lesMedicaments.filter(medo => medo.libelle.toLowerCase().includes(key.toLowerCase()))
+    }else{
+      this.recupererLesDispositifsMedicaux()
+      this.recupererLesMedicaments()
+    }
   }
 
   //Formulaire d'enrégistrement d'ajout d'un produit au panier
@@ -169,6 +177,11 @@ export class ClientCataloguesComponent implements OnInit {
         this.fermerFormulaireDajout()
       }
     }
+  }
+
+  //Commander un produit
+  commanderLeProduit(produit: any){
+
   }
 
 }

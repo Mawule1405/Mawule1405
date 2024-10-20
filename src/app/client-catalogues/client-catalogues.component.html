@@ -2,32 +2,17 @@
 <div class="header-catalogue">
     <app-client-nav-bar ></app-client-nav-bar>
     <!--Présentation des filtres-->
-    <div class="filter-container p-1">
-        <form class="d-flex flex-wrap align-items-center justify-content-between w-100">
-            <!-- Recherche par nom de produit -->
-            <div class="me-3 flex-grow-1">
-                <input type="search" class="form-control form-control-sm" id="productName" name="productName" placeholder="Entrez le nom du produit">
-            </div>
     
-            <!-- Spécialité -->
-            <div class="form-group w-25 me-3">
-                <label for="speciality" class="form-label"><i class="bi bi-heart"></i> Spécialité:</label>
-                <select name="speciality" id="speciality" class="form-select form-select-sm">
-                    <option value="0" selected>Toutes les spécialités</option>
-                    <option *ngFor="let spe of lesSpecialites"  value="{{spe.id}}">{{spe.libelleSpecialiteMedicament}} {{spe.dci.nomDci}}</option>
-                </select>
-            </div>
-    
-            <!-- Forme Galénique -->
-            <div class="form-group w-25">
-                <label for="galenicForm" class="form-label"><i class="bi bi-capsule"></i> Forme Galénique:</label>
-                <select name="galenicForm" id="galenicForm" class="form-select form-select-sm">
-                    <option value="0" selected>Toutes les formes galéniques</option>
-                    <option *ngFor="let form of lesFormGaleniques"  value="{{form.id}}">{{form.nomFormeGalenique}}</option>
-                </select>
-            </div>
-        </form>
-    </div>
+<div class="filter-container p-1">
+  <form [formGroup]="formulaireDeRecherche" class="d-flex flex-wrap align-items-center justify-content-center w-100">
+      <!-- Recherche par nom de produit -->
+      <div class="search-input me-3 col-md-6">
+          <i class="fa fa-search"></i>
+          <input type="search" class="form-control form-control-sm" id="productName" formControlName="key" name="productName" placeholder="Entrez le nom du produit" (input)="rechercherParMotCle()">
+      </div>
+      
+  </form>
+</div>
 </div>
 <main>
     
@@ -39,7 +24,13 @@
     <!--Présentation des produits-->
     <div class="product-display ">
 
+        <h3>
+          <strong>Catalogue des produits</strong>
+        </h3>
+
         <div class="card-container">
+
+          
 
             <!--Présentation des médicaments-->
             <div class="product-card" *ngFor="let produit of lesMedicaments">
@@ -90,7 +81,7 @@
     </div>
 
     <!--formulaire pour ajouter un produit au panier-->
-    <div [class]="estVisibleLefFormulaireDajout ? 'modal  show ' : 'modal fade'" [style.display]="estVisibleLefFormulaireDajout ? 'block' : 'none'" *ngIf="produitAjouter">
+    <div [class]="estVisibleLefFormulaireDajout ? 'modal  show ' : 'modal fade'"  *ngIf="produitAjouter">
       <div class="modal-dialog modal-dialog-centered custom-modal-width">
         <div class="modal-content">
           <div class="modal-header">

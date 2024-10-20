@@ -5,55 +5,26 @@
 }
 /* Style du conteneur du filtre */
 .filter-container {
-  display: flex;
-  justify-content: row;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  width: 100%;
-  background-color: #fff;
-  z-index: 2;
-  margin: 0 auto;
+  background-color: #fff; /* Couleur d'arrière-plan */
+  border-radius: 5px; /* Coins arrondis */
+  padding: 10px; /* Rembourrage interne */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre */
 }
 
-/* Style des groupes de formulaire */
-.form-group {
-  
-  display: flex;
-  flex-direction: row;
-  gap: 1px;
+.search-input {
+  position: relative; /* Position pour l'icône */
 }
 
-/* Style des champs de texte et des listes déroulantes */
-input[type="search"], select {
-  padding: 5px;
-  border: 1px solid #002b5f;
-  border-radius: 1px;
-  font-size: .8rem;
+.search-input input {
+  padding-left: 30px; /* Espace pour l'icône */
 }
 
-input[type="search"]:focus, select:focus {
-  border-color: #5093db;
-  box-shadow: 0 0 8px rgba(80, 147, 219, 0.2);
-}
-
-/* Style des labels */
-.form-group label {
-  
-  font-size: .7rem;
-  font-weight: 500;
-  color: #002b5f;
-}
-
-/* Icônes */
-.form-group label i {
-  margin-right: 5px;
-  color: #5093db;
-}
-
-/* Ajout d'animation au focus */
-input[type="search"]:hover, select:hover {
-  transform: scale(1.02);
-  border-color: #3072a3;
+.search-input .fa-search {
+  position: absolute;
+  left: 10px; /* Position de l'icône à gauche */
+  top: 50%;
+  transform: translateY(-50%); /* Centrage vertical */
+  color: #6c757d; /* Couleur de l'icône */
 }
 
 
@@ -73,11 +44,14 @@ input[type="search"]:hover, select:hover {
   justify-content: space-between;
   flex-wrap: nowrap;
   color: #fff;
+  text-align: left;
   flex-direction: column;
-    background-color: #3072a3; /* Couleur de fond de la carte */
-    width: 250px; /* Largeur fixe pour chaque carte */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre portée pour un effet de profondeur */
-    text-align: center; /* Centrer le texte */
+  background-color: #3072a3; /* Couleur de fond de la carte */
+  width: 300px; /* Largeur fixe pour chaque carte */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre portée pour un effet de profondeur */
+  text-align: start; /* Centrer le texte */
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .product-card:hover {
@@ -125,7 +99,7 @@ input[type="search"]:hover, select:hover {
     flex-direction: column;
     align-items:center ;
     position: relative;
-    top:200px
+    top:100px
   }
   
   
@@ -134,17 +108,27 @@ input[type="search"]:hover, select:hover {
   .product-display {
     flex: 1; /* Prendre le reste de l'espace disponible */
     background-color: #ffffff; /* Couleur d'arrière-plan pour l'affichage des produits */
-    padding:5px 20px; /* Espacement interne */
+    padding:5px 5px; /* Espacement interne */
     
-    
-    
-   
   }
+
   
-  .product-display h2 {
-    margin-bottom: 5px; /* Espacement sous le titre */
-    font-size: 1.3rem; /* Taille de police pour le titre */
-    
+  
+  .product-display h3 strong {
+   margin: 50px 20px;
+    font-size: 2rem; /* Taille de police pour le titre */
+    display: block;
+   
+    color: #002b5f;
+
+  }
+
+  .product-display h3 strong::after{
+    content: "";
+    flex: 1;
+    border-bottom: 2px solid #002b5f;
+    margin: 0 15px; /* Ajuste l'espace entre le texte et les lignes */
+
   }
 
 
@@ -175,20 +159,24 @@ input[type="search"]:hover, select:hover {
 
   /* Ajouter opacité de 0.5 au fond du modal */
 .modal{
-  top: 80px;
+  top: 25%;
+  left : calc(50%-500px);
+  width: 500px;
   height: 50vh;
   background-color: #002b5f;
+  display: inline-block;
+  box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.7);
 }
 
 .modal-backdrop {
-  opacity: 0.2 !important;
+  opacity: 1 !important;
 }
 
 .modal-content {
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1px;
+  
 }
 
 .custom-modal-width {
-  width: 50%; /* ou 50%, selon ce que vous préférez */
+  width: 90%; /* ou 50%, selon ce que vous préférez */
 }

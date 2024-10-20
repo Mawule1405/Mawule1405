@@ -15,6 +15,8 @@ export class ClientAnciennesCommandesComponent implements OnInit {
 
   client!: Client
   lesCommandes : Commande[] = []
+  lesCommandesInitiaux : Commande[] = []
+  ID : any;
 
   constructor(
     private authService: AuthService,
@@ -26,11 +28,11 @@ export class ClientAnciennesCommandesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const ID = this.authService.getCompteID();
+    this.ID = this.authService.getCompteID();
 
-    if(ID){
+    if(this.ID){
       
-      this.recupererLesInformationsDuClients(ID.id)
+      this.recupererLesInformationsDuClients(this.ID.id)
       
       
     }else{
@@ -55,8 +57,8 @@ export class ClientAnciennesCommandesComponent implements OnInit {
   //Obtenir les commandes deux à deux
   getCommandesParPaire() {
     const groupes = [];
-    for (let i = 0; i < this.lesCommandes.length; i += 2) {
-      groupes.push(this.lesCommandes.slice(i, i + 2));
+    for (let i = 0; i < this.lesCommandes.length; i += 4) {
+      groupes.push(this.lesCommandes.slice(i, i + 4));
     }
     return groupes;
   }
@@ -65,10 +67,11 @@ export class ClientAnciennesCommandesComponent implements OnInit {
   recupererLesCommandesDuClient(){
     this.commandeService.recupererLesCommandes().subscribe({
       next: commandes=>{
-        this.lesCommandes = commandes.filter(com=> com.etatCommande !== "EN_COURS" &&  com.etatCommande !=="EN_ATTENTE" && com.client.id === this.client.id)
+        this.lesCommandesInitiaux = commandes.filter(com=> com.client.id === this.ID.id )
+        this.lesCommandes = this.lesCommandesInitiaux.filter(com=> com.etatCommande === "TRAITEE")
       },
       error: err=> console.log("Erreur de chargement des commandes")
-    })
+    }) ; 
   }
 
   //afficher les détails d'une commande
@@ -79,14 +82,39 @@ export class ClientAnciennesCommandesComponent implements OnInit {
   //Annuler une commande
   annulerCommande(commande: Commande){
 
+    commande.etatCommande = "ANNULEE"
+    if(confirm("Souhaitez-vous annulés cette commande?")){
+      this.commandeService.changeEtatCommande(commande).subscribe({
+        next: commandes=>{
+          this.recupererLesCommandesDuClient()
+            this.filtrerCommandes("ANNULEE")
+        },
+        error: err=> console.log("Erreur de modification")
+      })
+    }
+
+  }
+
+  //Relancer une commande
+  relancerLaCommande(commande : Commande){
+    commande.etatCommande = "EN_COURS"
+    if(confirm("Souhaitez-vous annulés cette commande?")){
+      this.commandeService.changeEtatCommande(commande).subscribe({
+        next: commandes=>{
+            this.recupererLesCommandesDuClient()
+            this.filtrerCommandes("ANNULLEE")
+        },
+        error: err=> console.log("Erreur de modification")
+      })
+    }
   }
 
   filtrerCommandes(etat: string) {
     // Logique pour filtrer les commandes en fonction de l'état sélectionné
-    if (etat === 'EN_ATTENTE') {
-      this.lesCommandes = this.lesCommandes.filter(commande => commande.etatCommande === 'EN_ATTENTE');
-    } else if (etat === 'EN_COURS') {
-      this.lesCommandes = this.lesCommandes.filter(commande => commande.etatCommande === 'EN_COURS');
+    if (etat === 'ANNULEE') {
+      this.lesCommandes = this.lesCommandesInitiaux.filter(commande => commande.etatCommande === 'ANNULEE' && commande.client.id === this.ID.id );
+    } else if (etat === 'TRAITEE') {
+      this.lesCommandes = this.lesCommandesInitiaux.filter(commande => commande.etatCommande === 'TRAITEE' && commande.client.id === this.ID.id );
     }
   }
 }

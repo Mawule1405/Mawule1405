@@ -22,9 +22,9 @@ export class ClientNavBarComponent implements OnInit {
     {index:4, title:"Commandes", router:"/client/commandes/nouvelles-commandes"},
     {index:5, title:"Nouvelles commandes", router:"/client/commandes/nouvelles-commandes"},
     {index:6, title:"Anciennes commandes", router:"/client/commandes/anciennes-commandes"},
-    {index:7, title:"Reclamations", router:"/client/commandes/nouvelles-reclamations"},
-    {index:8, title:"Nouvelles reclamations", router:"/client/commandes/nouvelles-reclamations"},
-    {index:9, title:"Anciennes reclamations", router:"/client/commandes/anciennes-reclamations"},
+    {index:7, title:"Reclamations", router:"/client/reclamations/nouvelles-reclamations"},
+    {index:8, title:"Nouvelles reclamations", router:"/client/reclamations/nouvelles-reclamations"},
+    {index:9, title:"Anciennes reclamations", router:"/client/reclamations/anciennes-reclamations"},
 
   ]
    compte! : Client;

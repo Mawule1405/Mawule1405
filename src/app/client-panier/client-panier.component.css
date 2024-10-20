@@ -1,179 +1,69 @@
-/* Style général pour le header */
-header {
-    background-color: #002b5f;
-    color: white;
-    padding: 0px;
-    
-   
-    
-}
-/* Style initial */
-header > div {
-    background-color: #5093db;
-    font-size: 0.6rem !important;
-    padding: 10px;
-    color: white;
-    transition: background-color 0.5s ease, font-size 0.5s ease;
-}
 
-/* Effet au survol */
-header > div:hover {
-    background-color: #3072a3;
-   
-}
-
-
-header div:first-child {
-    text-align: center;
-    font-size: 1rem;
-    padding: 5px 0;
-}
-
-/* Style pour la navigation */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-}
-
-nav div {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-nav ul li {
+.panier-card{
     position: relative;
-    display: inline-block;
-    padding: 0 5px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease;
-}
-
-nav ul li a:hover {
-    color: #fc9d05;
-}
-
-/* Dropdown */
-nav ul li ul {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #002b5f;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    z-index: 3;
-}
-
-nav ul li:hover ul {
-    display: block;
-}
-
-nav ul li ul li {
-    width: 200px;
-    padding: 5px 10px;
-}
-
-nav ul li ul li a {
-    color: white;
-    padding: 2px;
-    display: block;
-}
-
-nav ul li ul li a:hover {
-    background-color: #0771f3;
-}
-
-/* Style pour le profil et le bouton de déconnexion */
-nav div:last-child div {
-    margin-right: 20px;
-}
-
-button {
-    padding: 5px 10px;
-    background-color: #fc2008;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #a52618;
-}
-
-/* Style responsive */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column;
-    }
-
-    nav div {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    nav ul li ul {
-        position: relative;
-        width: 100%;
-    }
-}
-
-.show-modal-client{
-    text-align: center;
-    width: 100%;
-    top: 80px;
+    z-index: 1;
     height: 85vh;
-    align-items: start;
-    color:#fff;
-    flex-direction: column;
-    z-index:1;
-    overflow-y: auto;
+}
 
-  
+.panier-card-header{
+    
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5);
+    margin: 30px 0;
+}
+
+.ligne-card {
+    
+    color: #000;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.ligne-card:hover {
+    box-shadow: 0px 0px 5px rgba(36, 14, 161, 0.4); /* Ombre plus large tout autour */
+    transform: scale(1.01);
+    z-index: 10;
+}
+
+
+  /* Ajouter opacité de 0.5 au fond du modal */
+  .modal{
+    
+    top: 25vh;
+    left: 25%;
+    height: 50vh;
+    width: 50%;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    background-color: #031e4b;
+    box-shadow: 0px 0px 5px  rgba(0, 0, 0, 0.3);
+    z-index: 5;
   }
-
-  .header-panier{
-    width:100%;
-    display: flex;
-    padding: 0;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: space-between;
-    background-color: #002b5f;
+  
+  .modal-backdrop {
+    opacity: 1 !important;
+  }
+  
+  .modal-content {
+    border-radius: 1px;
     
   }
-
-  .header-panier>div{
-    padding: 0 20px;
+  
+  .custom-modal-width {
+    width: 100%; /* ou 50%, selon ce que vous préférez */
+  }
+  
+  .title{
+    font-weight: bold;
+    font-size: 3rem;
+    color: #002b5f;
   }
 
-  .body-panier{
-    width: 100%;
-    margin-top: 20px;
+  .ligne-commande-title{
+    background-color: #002b5f;
+    color: #fff;
   }
-
-  .show-modal-ligne-quantite{
-    z-index: 5;
-    position: fixed;
-    top: 50%;
-    left: 25%;
-    width:  25%;
-    height: auto;
-    background-color: #fff;
-  }
-

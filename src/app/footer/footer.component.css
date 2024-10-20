@@ -1,0 +1,17 @@
+strong{
+    font-size: 2rem;
+    color: #002b5f;
+}
+
+div a{
+    text-decoration: none;
+    color: #002b5f;
+    padding: 5px 10px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+div a:hover{
+    background-color: #002b5f;
+    color: #fff;
+}

@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -33,6 +36,8 @@ import { ClientCatalogueMedicamentsComponent } from './client-catalogue-medicame
 import { CreateCompteClientComponent } from './create-compte-client/create-compte-client.component';
 import { ClientPanierComponent } from './client-panier/client-panier.component';
 import { ClientCatalogueDispositifsMedicauxComponent } from './client-catalogue-dispositifs-medicaux/client-catalogue-dispositifs-medicaux.component';
+import { FooterComponent } from './footer/footer.component';
+import { ClientCommandeDetailComponent } from './client-commande-detail/client-commande-detail.component';
 
 @NgModule({
   declarations: [
@@ -64,14 +69,18 @@ import { ClientCatalogueDispositifsMedicauxComponent } from './client-catalogue-
     ClientCatalogueMedicamentsComponent,
     CreateCompteClientComponent,
     ClientPanierComponent,
-    ClientCatalogueDispositifsMedicauxComponent
+    ClientCatalogueDispositifsMedicauxComponent,
+    FooterComponent,
+    ClientCommandeDetailComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule, 
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

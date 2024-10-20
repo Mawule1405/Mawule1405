@@ -1,12 +1,12 @@
-<div class="d-flex justify-content-between flex-row">
+<div class="d-flex justify-content-between flex-row ">
     <app-agent-nav-bar></app-agent-nav-bar>
 
-    <div class="mini-aside">
+    <div class="mini-aside bg-opn-1">
 
 
-        <div class="d-flex justify-content-end align-items-center mb-4">
+        <div class="d-flex justify-content-end align-items-center py-2 shadow-sm">
             <!-- Formulaire de recherche -->
-            <form [formGroup]="researchProductsFormular" class="me-2 flex-grow-1">
+            <form [formGroup]="researchProductsFormular" class="mx-1 flex-grow-1">
                 <input
                   type="search"
                   class="form-control form-control-sm w-100"
@@ -17,7 +17,7 @@
 
 
             <!-- Boutons -->
-            <button class="btn btn-sm btn-outline-dark small me-1 d-flex align-items-center"
+            <button class=" btn-style-1  me-1 d-flex align-items-center"
                     *ngFor="let btn of allButtonsElements"
                     (click)="openModalButton(btn)">
                 <i class="bi bi-{{btn.icon}} me-1"></i>
@@ -27,10 +27,10 @@
 
 
         <!--Présentation des médicaments-->
-        <div class="container py-4 overflow-y-auto" style="max-height:95vh">
+        <div class="container scroller-card py-2 overflow-y-auto" style="max-height:90vh">
   
             <div class="d-flex flex-wrap justify-content-between">
-                <div *ngFor="let medoc of lesMedicaments"   [class]="medoc.etat=='NON_RETIRE'? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+                <div *ngFor="let medoc of lesMedicaments"   [class]="medoc.etat=='NON_RETIRE'? 'card mb-3 hover' : 'modal'" style="width: 15rem;">
                    <div *ngIf="medoc.etat == 'NON_RETIRE'">
                      <div class="card-header p-0">
                        <img src="../../assets/images/img_1.png" class="card-img-top" alt="{{medoc.code}} {{medoc.libelle}}" style="height: 150px; object-fit: cover;">
@@ -57,7 +57,7 @@
 
 
                 <!--Affichage des dispositfs médicaux-->
-                <div *ngFor="let disp of lesDisposidifsMedicaux"   [class]="disp.etat=='NON_RETIRE'? 'card mb-3 shadow-sm' : 'modal'" style="width: 18rem;">
+                <div *ngFor="let disp of lesDisposidifsMedicaux"   [class]="disp.etat=='NON_RETIRE'? 'card mb-3 hover' : 'modal'" style="width: 15rem;">
                    <div *ngIf="disp.etat == 'NON_RETIRE'">
                      <div class="card-header p-0">
                        <img src="../../assets/images/img_3.png" class="card-img-top" alt="{{disp.code}} {{disp.libelle}}" style="height: 150px; object-fit: cover;">
